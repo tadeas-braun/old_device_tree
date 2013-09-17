@@ -52,6 +52,7 @@ BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_wl12xx
 USE_OPENGL_RENDERER := true
 BOARD_EGL_CFG := device/sony/lotus/config/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
+BOARD_EGL_NEEDS_LEGACY_FB := true
 
 #Fm Radio
 #BOARD_USES_STE_FM := true

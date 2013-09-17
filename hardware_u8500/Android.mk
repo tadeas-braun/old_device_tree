@@ -66,4 +66,50 @@ LOCAL_SHARED_LIBRARIES := \
 
 include $(BUILD_SHARED_LIBRARY)
 
+include $(CLEAR_VARS)
+SRC := surfaceflinger
+LOCAL_SRC_FILES:= \
+    $(SRC)/Client.cpp \
+    $(SRC)/DisplayDevice.cpp \
+    $(SRC)/EventThread.cpp \
+    $(SRC)/FrameTracker.cpp \
+    $(SRC)/GLExtensions.cpp \
+    $(SRC)/Layer.cpp \
+    $(SRC)/LayerDim.cpp \
+    $(SRC)/MessageQueue.cpp \
+    $(SRC)/SurfaceFlinger.cpp \
+    $(SRC)/SurfaceFlingerConsumer.cpp \
+    $(SRC)/SurfaceTextureLayer.cpp \
+    $(SRC)/Transform.cpp \
+    $(SRC)/DisplayHardware/FramebufferSurface.cpp \
+    $(SRC)/DisplayHardware/HWComposer.cpp \
+    $(SRC)/DisplayHardware/PowerHAL.cpp \
+    $(SRC)/DisplayHardware/VirtualDisplaySurface.cpp \
+
+LOCAL_CFLAGS:= -DLOG_TAG=\"SurfaceFlinger\"
+LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES
+ifeq ($(TARGET_DISABLE_TRIPLE_BUFFERING),true)
+	LOCAL_CFLAGS += -DTARGET_DISABLE_TRIPLE_BUFFERING
+endif
+ifeq ($(BOARD_EGL_NEEDS_LEGACY_FB),true)
+	LOCAL_CFLAGS += -DBOARD_EGL_NEEDS_LEGACY_FB
+endif
+ifneq ($(NUM_FRAMEBUFFER_SURFACE_BUFFERS),)
+  LOCAL_CFLAGS += -DNUM_FRAMEBUFFER_SURFACE_BUFFERS=$(NUM_FRAMEBUFFER_SURFACE_BUFFERS)
+endif
+LOCAL_SHARED_LIBRARIES := \
+	libcutils \
+	liblog \
+	libdl \
+	libhardware \
+	libutils \
+	libEGL \
+	libGLESv1_CM \
+	libbinder \
+	libui \
+	libgui
+
+LOCAL_MODULE:= libsurfaceflinger
+include $(BUILD_SHARED_LIBRARY)
+
 endif # BOARD_USES_STE_HARDWARE
