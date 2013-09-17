@@ -592,7 +592,6 @@ lib/libcameraextensionservice.so
 lib/libcameralight.so
 lib/libcald_server.so
 lib/libcamera_clientsemc.so
-lib/libmedia_native.so
 vendor/camera/flash.dat
 vendor/camera/KMO05BN0.dat
 vendor/camera/STW05BN0_BH6476.dat
