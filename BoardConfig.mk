@@ -31,7 +31,7 @@ TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_STE := true
 COMMON_GLOBAL_CFLAGS += -DSTE_BT
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/sony/lotus/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/sony/lotus/hardware/bluetooth
 
 # Audio
 BOARD_USES_GENERIC_AUDIO := false
@@ -54,7 +54,7 @@ BOARD_EGL_CFG := device/sony/lotus/config/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
 BOARD_EGL_NEEDS_LEGACY_FB := true
 
-#Fm Radio
+# Fm Radio
 #BOARD_USES_STE_FM := true
 #COMMON_GLOBAL_CFLAGS +=-DSTE_FM
 
