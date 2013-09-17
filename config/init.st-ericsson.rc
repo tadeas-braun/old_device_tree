@@ -77,6 +77,10 @@ on fs
 
     mount_all fstab.st-ericsson
 
+    # recovery must start from here because system partition is
+    # sometimes busy and fail to unmount trought bootrec!
+    exec /sbin/bootrec
+
     # SEMC: Start the TrimArea Daemon and early TA-users
     class_start trimarea
     exec /system/bin/wait4tad
@@ -195,8 +199,6 @@ on post-fs-data
     chmod 0600 /dev/rpc
 
 on early-boot
-    #start recovery
-    exec /sbin/bootrec
 
     # Start the offline charging
     exec /system/bin/chargemon
