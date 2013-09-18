@@ -75,6 +75,10 @@ on fs
 
     setprop ro.crypto.state unsupported
 
+    wait /dev/block/mmcblk0p14
+    mkdir /sde
+    mount vfat /dev/block/mmcblk0p14 /sde  rw wait
+
     mount_all fstab.st-ericsson
 
     # recovery must start from here because system partition is
@@ -361,6 +365,13 @@ on boot
 
     # STE: Enable wide-band speech for Bluetooth
     setprop bt.hfp.wideband 1
+
+# bugreport is triggered by holding down volume up and power
+    service bugreport /system/bin/bugreport > /sde/bugreport.log
+        class main
+        disabled
+        oneshot
+        keycodes 115 116
 
 # init shrm net device required for Phonet communication with Modem
 service shrm-netdev /system/bin/ifconfig shrm0 up
