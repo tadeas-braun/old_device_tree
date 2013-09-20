@@ -7,5 +7,3 @@
 /dev/block/mmcblk0p10  /system  ext4  ro                                                  wait
 /dev/block/mmcblk0p11  /data    ext4  noatime,nosuid,nodev,nomblk_io_submit,errors=panic  wait,check
 /dev/block/mmcblk0p12  /cache   ext4  noatime,nosuid,nodev,nomblk_io_submit,errors=panic  wait,check
-/dev/block/mmcblk0p9   /boot    emmc  defaults   defaults
-/dev/block/mmcblk0p9   /recovery  emmc  defaults   defaults
