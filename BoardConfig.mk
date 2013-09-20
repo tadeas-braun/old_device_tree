@@ -52,7 +52,6 @@ BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_wl12xx
 USE_OPENGL_RENDERER := true
 BOARD_EGL_CFG := device/sony/lotus/config/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
-BOARD_HAVE_OWN_SURFACEFLINGER := true
 BOARD_EGL_NEEDS_LEGACY_FB := true
 
 # Fm Radio
@@ -65,6 +64,7 @@ TARGET_PROVIDES_LIBLIGHTS := true
 # Custom boot
 TARGET_PROVIDES_INIT_RC := true
 TARGET_RECOVERY_PRE_COMMAND := "touch /cache/recovery/boot;sync;"
+BOARD_CUSTOM_BOOTIMG_MK := device/sony/lotus/custombootimg.mk
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/sony/lotus/releasetools/semc_ota_from_target_files
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/lotus/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
@@ -73,15 +73,14 @@ BOARD_UMS_LUNFILE := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun0/f
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun0/file"
 
 # Kernel information
-LOCAL_KERNEL := device/sony/lotus/kernel
-LOCAL_PREBUILT_KERNEL := device/sony/lotus/kernel
+TARGET_KERNEL_CONFIG := xperiago_defconfig
+TARGET_KERNEL_SOURCE := kernel/sony/u8500
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
 BOARD_KERNEL_BASE := 0x0
 BOARD_RECOVERY_BASE := 0x0
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_CMDLINE := cachepolicy=writealloc noinitrd init=init board_id=1 logo.nologo root=/dev/ram0 rw rootwait console=null androidboot.console=null androidboot.hardware=st-ericsson mem=96M@0 mem_mtrace=15M@96M mem_mshared=1M@111M mem_modem=16M@112M mem=32M@128M mem_issw=1M@160M hwmem=71M@161M mem=280M@232M mpcore_wdt.mpcore_margin=359 end lpj=24019
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000
-PRODUCT_COPY_FILES += \
-	$(LOCAL_KERNEL):kernel
 
 # Partition information
 BOARD_VOLD_MAX_PARTITIONS := 16
@@ -102,6 +101,6 @@ BOARD_SDCARD_INTERNAL_DEVICE := /dev/block/mmcblk0p14
 
 PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=ST27i_1262-1120 BUILD_FINGERPRINT=SEMC/ST27i_1262-1120/ST27i:4.0.4/6.1.1.B.1.10/9bt3zw:user/release-keys PRIVATE_BUILD_DESC="ST27i-user 4.0.4 6.1.1.B.1.10 9bt3zw test-keys"
 
-TARGET_BOOTANIMATION_NAME := vertical-320x480
+TARGET_BOOTANIMATION_NAME := 320
 
 TARGET_OTA_ASSERT_DEVICE := ST27i,ST27a,lotus

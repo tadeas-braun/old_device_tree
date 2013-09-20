@@ -305,11 +305,11 @@ static struct hw_module_methods_t lights_module_methods = {
 };
 
 struct hw_module_t HAL_MODULE_INFO_SYM = {
-	.tag		= HARDWARE_MODULE_TAG,
+	.tag			= HARDWARE_MODULE_TAG,
 	.version_major	= 1,
 	.version_minor	= 0,
-	.id		= LIGHTS_HARDWARE_MODULE_ID,
-	.name		= "Sony lights module",
+	.id			= LIGHTS_HARDWARE_MODULE_ID,
+	.name			= "Sony lights module",
 	.author		= "Diogo Ferreira <defer@cyanogenmod.com>, Andreas Makris <Andreas.Makris@gmail.com>, Alin Jerpelea <jerpelea@gmail.com>",
-	.methods	= &lights_module_methods,
+	.methods		= &lights_module_methods,
 };

@@ -16,8 +16,6 @@
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-$(call inherit-product, device/sony/lotus/recovery/recovery.mk)
-
 # Inherit the proprietary counterpart
 $(call inherit-product-if-exists, vendor/sony/lotus/lotus-vendor.mk)
 
@@ -155,8 +153,6 @@ PRODUCT_COPY_FILES += \
 
 # Recovery bootstrap (device-specific part)
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/recovery/bootrec-device:root/sbin/bootrec-device \
-   $(LOCAL_PATH)/recovery/bootrec-device-fs:root/sbin/bootrec-device-fs \
    $(LOCAL_PATH)/recovery.fstab:root/recovery.fstab
 
 # Key layouts and touchscreen
@@ -177,19 +173,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/cflashlib.cfg:system/etc/cflashlib.cfg \
    $(LOCAL_PATH)/config/flashled_param_config.cfg:system/etc/flashled_param_config.cfg
-
-# kernel modules
-PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/prebuilt/modules/cifs.ko:system/lib/modules/cifs.ko \
-   $(LOCAL_PATH)/prebuilt/modules/cw1200_core.ko:system/lib/modules/cw1200_core.ko \
-   $(LOCAL_PATH)/prebuilt/modules/cw1200_wlan.ko:system/lib/modules/cw1200_wlan.ko \
-   $(LOCAL_PATH)/prebuilt/modules/mmc_test.ko:system/lib/modules/mmc_test.ko \
-   $(LOCAL_PATH)/prebuilt/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-   $(LOCAL_PATH)/prebuilt/modules/oprofile.ko:system/lib/modules/oprofile.ko \
-   $(LOCAL_PATH)/prebuilt/modules/pwr.ko:system/lib/modules/pwr.ko \
-   $(LOCAL_PATH)/prebuilt/modules/rng-core.ko:system/lib/modules/rng-core.ko \
-   $(LOCAL_PATH)/prebuilt/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
-   $(LOCAL_PATH)/prebuilt/modules/tun.ko:system/lib/modules/tun.ko
 
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 

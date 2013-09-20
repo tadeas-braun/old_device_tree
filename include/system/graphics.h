@@ -21,6 +21,10 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+#include <sys/cdefs.h>
+#include <sys/types.h>
+
 /*
  * If the HAL needs to create service threads to handle graphics related
  * tasks, these threads need to run at HAL_PRIORITY_URGENT_DISPLAY priority
@@ -107,7 +111,6 @@ enum {
      * - an even height
      * - a horizontal stride multiple of 16 pixels (32 bytes).
      */
-    HAL_PIXEL_FORMAT_RAW_SENSOR = 0x20,
 
     /* STE: Added Support of YUV42XMBN, required for Copybit CC acceleration */
     HAL_PIXEL_FORMAT_YCBCR42XMBN = 0xE,
@@ -148,6 +151,25 @@ enum {
     HAL_TRANSFORM_ROT_180   = 0x03,
     /* rotate source image 270 degrees clockwise */
     HAL_TRANSFORM_ROT_270   = 0x07,
+};
+
+enum {
+    HAL_PIXEL_FORMAT_RAW_SENSOR = 0x20,
+    HAL_PIXEL_FORMAT_BLOB = 0x21,
+    HAL_PIXEL_FORMAT_IMPLEMENTATION_DEFINED = 0x22,
+    HAL_PIXEL_FORMAT_YCbCr_420_888 = 0x23,
+};
+
+struct android_ycbcr {
+    void *y;
+    void *cb;
+    void *cr;
+    size_t ystride;
+    size_t cstride;
+    size_t chroma_step;
+
+    /** reserved for future use, set to 0 by gralloc's (*lock_ycbcr)() */
+    uint32_t reserved[8];
 };
 
 #ifdef __cplusplus
