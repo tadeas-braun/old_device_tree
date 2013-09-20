@@ -411,9 +411,6 @@ usr/share/nmf/repository/mmdsp_8500_v2/_sk/pcm_splitter/nmfil/wrapper/configure.
 usr/share/nmf/repository/mmdsp_8500_v2/_sk/misc/controller/configure.elf4nmf
 usr/share/nmf/repository/mmdsp_8500_v2/_sk/misc/samplesplayed.elf4nmf
 usr/share/nmf/repository/mmdsp_8500_v2/_sk/fillthisbuffer.elf4nmf
-usr/lib/alsa-lib/libasound_module_ctl_bluetooth.so
-usr/lib/alsa-lib/libasound_module_pcm_steiop.so
-usr/lib/alsa-lib/libasound_module_pcm_bluetooth.so
 usr/share/camera/config_file/aptina_mt9v115.dat
 usr/share/camera/config_file/omnivision_ov5640_pri.dat
 usr/share/camera/config_file/omnivision_ov5640_sec.dat
