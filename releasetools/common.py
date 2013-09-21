@@ -164,9 +164,9 @@ def LoadRecoveryFSTab(zip):
       raise ValueError("malformed recovery.fstab line: \"%s\"" % (line,))
 
     p = Partition()
-    p.mount_point = pieces[0]
-    p.fs_type = pieces[1]
-    p.device = pieces[2]
+    p.device = pieces[0]
+    p.mount_point = pieces[1]
+    p.fs_type = pieces[2]
     p.length = 0
     options = None
     if len(pieces) >= 4 and pieces[3] != 'NULL':
