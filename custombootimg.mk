@@ -8,7 +8,7 @@ $(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(recovery_ramdisk) $(INSTA
 	$(hide) cp -R $(PRODUCT_OUT)/recovery/root/sbin/* $(PRODUCT_OUT)/combinedroot/sbin/
 	$(hide) mkdir -p $(PRODUCT_OUT)/combinedroot/res/images
 	$(hide) cp -R $(PRODUCT_OUT)/../../../../bootable/recovery/res/images/* $(PRODUCT_OUT)/combinedroot/res/images/
-	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/lotus/config/default.prop $(PRODUCT_OUT)/combinedroot/
+	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/lotus/config/root/default.prop $(PRODUCT_OUT)/combinedroot/
 	$(hide) $(MKBOOTFS) $(PRODUCT_OUT)/combinedroot > $(PRODUCT_OUT)/combinedroot.cpio
 	$(hide) cat $(PRODUCT_OUT)/combinedroot.cpio | gzip > $(PRODUCT_OUT)/combinedroot.fs
 	$(hide) $(MKBOOTIMG) -o $@ --kernel $(PRODUCT_OUT)/kernel --ramdisk $(PRODUCT_OUT)/combinedroot.fs --cmdline '$(BOARD_KERNEL_CMDLINE)' --base $(BOARD_KERNEL_BASE) $(BOARD_MKBOOTIMG_ARGS)
