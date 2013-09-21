@@ -49,9 +49,10 @@ PRODUCT_COPY_FILES += \
     device/sony/lotus/config/dbus.conf:system/etc/dbus.conf \
     device/sony/lotus/config/sysmon.cfg:system/etc/sysmon.cfg \
     device/sony/lotus/config/hostapd.conf:system/etc/wifi/hostapd.conf \
-    device/sony/lotus/config/01stesetup:system/etc/init.d/01stesetup \
-    device/sony/lotus/config/10dhcpcd:system/etc/init.d/10dhcpcd \
-    device/sony/lotus/config/10hostapd:system/etc/init.d/10hostapd \
+    device/sony/lotus/config/init.d/01stesetup:system/etc/init.d/01stesetup \
+    device/sony/lotus/config/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
+    device/sony/lotus/config/init.d/10hostapd:system/etc/init.d/10hostapd \
+    device/sony/lotus/config/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel \
     device/sony/lotus/config/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
 # Filesystem management tools
@@ -88,10 +89,10 @@ PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 
 # Custom init / uevent
 PRODUCT_COPY_FILES += \
-    device/sony/lotus/config/init.rc:root/init.rc \
-    device/sony/lotus/config/fstab.st-ericsson:root/fstab.st-ericsson \
-    device/sony/lotus/config/init.st-ericsson.rc:root/init.st-ericsson.rc \
-    device/sony/lotus/config/ueventd.st-ericsson.rc:root/ueventd.st-ericsson.rc
+    device/sony/lotus/config/root/init.rc:root/init.rc \
+    device/sony/lotus/config/root/fstab.st-ericsson:root/fstab.st-ericsson \
+    device/sony/lotus/config/root/init.st-ericsson.rc:root/init.st-ericsson.rc \
+    device/sony/lotus/config/root/ueventd.st-ericsson.rc:root/ueventd.st-ericsson.rc
 
 # Recovery bootstrap script
 PRODUCT_COPY_FILES += \
@@ -116,7 +117,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.mem.max_hidden_apps=10
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp \
+    persist.sys.usb.config=mtp,adb \
     wifi.interface=wlan0
 
 # The gps config appropriate for this device
@@ -135,7 +136,7 @@ PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 # Configuration scripts
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/init.st-ericsson.device.rc:root/init.st-ericsson.device.rc \
+   $(LOCAL_PATH)/config/root/init.st-ericsson.device.rc:root/init.st-ericsson.device.rc \
    device/sony/lotus/prebuilt/logo-320x480.rle:root/logo.rle
 
 # Configuration scripts
@@ -145,7 +146,7 @@ PRODUCT_COPY_FILES += \
 
 # USB function switching
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/init.st-ericsson.usb.rc:root/init.st-ericsson.usb.rc
+   $(LOCAL_PATH)/config/root/init.st-ericsson.usb.rc:root/init.st-ericsson.usb.rc
 
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/vold.fstab:system/etc/vold.fstab \
