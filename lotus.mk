@@ -72,15 +72,23 @@ PRODUCT_PACKAGES += \
 
 # light package
 PRODUCT_PACKAGES += \
-   lights.montblanc
+    lights.montblanc
 
 # Misc
 PRODUCT_PACKAGES += \
-   com.android.future.usb.accessory
+    com.android.future.usb.accessory
 
-#Fmradio
+# Fmradio
 #PRODUCT_PACKAGES += \
-#   FmRadioReceiver
+#    FmRadioReceiver
+
+# b2r2lib
+PRODUCT_PACKAGES += \
+    libblt_hw
+
+# libomxil-bellagio
+PRODUCT_PACKAGES += \
+    libomxil-bellagio
 
 # We have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
