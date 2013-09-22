@@ -53,6 +53,9 @@ USE_OPENGL_RENDERER := true
 BOARD_EGL_CFG := device/sony/lotus/config/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
 
+# jb camera
+COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
+
 # surfaceflinger support for Xperia Sola,Go...
 BOARD_EGL_NEEDS_LEGACY_FB := true
 EGL_NEEDS_FNW := true
