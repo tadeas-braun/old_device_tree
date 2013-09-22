@@ -152,12 +152,15 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/dash.conf:system/etc/dash.conf \
    $(LOCAL_PATH)/prebuilt/hw_config.sh:system/etc/hw_config.sh
 
+# fake script needed for recovery
+   $(LOCAL_PATH)/prebuilt/modelid_cfg.sh:system/bin/modelid_cfg.sh
+
+
 # USB function switching
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/root/init.st-ericsson.usb.rc:root/init.st-ericsson.usb.rc
 
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/vold.fstab:system/etc/vold.fstab \
    $(LOCAL_PATH)/config/media_profiles.xml:system/etc/media_profiles.xml
 
 # Recovery bootstrap (device-specific part)
