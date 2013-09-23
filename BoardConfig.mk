@@ -68,7 +68,7 @@ COMMON_GLOBAL_CFLAGS += -DEGL_NEEDS_FNW
 TARGET_PROVIDES_LIBLIGHTS := true
 
 # ril implementation
-BOARD_RIL_CLASS := ../../../device/sony/lotus/hardware/ril/
+BOARD_RIL_CLASS := ../../../device/sony/lotus/telephony-common/
 
 # Custom boot
 TARGET_PROVIDES_INIT_RC := true

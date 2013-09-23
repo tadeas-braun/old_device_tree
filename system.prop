@@ -1,5 +1,6 @@
 rild.libpath=/system/lib/libu300-ril.so
 rild.libargs=-c UNIX -n 2 -p /dev/socket/at_core -s /dev/socket/at_core -i rmnet
+ro.telephony.ril_class=SonyU8500RIL
 
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
