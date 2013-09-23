@@ -125,7 +125,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.mem.max_hidden_apps=10
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp,adb \
+    persist.sys.usb.config=mtp \
     wifi.interface=wlan0
 
 # The gps config appropriate for this device
