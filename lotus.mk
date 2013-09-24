@@ -157,6 +157,7 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/hw_config.sh:system/etc/hw_config.sh
 
 # fake script needed for recovery
+PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/modelid_cfg.sh:system/bin/modelid_cfg.sh
 
 
