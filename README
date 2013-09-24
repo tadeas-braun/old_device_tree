@@ -24,7 +24,29 @@ Now connect your phone which have runing FXP CM10 :
     git clone https://github.com/munjeni/android_kernel_xperiago.git -b jb-dev u8500
     cd ../..
 
-To build :
+Patch android source code :
+
+    patch -p1 < device/sony/lotus/patches/framework_av.patch
+    patch -p1 < device/sony/lotus/patches/framework_native.patch
+    patch -p1 < device/sony/lotus/patches/hardware_libhardware.patch
+    patch -p1 < device/sony/lotus/patches/hardware_libhardware_legacy.patch
+    patch -p1 < device/sony/lotus/patches/system_netd.patch
+
+Our step is optional!!! Use only if you going to sync CM source code daily, than simple revert each patch before you sync CM source code :
+
+    patch -p1 -R < device/sony/lotus/patches/framework_av.patch
+    patch -p1 -R < device/sony/lotus/patches/framework_native.patch
+    patch -p1 -R < device/sony/lotus/patches/hardware_libhardware.patch
+    patch -p1 -R < device/sony/lotus/patches/hardware_libhardware_legacy.patch
+    patch -p1 -R < device/sony/lotus/patches/system_netd.patch
+    repo sync
+    patch -p1 < device/sony/lotus/patches/framework_av.patch
+    patch -p1 < device/sony/lotus/patches/framework_native.patch
+    patch -p1 < device/sony/lotus/patches/hardware_libhardware.patch
+    patch -p1 < device/sony/lotus/patches/hardware_libhardware_legacy.patch
+    patch -p1 < device/sony/lotus/patches/system_netd.patch
+
+You are ready to build :
 
     . build/envsetup.sh
     lunch cm_lotus-userdebug
