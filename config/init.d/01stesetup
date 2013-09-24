@@ -2,7 +2,7 @@
 
 cp -f /system/etc/ril_config /data/misc/ril_config
 chmod 0660 /data/misc/ril_config
-chown root radio /data/misc/ril_config
+chown root:radio /data/misc/ril_config
 cp -f /system/etc/psdata/sterc_conf /data/misc/psdata/sterc_conf
 cp -f /system/etc/psdata/sterc_script_connect /data/misc/psdata/sterc_script_connect
 cp -f /system/etc/psdata/sterc_script_disconnect /data/misc/psdata/sterc_script_disconnect
@@ -17,8 +17,8 @@ chmod 0660 /data/misc/psdata/sterc_conf_alt
 chmod 0500 /data/misc/psdata/sterc_script_connect_alt
 chmod 0500 /data/misc/psdata/sterc_script_connect_dun
 chmod 0500 /data/misc/psdata/sterc_script_disconnect_dun
-chown root radio /data/misc/psdata/sterc_conf
-chown root radio /data/misc/psdata/sterc_conf_alt
+chown root:radio /data/misc/psdata/sterc_conf
+chown root:radio /data/misc/psdata/sterc_conf_alt
 cp -f /system/etc/psdata/stepscc_conf /data/misc/psdata/stepscc_conf
 chmod 0660 /data/misc/psdata/stepscc_conf
-chown root radio /data/misc/psdata/stepscc_conf
+chown root:radio /data/misc/psdata/stepscc_conf
