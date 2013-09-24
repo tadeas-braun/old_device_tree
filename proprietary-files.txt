@@ -29,6 +29,7 @@ bin/at_core
 bin/chargemon
 bin/lbsstelp
 bin/sms_server
+bin/dbus-daemon
 xbin/ste-cg29xx_ctrl
 xbin/watchdog-kicker
 etc/LbsPltConfig.cfg
