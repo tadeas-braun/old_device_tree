@@ -172,4 +172,106 @@ LOCAL_MODULE := libnl
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 
+LOG_TO_ANDROID_LOGCAT := true
+include $(CLEAR_VARS)
+SRC := dbus
+LOCAL_SRC_FILES:= \
+   $(SRC)/dbus-address.c \
+   $(SRC)/dbus-auth.c \
+   $(SRC)/dbus-bus.c \
+   $(SRC)/dbus-connection.c \
+   $(SRC)/dbus-credentials.c \
+   $(SRC)/dbus-dataslot.c \
+   $(SRC)/dbus-errors.c \
+   $(SRC)/dbus-file.c \
+   $(SRC)/dbus-file-unix.c \
+   $(SRC)/dbus-hash.c \
+   $(SRC)/dbus-internals.c \
+   $(SRC)/dbus-keyring.c \
+   $(SRC)/dbus-list.c \
+   $(SRC)/dbus-mainloop.c \
+   $(SRC)/dbus-marshal-basic.c \
+   $(SRC)/dbus-marshal-byteswap.c \
+   $(SRC)/dbus-marshal-header.c \
+   $(SRC)/dbus-marshal-recursive.c \
+   $(SRC)/dbus-marshal-validate.c \
+   $(SRC)/dbus-mempool.c \
+   $(SRC)/dbus-memory.c \
+   $(SRC)/dbus-message.c \
+   $(SRC)/dbus-nonce.c \
+   $(SRC)/dbus-pending-call.c \
+   $(SRC)/dbus-pipe.c \
+   $(SRC)/dbus-pipe-unix.c \
+   $(SRC)/dbus-resources.c \
+   $(SRC)/dbus-server.c \
+   $(SRC)/dbus-server-socket.c \
+   $(SRC)/dbus-server-unix.c \
+   $(SRC)/dbus-sha.c \
+   $(SRC)/dbus-shell.c \
+   $(SRC)/dbus-signature.c \
+   $(SRC)/dbus-spawn.c \
+   $(SRC)/dbus-string.c \
+   $(SRC)/dbus-string-util.c \
+   $(SRC)/dbus-sysdeps.c \
+   $(SRC)/dbus-sysdeps-pthread.c \
+   $(SRC)/dbus-sysdeps-unix.c \
+   $(SRC)/dbus-sysdeps-util-unix.c \
+   $(SRC)/dbus-timeout.c \
+   $(SRC)/dbus-threads.c \
+   $(SRC)/dbus-transport.c \
+   $(SRC)/dbus-transport-socket.c \
+   $(SRC)/dbus-transport-unix.c \
+   $(SRC)/dbus-object-tree.c \
+   $(SRC)/dbus-userdb.c \
+   $(SRC)/dbus-userdb-util.c \
+   $(SRC)/dbus-watch.c \
+   $(SRC)/sd-daemon.c
+
+LOCAL_C_INCLUDES := \
+	$(LOCAL_PATH)/dbus
+LOCAL_MODULE:=libdbus
+LOCAL_CFLAGS+= \
+	-DDBUS_COMPILATION \
+	-DANDROID_MANAGED_SOCKET \
+    -DANDROID_ATOMIC \
+	-DDBUS_MACHINE_UUID_FILE=\"/etc/machine-id\" \
+    -DDBUS_SYSTEM_CONFIG_FILE=\"/system/etc/dbus.conf\" \
+    -DDBUS_SESSION_CONFIG_FILE=\"/system/etc/session.conf\"
+ifeq ($(LOG_TO_ANDROID_LOGCAT),true)
+LOCAL_CFLAGS+= -DDBUS_ANDROID_LOG
+LOCAL_SHARED_LIBRARIES+= libcutils
+endif
+include $(BUILD_SHARED_LIBRARY)
+
+#
+# Copyright (C) 2012 Google, inc.
+#
+# $Id: Android.mk,v 2.6 2009-05-07 18:25:15 hharte Exp $
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+# SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+# OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+# CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+#
+# lib_net_iface_cmd
+#
+include $(CLEAR_VARS)
+SRC := bcmdhd_net_iface
+LOCAL_SRC_FILES := \
+    ${SRC}/bcmdhd_net_iface.c
+LOCAL_MODULE := libnetcmdiface
+LOCAL_CFLAGS := -mabi=aapcs-linux
+LOCAL_MODULE_TAGS := optional
+LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
+include $(BUILD_SHARED_LIBRARY)
+
+
 endif # BOARD_USES_STE_HARDWARE

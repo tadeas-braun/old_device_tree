@@ -408,6 +408,15 @@ service hdmid /system/bin/hdmid
     socket hdmid stream 0660 system graphics
     oneshot
 
+#service bluetoothd /system/bin/logwrapper /system/bin/bluetoothd -d -n
+#    class main
+#    socket bluetooth stream 660 bluetooth bluetooth
+#    socket dbus_bluetooth stream 660 bluetooth bluetooth
+#    # init.rc does not yet support applying capabilities, so run as root and
+#    # let bluetoothd drop uid to bluetooth with the right linux capabilities
+#    group bluetooth net_bt_admin misc radio
+#    disabled
+
 service ste-cg29xx_ctrl /system/xbin/ste-cg29xx_ctrl -b 115200 -p 6 -l 23 -i /system/bin/cg2900-channel_init.sh /dev/ttyAMA0
     class main
     user root

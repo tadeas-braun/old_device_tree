@@ -69,6 +69,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libnl
 
+# Dbus
+PRODUCT_PACKAGES += \
+    libdbus
+
+# lib_net_iface_cmd
+PRODUCT_PACKAGES += \
+    libnetcmdiface
+
 # BT A2DP
 PRODUCT_PACKAGES += \
     libasound_module_ctl_bluetooth \
