@@ -77,4 +77,99 @@ LOCAL_MODULE := lights.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 
+include $(CLEAR_VARS)
+SRC := netlink/lib
+LOCAL_SRC_FILES := \
+   $(SRC)/cache_mngr.c \
+   $(SRC)/nl.c \
+   $(SRC)/cache.c \
+   $(SRC)/error.c \
+   $(SRC)/data.c \
+   $(SRC)/addr.c \
+   $(SRC)/socket.c \
+   $(SRC)/msg.c \
+   $(SRC)/attr.c \
+   $(SRC)/object.c \
+   $(SRC)/doc.c \
+   $(SRC)/cache_mngt.c \
+   $(SRC)/utils.c \
+   $(SRC)/handlers.c \
+   $(SRC)/fib_lookup/lookup.c \
+   $(SRC)/fib_lookup/request.c \
+   $(SRC)/genl/ctrl.c \
+   $(SRC)/genl/mngt.c \
+   $(SRC)/genl/family.c \
+   $(SRC)/genl/genl.c \
+   $(SRC)/netfilter/log_obj.c \
+   $(SRC)/netfilter/log.c \
+   $(SRC)/netfilter/queue.c \
+   $(SRC)/netfilter/log_msg_obj.c \
+   $(SRC)/netfilter/queue_obj.c \
+   $(SRC)/netfilter/netfilter.c \
+   $(SRC)/netfilter/log_msg.c \
+   $(SRC)/netfilter/queue_msg.c \
+   $(SRC)/netfilter/nfnl.c \
+   $(SRC)/netfilter/queue_msg_obj.c \
+   $(SRC)/netfilter/ct.c \
+   $(SRC)/netfilter/ct_obj.c \
+   $(SRC)/route/tc.c \
+   $(SRC)/route/class_api.c \
+   $(SRC)/route/qdisc_obj.c \
+   $(SRC)/route/nexthop.c \
+   $(SRC)/route/route_utils.c \
+   $(SRC)/route/cls_api.c \
+   $(SRC)/route/cls.c \
+   $(SRC)/route/qdisc_api.c \
+   $(SRC)/route/link/vlan.c \
+   $(SRC)/route/link/api.c \
+   $(SRC)/route/link.c \
+   $(SRC)/route/sch/dsmark.c \
+   $(SRC)/route/sch/red.c \
+   $(SRC)/route/sch/netem.c \
+   $(SRC)/route/sch/cbq.c \
+   $(SRC)/route/sch/blackhole.c \
+   $(SRC)/route/sch/sfq.c \
+   $(SRC)/route/sch/tbf.c \
+   $(SRC)/route/sch/htb.c \
+   $(SRC)/route/sch/prio.c \
+   $(SRC)/route/sch/fifo.c \
+   $(SRC)/route/addr.c \
+   $(SRC)/route/neightbl.c \
+   $(SRC)/route/rtnl.c \
+   $(SRC)/route/route.c \
+   $(SRC)/route/class.c \
+   $(SRC)/route/rule.c \
+   $(SRC)/route/class_obj.c \
+   $(SRC)/route/qdisc.c \
+   $(SRC)/route/route_obj.c \
+   $(SRC)/route/cls/u32.c \
+   $(SRC)/route/cls/cgroup.c \
+   $(SRC)/route/cls/fw.c \
+   $(SRC)/route/cls/police.c \
+   $(SRC)/route/cls/basic.c \
+   $(SRC)/route/cls/ematch.c \
+   $(SRC)/route/neigh.c \
+   $(SRC)/route/cls_obj.c
+
+# We need to include out own set of
+# linux header files before the bionic ones,
+# so we turn off the default compiler flags
+# and add them ourselves after our own
+# include directory.
+LOCAL_NO_DEFAULT_COMPILER_FLAGS := true
+LOCAL_C_INCLUDES := \
+	$(LOCAL_PATH)/netlink/include \
+	$(TARGET_PROJECT_INCLUDES) \
+	$(TARGET_C_INCLUDES)
+LOCAL_CFLAGS := \
+	$(TARGET_GLOBAL_CFLAGS)
+ifeq ($(TARGET_ARCH),arm)
+	LOCAL_CFLAGS += $(normal_objects_cflags)
+endif
+LOCAL_PRELINK_MODULE := false
+LOCAL_SHARED_LIBRARIES := libc libcutils
+LOCAL_MODULE := libnl
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_SHARED_LIBRARY)
+
 endif # BOARD_USES_STE_HARDWARE

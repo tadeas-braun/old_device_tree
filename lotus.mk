@@ -65,6 +65,10 @@ PRODUCT_PACKAGES += \
     hostapd_cli \
     hostapd
 
+# Netlink
+PRODUCT_PACKAGES += \
+    libnl
+
 # BT A2DP
 PRODUCT_PACKAGES += \
     libasound_module_ctl_bluetooth \

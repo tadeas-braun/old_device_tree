@@ -567,7 +567,6 @@ lib/libMali.so
 lib/libmalmte.so
 lib/libaudiopolicy.so
 lib/libspeech_processing.so
-lib/libnl.so
 lib/libmmprobe.so
 lib/libste_aiq_tools.so
 lib/libste_ensloader.so
