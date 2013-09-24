@@ -203,6 +203,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/../../../vendor/cm/prebuilt/common/bootanimation/320.zip:system/media/bootanimation.zip
 
+# patched JB cn_binary needed for mobile network for CM10.2 only
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/prebuilt/cn_server:system/bin/cn_server
+
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 
 $(call inherit-product-if-exists, vendor/sony/lotus/lotus-vendor.mk)

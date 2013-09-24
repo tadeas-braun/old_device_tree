@@ -23,7 +23,6 @@ bin/blue-up.sh
 bin/admsrv
 bin/ste_omxil_test
 bin/modem-supervisor
-bin/cn_server
 bin/ste-adm-test
 bin/at_core
 bin/chargemon
