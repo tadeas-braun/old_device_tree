@@ -4,6 +4,9 @@ USE_CAMERA_STUB := true
 -include vendor/sony/lotus/BoardConfigVendor.mk
 
 TARGET_SPECIFIC_HEADER_PATH := device/sony/lotus/include
+TARGET_SPECIFIC_HEADER_PATH += device/sony/lotus/hardware
+TARGET_SPECIFIC_HEADER_PATH += hardware/semc/bluetooth/glib
+TARGET_SPECIFIC_HEADER_PATH += hardware/semc/bluetooth/bluez/lib
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true

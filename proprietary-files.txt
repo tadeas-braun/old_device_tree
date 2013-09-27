@@ -83,9 +83,7 @@ etc/firmware/wsm_20.bin
 etc/firmware/R2c.2_SoC2v06_Cobra_FM_SOC2_prog.fw
 etc/firmware/cg2900_fm_bt_src_coeff_info.fw
 etc/firmware/sdd_10.bin
-usr/lib/alsa-lib/libasound_module_pcm_bluetooth.so
 usr/lib/alsa-lib/libasound_module_pcm_steiop.so
-usr/lib/alsa-lib/libasound_module_ctl_bluetooth.so
 usr/share/camera/config_file/aptina_mt9v115.dat
 usr/share/camera/config_file/omnivision_ov5640_pri.dat
 usr/share/camera/config_file/omnivision_ov5640_sec.dat
@@ -458,7 +456,6 @@ lib/libUMP.so
 lib/libbluedroid.so
 lib/libmalgss.so
 lib/libmalcs.so
-lib/libbluetooth.so
 lib/libmalpipe.so
 lib/libste_adm.so
 lib/libste_ens_audio_samplerateconv.so
@@ -475,7 +472,6 @@ lib/libkeyctrl.so
 lib/libu300-parser.so
 lib/libste_ext_ens_image_common.so
 lib/libmpl.so
-lib/libbluetoothd.so
 lib/libmalnet.so
 lib/liblos.so
 lib/libcn.so
@@ -546,13 +542,8 @@ lib/libtrace.so
 lib/libmiscta.so
 lib/libiddjni.so
 lib/libS1SL.so
-lib/bluez-plugin/audio.so
-lib/bluez-plugin/bluetooth-health.so
-lib/bluez-plugin/network.so
-lib/bluez-plugin/input.so
 lib/libstagefrighthw.so
 lib/libste_ens_video_common.so
-lib/libasound.so
 lib/libu300-ril.so
 lib/libta.so
 lib/libril.so

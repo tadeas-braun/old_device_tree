@@ -77,6 +77,41 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libnetcmdiface
 
+# Glib
+PRODUCT_PACKAGES += \
+    libglib
+
+# Hcidump
+PRODUCT_PACKAGES += \
+    hcidump
+
+# Libasound
+PRODUCT_PACKAGES += \
+    libasound
+
+# Bluez
+PRODUCT_PACKAGES += \
+    sap \
+    libsap_pts \
+    bluetoothd \
+    hstest \
+    l2test \
+    rctest \
+    scotest \
+    agent \
+    attest \
+    avtest \
+    bdaddr \
+    lmptest \
+    sdptest \
+    hidpts \
+    avinfo \
+    hciconfig \
+    hcitool \
+    l2ping \
+    hciattach \
+    rfcomm
+
 # BT A2DP
 PRODUCT_PACKAGES += \
     libasound_module_ctl_bluetooth \
