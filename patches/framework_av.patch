@@ -86,7 +86,7 @@ index 4c08ece..32ee0f7 100644
  #endif
  
 +#ifdef STE_HARDWARE
-+    // keys for record stride and slice height 
++    // keys for record stride and slice height
 +    static const char KEY_RECORD_STRIDE[];
 +    static const char KEY_RECORD_SLICE_HEIGHT[];
 +#endif
