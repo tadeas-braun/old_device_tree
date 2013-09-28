@@ -242,6 +242,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/cn_server:system/bin/cn_server
 
+# Copy the Bluetooth permissions file. The permissions file also enables Bluetooth menu in Settings?
+PRODUCT_COPY_FILES += \
+   frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml
+
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 
 $(call inherit-product-if-exists, vendor/sony/lotus/lotus-vendor.mk)
