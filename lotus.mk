@@ -121,6 +121,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libbt-vendor
 
+# bluedroid a2dp
+PRODUCT_PACKAGES += \
+    audio.a2dp.default
+
 # light package
 PRODUCT_PACKAGES += \
     lights.montblanc
