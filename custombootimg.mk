@@ -6,12 +6,12 @@ $(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(recovery_ramdisk) $(INSTA
 	$(hide) mkdir -p $(PRODUCT_OUT)/combinedroot/
 	$(hide) cp -R $(PRODUCT_OUT)/root/* $(PRODUCT_OUT)/combinedroot/
 	$(hide) cp -R $(PRODUCT_OUT)/recovery/root/sbin/* $(PRODUCT_OUT)/combinedroot/sbin/
-	$(hide) mkdir -p $(PRODUCT_OUT)/combinedroot/res/images
-	$(hide) cp -R $(PRODUCT_OUT)/../../../../bootable/recovery/res/images/* $(PRODUCT_OUT)/combinedroot/res/images/
 	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/lotus/config/root/default.prop $(PRODUCT_OUT)/combinedroot/
-	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/lotus/recovery/initrd.gz $(PRODUCT_OUT)/combinedroot/sbin/
-	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/lotus/recovery/kexec $(PRODUCT_OUT)/combinedroot/sbin/
-	$(hide) cp -R $(PRODUCT_OUT)/kernel $(PRODUCT_OUT)/combinedroot/sbin/
+	$(hide) sed -i 's/18D1/0FCE/g' $(PRODUCT_OUT)/recovery/root/init.rc
+	$(hide) sed -i 's/D001/617E/g' $(PRODUCT_OUT)/recovery/root/init.rc
+	$(hide) $(MKBOOTFS) $(PRODUCT_OUT)/recovery/root > $(PRODUCT_OUT)/recoveryforkexec.cpio
+	$(hide) cat $(PRODUCT_OUT)/recoveryforkexec.cpio | gzip > $(PRODUCT_OUT)/recoveryforkexec.fs
+	$(hide) cp -R $(PRODUCT_OUT)/recoveryforkexec.fs $(PRODUCT_OUT)/combinedroot/sbin/recovery_ramdisk.gz
 	$(hide) $(MKBOOTFS) $(PRODUCT_OUT)/combinedroot > $(PRODUCT_OUT)/combinedroot.cpio
 	$(hide) cat $(PRODUCT_OUT)/combinedroot.cpio | gzip > $(PRODUCT_OUT)/combinedroot.fs
 	$(hide) $(MKBOOTIMG) -o $@ --kernel $(PRODUCT_OUT)/kernel --ramdisk $(PRODUCT_OUT)/combinedroot.fs --cmdline '$(BOARD_KERNEL_CMDLINE)' --base $(BOARD_KERNEL_BASE) $(BOARD_MKBOOTIMG_ARGS)
