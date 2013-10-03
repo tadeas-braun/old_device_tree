@@ -423,6 +423,13 @@ service ste-cg29xx_ctrl /system/xbin/ste-cg29xx_ctrl -b 115200 -p 6 -l 23 -i /sy
     group bluetooth net_bt_admin misc root
     oneshot
 
+service pand /system/bin/logwrapper /system/bin/pand -s -n -M -A -E -r NAP -u /system/bin/blue-up.sh
+    class main
+    user root
+    group bluetooth net_bt_admin misc
+    disabled
+    oneshot
+
 # STE
 service lbsd /system/bin/lbsd
     class main

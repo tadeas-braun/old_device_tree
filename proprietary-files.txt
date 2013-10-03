@@ -29,6 +29,7 @@ bin/taimport
 bin/updatemiscta
 bin/usbid_init.sh
 bin/wait4tad
+bin/pand
 etc/adm.sqlite
 etc/AT/manuf_id.cfg
 etc/AT/model_id.cfg
