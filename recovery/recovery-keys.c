@@ -26,7 +26,11 @@ int device_toggle_display(volatile char* key_pressed, int key_code) {
     return key_pressed[KEY_POWER] && key_code == KEY_VOLUMEUP;
 }
 
+static short adbenabled = 0;
+extern int __system(const char *command);
+
 int device_handle_key(int key_code, int visible) {
+
     if (visible) {
         switch (key_code) {
             case KEY_CAPSLOCK:
@@ -44,7 +48,7 @@ int device_handle_key(int key_code, int visible) {
                 if (ui_get_showing_back_button()) {
                     return SELECT_ITEM;
                 }
-                if (!get_allow_toggle_display() && !ui_root_menu) {
+                if (!ui_root_menu) {
                     return GO_BACK;
                 }
                 break;
@@ -62,13 +66,29 @@ int device_handle_key(int key_code, int visible) {
                 if (ui_get_showing_back_button()) {
                     return SELECT_ITEM;
                 }
-                if (!get_allow_toggle_display() && !ui_root_menu) {
+                if (!ui_root_menu) {
                     return GO_BACK;
                 }
             case KEY_BACK:
                 if (!ui_root_menu) {
                     return GO_BACK;
                 }
+        }
+
+        /* hack non recognised usb */
+        if (!adbenabled) {
+            __system("/sbin/mount -o remount,rw /");
+            __system("/sbin/killall -9 adbd");
+            __system("/sbin/echo 0 >/sys/class/android_usb/android0/enable");
+            __system("/sbin/echo 0FCE >/sys/class/android_usb/android0/idVendor");
+            __system("/sbin/echo 617E >/sys/class/android_usb/android0/idProduct");
+            __system("/sbin/echo 'mass_storage,adb' >/sys/class/android_usb/android0/functions");
+            __system("/sbin/echo 1 >/sys/class/android_usb/android0/enable");
+            __system("/sbin/setprop sys.usb.state mass_storage,adb");
+            __system("/sbin/setprop sys.usb.config mass_storage,adb");
+            __system("/sbin/setprop persist.sys.usb.config mass_storage,adb");
+            __system("/sbin/start adbd");
+            adbenabled = 1;
         }
     }
 
