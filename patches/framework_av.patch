@@ -991,10 +991,83 @@ index 5d8029c..4b444af 100644
  const char *MEDIA_MIMETYPE_AUDIO_AMR_NB = "audio/3gpp";
  const char *MEDIA_MIMETYPE_AUDIO_AMR_WB = "audio/amr-wb";
 diff --git a/frameworks/av/media/libstagefright/OMXCodec.cpp b/frameworks/av/media/libstagefright/OMXCodec.cpp
-index 2aedd0f..c66122d 100644
+index 2aedd0f..1505a5f 100644
 --- a/frameworks/av/media/libstagefright/OMXCodec.cpp
 +++ b/frameworks/av/media/libstagefright/OMXCodec.cpp
-@@ -308,6 +308,20 @@ void OMXCodec::findMatchingCodecs(
+@@ -266,6 +266,72 @@ void OMXCodec::findMatchingCodecs(
+         return;
+     }
+ #endif
++#ifdef STE_HARDWARE
++    if (matchComponentName && !strcmp("OMX.ST.mp3.decoder", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.mp3.decoder");
++        entry->mQuirks = 0;
++        return;
++    } else if (matchComponentName && !strcmp("OMX.ST.aac.decoder", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.aac.decoder");
++        entry->mQuirks = 0;
++        return;
++    } else if (matchComponentName && !strcmp("OMX.ST.VFM.MPEG4Dec", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.VFM.MPEG4Dec");
++        entry->mQuirks = 0;
++        return;
++    } else if (matchComponentName && !strcmp("OMX.ST.VFM.MPEG4Dec", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.VFM.MPEG4Dec");
++        entry->mQuirks = 0;
++        return;
++    } else if (matchComponentName && !strcmp("OMX.ST.VFM.MPEG4HostDec", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.VFM.MPEG4HostDec");
++        entry->mQuirks = 0;
++        return;
++    } else if (matchComponentName && !strcmp("OMX.ST.VFM.VC1Dec", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.VFM.VC1Dec");
++        entry->mQuirks = 0;
++        return;
++    } else if (matchComponentName && !strcmp("OMX.ST.VFM.MPEG4Enc", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.VFM.MPEG4Enc");
++        entry->mQuirks = 0;
++        return;
++    } else if (matchComponentName && !strcmp("OMX.ST.VFM.MPEG4Enc", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.VFM.MPEG4Enc");
++        entry->mQuirks = 0;
++        return;
++    } else if (matchComponentName && !strcmp("OMX.ST.VFM.H264Enc", matchComponentName)) {
++        matchingCodecs->add();
++
++        CodecNameAndQuirks *entry = &matchingCodecs->editItemAt(index);
++        entry->mName = String8("OMX.ST.VFM.H264Enc");
++        entry->mQuirks = 0;
++        return;
++    }
++#endif
+ 
+     for (;;) {
+         ssize_t matchIndex =
+@@ -308,6 +374,20 @@ void OMXCodec::findMatchingCodecs(
      }
  }
  
@@ -1015,7 +1088,7 @@ index 2aedd0f..c66122d 100644
  // static
  uint32_t OMXCodec::getComponentQuirks(
          const MediaCodecList *list, size_t index) {
-@@ -359,6 +373,12 @@ uint32_t OMXCodec::getComponentQuirks(
+@@ -359,6 +439,12 @@ uint32_t OMXCodec::getComponentQuirks(
                  index, "requires-loaded-to-idle-after-allocation")) {
          quirks |= kRequiresLoadedToIdleAfterAllocation;
      }
@@ -1028,7 +1101,42 @@ index 2aedd0f..c66122d 100644
  #ifdef QCOM_HARDWARE
      if (list->codecHasQuirk(
                  index, "requires-global-flush")) {
-@@ -934,6 +954,9 @@ static size_t getFrameSize(
+@@ -391,6 +477,34 @@ bool OMXCodec::findCodecQuirks(const char *componentName, uint32_t *quirks) {
+     }
+ #endif
+ 
++#ifdef STE_HARDWARE
++    if (componentName && !strcmp("OMX.ST.aac.decoder", componentName)) {
++        *quirks = 0;
++        return true;
++    } else if (componentName && !strcmp("OMX.ST.VFM.MPEG4Dec", componentName)) {
++        *quirks = 0;
++        return true;
++    } else if (componentName && !strcmp("OMX.ST.VFM.MPEG4Dec", componentName)) {
++        *quirks = 0;
++        return true;
++    } else if (componentName && !strcmp("OMX.ST.VFM.MPEG4HostDec", componentName)) {
++        *quirks = 0;
++        return true;
++    } else if (componentName && !strcmp("OMX.ST.VFM.VC1Dec", componentName)) {
++        *quirks = 0;
++        return true;
++    } else if (componentName && !strcmp("OMX.ST.VFM.MPEG4Enc", componentName)) {
++        *quirks = 0;
++        return true;
++    } else if (componentName && !strcmp("OMX.ST.VFM.MPEG4Enc", componentName)) {
++        *quirks = 0;
++        return true;
++    } else if (componentName && !strcmp("OMX.ST.VFM.H264Enc", componentName)) {
++        *quirks = 0;
++        return true;
++    }
++#endif
++
+     ssize_t index = list->findCodecByName(componentName);
+ 
+     if (index < 0) {
+@@ -934,6 +1048,9 @@ static size_t getFrameSize(
          case OMX_COLOR_FormatYUV420Planar:
          case OMX_COLOR_FormatYUV420SemiPlanar:
          case OMX_TI_COLOR_FormatYUV420PackedSemiPlanar:
@@ -1038,7 +1146,7 @@ index 2aedd0f..c66122d 100644
          /*
          * FIXME: For the Opaque color format, the frame size does not
          * need to be (w*h*3)/2. It just needs to
-@@ -1508,7 +1531,7 @@ status_t OMXCodec::setVideoOutputFormat(
+@@ -1508,7 +1625,7 @@ status_t OMXCodec::setVideoOutputFormat(
          CHECK_EQ(err, (status_t)OK);
          CHECK_EQ((int)format.eCompressionFormat, (int)OMX_VIDEO_CodingUnused);
  
@@ -1047,7 +1155,7 @@ index 2aedd0f..c66122d 100644
          CHECK(format.eColorFormat == OMX_COLOR_FormatYUV420Planar
                 || format.eColorFormat == OMX_COLOR_FormatYUV420SemiPlanar
                 || format.eColorFormat == OMX_COLOR_FormatCbYCrY
-@@ -1519,6 +1542,9 @@ status_t OMXCodec::setVideoOutputFormat(
+@@ -1519,6 +1636,9 @@ status_t OMXCodec::setVideoOutputFormat(
                 || format.eColorFormat == OMX_SEC_COLOR_FormatNV12TPhysicalAddress
                 || format.eColorFormat == OMX_SEC_COLOR_FormatNV12Tiled
  #endif
@@ -1057,7 +1165,7 @@ index 2aedd0f..c66122d 100644
                 );
  
  #ifdef USE_SAMSUNG_COLORFORMAT
-@@ -1530,7 +1556,7 @@ status_t OMXCodec::setVideoOutputFormat(
+@@ -1530,7 +1650,7 @@ status_t OMXCodec::setVideoOutputFormat(
          }
  #endif
  
@@ -1066,7 +1174,7 @@ index 2aedd0f..c66122d 100644
  
          int32_t colorFormat;
          if (meta->findInt32(kKeyColorFormat, &colorFormat)
-@@ -1717,6 +1743,10 @@ void OMXCodec::setComponentRole(
+@@ -1717,6 +1837,10 @@ void OMXCodec::setComponentRole(
              "video_decoder.mpeg4", "video_encoder.mpeg4" },
          { MEDIA_MIMETYPE_VIDEO_H263,
              "video_decoder.h263", "video_encoder.h263" },
@@ -1077,7 +1185,7 @@ index 2aedd0f..c66122d 100644
          { MEDIA_MIMETYPE_VIDEO_VPX,
              "video_decoder.vpx", "video_encoder.vpx" },
          { MEDIA_MIMETYPE_AUDIO_RAW,
-@@ -1809,6 +1839,16 @@ status_t OMXCodec::init() {
+@@ -1809,6 +1933,16 @@ status_t OMXCodec::init() {
      CHECK_EQ((int)mState, (int)LOADED);
  
      status_t err;
@@ -1094,7 +1202,7 @@ index 2aedd0f..c66122d 100644
      if (!(mQuirks & kRequiresLoadedToIdleAfterAllocation)) {
          err = mOMX->sendCommand(mNode, OMX_CommandStateSet, OMX_StateIdle);
          CHECK_EQ(err, (status_t)OK);
-@@ -1875,7 +1915,12 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
+@@ -1875,7 +2009,12 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
      }
  
      status_t err = OK;
@@ -1107,7 +1215,7 @@ index 2aedd0f..c66122d 100644
              && portIndex == kPortIndexInput) {
          err = mOMX->storeMetaDataInBuffers(mNode, kPortIndexInput, OMX_TRUE);
          if (err != OK) {
-@@ -2075,7 +2120,11 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
+@@ -2075,7 +2214,11 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,
@@ -1119,6 +1227,16 @@ index 2aedd0f..c66122d 100644
  #else
      OMX_COLOR_FORMATTYPE eColorFormat;
  
+@@ -4785,6 +4928,9 @@ static const char *videoCompressionFormatString(OMX_VIDEO_CODINGTYPE type) {
+         "OMX_VIDEO_CodingRV",
+         "OMX_VIDEO_CodingAVC",
+         "OMX_VIDEO_CodingMJPEG",
++#ifdef STE_HARDWARE
++        "OMX_VIDEO_CodingVC1",
++#endif
+     };
+ 
+     size_t numNames = sizeof(kNames) / sizeof(kNames[0]);
 diff --git a/frameworks/av/media/libstagefright/SurfaceMediaSource.cpp b/frameworks/av/media/libstagefright/SurfaceMediaSource.cpp
 index 409038a..2c833c1 100644
 --- a/frameworks/av/media/libstagefright/SurfaceMediaSource.cpp
