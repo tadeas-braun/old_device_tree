@@ -23,6 +23,7 @@
 #       modified:   media/libstagefright/SurfaceMediaSource.cpp
 #       modified:   media/libstagefright/colorconversion/ColorConverter.cpp
 #       modified:   media/libstagefright/omx/SoftOMXPlugin.cpp
+#       modified:   services/audioflinger/Android.mk
 #       modified:   services/audioflinger/AudioFlinger.cpp
 #       modified:   services/audioflinger/AudioFlinger.h
 #       modified:   services/audioflinger/AudioPolicyService.cpp
@@ -31,10 +32,23 @@
 #       modified:   services/audioflinger/Threads.cpp
 #       modified:   services/audioflinger/Threads.h
 diff --git a/frameworks/av/camera/CameraParameters.cpp b/frameworks/av/camera/CameraParameters.cpp
-index d661a85..b5f1b3c 100644
+index d661a85..6cff407 100644
 --- a/frameworks/av/camera/CameraParameters.cpp
 +++ b/frameworks/av/camera/CameraParameters.cpp
-@@ -355,8 +355,18 @@ const char CameraParameters::PIXEL_FORMAT_YUV420SP[] = "yuv420sp";
+@@ -329,6 +329,12 @@ const char CameraParameters::SCENE_MODE_FIREWORKS[] = "fireworks";
+ const char CameraParameters::SCENE_MODE_SPORTS[] = "sports";
+ const char CameraParameters::SCENE_MODE_PARTY[] = "party";
+ const char CameraParameters::SCENE_MODE_CANDLELIGHT[] = "candlelight";
++#ifdef STE_HARDWARE
++const char CameraParameters::SCENE_MODE_BACKLIGHT[] = "backlight";
++const char CameraParameters::SCENE_MODE_DUSKDAWN[] = "duskdawn";
++const char CameraParameters::SCENE_MODE_FALLCOLOR[] = "fallcolor";
++const char CameraParameters::SCENE_MODE_TEXT[] = "text";
++#endif
+ #ifdef QCOM_HARDWARE
+ #ifdef SAMSUNG_CAMERA_LEGACY
+ const char CameraParameters::SCENE_MODE_BACKLIGHT[] = "back-light";
+@@ -355,8 +361,18 @@ const char CameraParameters::PIXEL_FORMAT_YUV420SP[] = "yuv420sp";
  #ifdef QCOM_HARDWARE
  const char CameraParameters::PIXEL_FORMAT_YUV420SP_ADRENO[] = "yuv420sp-adreno";
  #endif
@@ -53,7 +67,31 @@ index d661a85..b5f1b3c 100644
  const char CameraParameters::PIXEL_FORMAT_RGB565[] = "rgb565";
  const char CameraParameters::PIXEL_FORMAT_RGBA8888[] = "rgba8888";
  const char CameraParameters::PIXEL_FORMAT_JPEG[] = "jpeg";
-@@ -532,6 +542,11 @@ void CameraParameters::setOrientation(int orientation)
+@@ -512,6 +528,23 @@ const char CameraParameters::SCENE_MODE_FALL_COLOR[] = "fall-color";
+ const char CameraParameters::SCENE_MODE_TEXT[] = "text";
+ #endif
+ 
++#ifdef STE_HARDWARE
++const char CameraParameters::FOCUS_MODE_FACEDETECT[] = "facedetect";
++const char CameraParameters::FOCUS_MODE_TOUCHAF[] = "touchaf";
++const char CameraParameters::ISO_50[] = "ISO50";
++const char CameraParameters::KEY_ANTI_SHAKE_MODE[] = "antishake";
++const char CameraParameters::KEY_AUTO_CONTRAST[] = "auto-contrast";
++const char CameraParameters::KEY_BEAUTY_MODE[] = "beauty";
++const char CameraParameters::KEY_BLUR_MODE[] = "blur";
++const char CameraParameters::KEY_VINTAGE_MODE[] = "vintagemode";
++const char CameraParameters::KEY_WDR_MODE[] = "wdr";
++const char CameraParameters::VINTAGE_MODE_BNW[] = "bnw";
++const char CameraParameters::VINTAGE_MODE_COOL[] = "cool";
++const char CameraParameters::VINTAGE_MODE_NORMAL[] = "normal";
++const char CameraParameters::VINTAGE_MODE_OFF[] = "off";
++const char CameraParameters::VINTAGE_MODE_WARM[] = "warm";
++#endif 
++
+ static const char* portrait = "portrait";
+ static const char* landscape = "landscape";
+ 
+@@ -532,6 +565,11 @@ void CameraParameters::setOrientation(int orientation)
  }
  #endif
  
@@ -66,10 +104,23 @@ index d661a85..b5f1b3c 100644
  // Values for light fx settings
  const char CameraParameters::LIGHTFX_LOWLIGHT[] = "low-light";
 diff --git a/frameworks/av/include/camera/CameraParameters.h b/frameworks/av/include/camera/CameraParameters.h
-index 2758989..9549609 100644
+index 2758989..a0e3239 100644
 --- a/frameworks/av/include/camera/CameraParameters.h
 +++ b/frameworks/av/include/camera/CameraParameters.h
-@@ -853,8 +853,18 @@ public:
+@@ -834,6 +834,12 @@ public:
+     static const char SCENE_MODE_FLOWERS[];
+     static const char SCENE_MODE_AR[];
+ #endif
++#ifdef STE_HARDWARE
++    static const char SCENE_MODE_BACKLIGHT[];
++    static const char SCENE_MODE_DUSKDAWN[];
++    static const char SCENE_MODE_FALLCOLOR[];
++    static const char SCENE_MODE_TEXT[];
++#endif
+     // Applications are looking for a barcode. Camera driver will be optimized
+     // for barcode reading.
+     static const char SCENE_MODE_BARCODE[];
+@@ -853,8 +859,18 @@ public:
  #ifdef QCOM_HARDWARE
      static const char PIXEL_FORMAT_YUV420SP_ADRENO[]; // ADRENO
  #endif
@@ -88,7 +139,35 @@ index 2758989..9549609 100644
      static const char PIXEL_FORMAT_RGB565[];
      static const char PIXEL_FORMAT_RGBA8888[];
      static const char PIXEL_FORMAT_JPEG[];
-@@ -1083,6 +1093,12 @@ public:
+@@ -1062,6 +1078,27 @@ public:
+     static const char SCENE_MODE_TEXT[];
+ #endif
+ 
++#ifdef STE_HARDWARE
++    static const char FOCUS_MODE_FACEDETECT[];
++    static const char FOCUS_MODE_TOUCHAF[];
++    static const char ISO_50[];
++    static const char KEY_ANTI_SHAKE_MODE[];
++    static const char KEY_AUTO_CONTRAST[];
++    static const char KEY_BEAUTY_MODE[];
++    static const char KEY_BLUR_MODE[];
++    static const char KEY_VINTAGE_MODE[];
++    static const char KEY_WDR_MODE[];
++    static const char VINTAGE_MODE_BNW[];
++    static const char VINTAGE_MODE_COOL[];
++    static const char VINTAGE_MODE_NORMAL[];
++    static const char VINTAGE_MODE_OFF[];
++    static const char VINTAGE_MODE_WARM[];
++    static const char SCENE_MODE_DUSKDAWN[];
++    static const char SCENE_MODE_FALL[];
++    static const char SCENE_MODE_FALL_COLOR[];
++    static const char SCENE_MODE_TEXT[];
++#endif
++
+    // Values for Redeye Reduction settings.
+    // static const char REDEYE_REDUCTION_ENABLE[];
+    // static const char REDEYE_REDUCTION_DISABLE[];
+@@ -1083,6 +1120,12 @@ public:
      void getSupportedHfrSizes(Vector<Size> &sizes) const;
  #endif
  
@@ -1450,6 +1529,21 @@ index b3fe98e..1806547 100644
      { "OMX.google.mp3.decoder", "mp3dec", "audio_decoder.mp3" },
      { "OMX.google.vorbis.decoder", "vorbisdec", "audio_decoder.vorbis" },
      { "OMX.google.vpx.decoder", "vpxdec", "video_decoder.vpx" },
+diff --git a/frameworks/av/services/audioflinger/Android.mk b/frameworks/av/services/audioflinger/Android.mk
+index 7fc9872..5a82ea0 100644
+--- a/frameworks/av/services/audioflinger/Android.mk
++++ b/frameworks/av/services/audioflinger/Android.mk
+@@ -13,6 +13,10 @@ include $(BUILD_STATIC_LIBRARY)
+ 
+ include $(CLEAR_VARS)
+ 
++ifeq ($(BOARD_USES_STE_HARDWARE),true)
++LOCAL_CFLAGS += -DSTE_AUDIO
++LOCAL_CFLAGS += -Wno-conversion -fpermissive
++endif
+ LOCAL_SRC_FILES:=               \
+     AudioFlinger.cpp            \
+     Threads.cpp                 \
 diff --git a/frameworks/av/services/audioflinger/AudioFlinger.cpp b/frameworks/av/services/audioflinger/AudioFlinger.cpp
 index 84e2498..2a078d1 100644
 --- a/frameworks/av/services/audioflinger/AudioFlinger.cpp
