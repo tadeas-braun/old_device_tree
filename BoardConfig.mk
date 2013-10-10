@@ -62,7 +62,6 @@ COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
 
 # jb camera
 COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
-BOARD_USES_QCOM_LEGACY_CAM_PARAMS := true
 
 # surfaceflinger support for Xperia Sola,Go...
 BOARD_EGL_NEEDS_LEGACY_FB := true
