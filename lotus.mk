@@ -116,6 +116,10 @@ PRODUCT_PACKAGES += \
     libasound_module_ctl_bluetooth \
     libasound_module_pcm_bluetooth
 
+# libaudioparameter
+PRODUCT_PACKAGES += \
+    libaudioparameter
+
 # light package
 PRODUCT_PACKAGES += \
     lights.montblanc
