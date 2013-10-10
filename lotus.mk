@@ -52,7 +52,8 @@ PRODUCT_COPY_FILES += \
     device/sony/lotus/config/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
     device/sony/lotus/config/init.d/10hostapd:system/etc/init.d/10hostapd \
     device/sony/lotus/config/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel \
-    device/sony/lotus/config/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+    device/sony/lotus/config/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+    device/sony/lotus/config/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -237,6 +238,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/cflashlib.cfg:system/etc/cflashlib.cfg \
    $(LOCAL_PATH)/config/flashled_param_config.cfg:system/etc/flashled_param_config.cfg
+
+# Vendor libs
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/config/vendor/lib/libwvdrm_L3.so:system/vendor/lib/libwvdrm_L3.so \
+   $(LOCAL_PATH)/config/vendor/lib/libwvm.so:system/vendor/lib/libwvm.so \
+   $(LOCAL_PATH)/config/vendor/lib/libWVStreamControlAPI_L3.so:system/vendor/lib/libWVStreamControlAPI_L3.so \
+   $(LOCAL_PATH)/config/vendor/lib/drm/libdrmwvmplugin.so:system/vendor/lib/drm/libdrmwvmplugin.so
 
 # Bootanimation
 PRODUCT_COPY_FILES += \
