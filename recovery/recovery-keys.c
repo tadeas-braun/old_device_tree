@@ -59,20 +59,6 @@ int device_handle_key(int key_code, int visible) {
     static int fixup_xperia_usb = 0;
 
     if (!fixup_xperia_usb) {
-        __system("/sbin/cat /sys/devices/platform/ab8500-i2c.0/ab8500-usb.0/boot_time_device > /sys/devices/platform/ab8500-i2c.0/ab8500-usb.0/boot_time_device");
-        __system("/sbin/killall -9 adbd");
-        __system("/sbin/echo 0 >/sys/class/android_usb/android0/enable");
-        __system("/sbin/echo 0FCE >/sys/class/android_usb/android0/idVendor");
-        __system("/sbin/echo 617E >/sys/class/android_usb/android0/idProduct");
-        __system("/sbin/echo 'mass_storage,adb' >/sys/class/android_usb/android0/functions");
-        __system("/sbin/echo 1 >/sys/class/android_usb/android0/enable");
-        __system("/sbin/setprop sys.usb.state mass_storage,adb");
-        __system("/sbin/setprop sys.usb.config mass_storage,adb");
-        __system("/sbin/setprop persist.sys.usb.config mass_storage,adb");
-        __system("/sbin/restart adbd");
-        __system("/sbin/setprop ro.build.product lotus");
-
-        /* enable button lights */
         __system("/sbin/echo '255' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/button-backlight/brightness");
 
         fixup_xperia_usb = 1;
