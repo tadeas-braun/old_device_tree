@@ -67,6 +67,9 @@ int device_handle_key(int key_code, int visible) {
         __system("/sbin/start adbd");
         __system("/sbin/setprop ro.build.product lotus");
 
+        /* enable button lights */
+        __system("/sbin/echo '255' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/button-backlight/brightness");
+
         fixup_xperia_usb = 1;
     }
 
