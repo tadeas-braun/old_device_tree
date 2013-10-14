@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <dirent.h>
+
 #include <linux/input.h>
 
 #include "recovery_ui.h"
@@ -64,7 +69,7 @@ int device_handle_key(int key_code, int visible) {
         __system("/sbin/setprop sys.usb.state mass_storage,adb");
         __system("/sbin/setprop sys.usb.config mass_storage,adb");
         __system("/sbin/setprop persist.sys.usb.config mass_storage,adb");
-        __system("/sbin/start adbd");
+        __system("/sbin/restart adbd");
         __system("/sbin/setprop ro.build.product lotus");
 
         /* enable button lights */
