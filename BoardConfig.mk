@@ -62,6 +62,7 @@ COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
 
 # jb camera
 COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
+BOARD_USES_LEGACY_OVERLAY := true
 
 # surfaceflinger support for Xperia Sola,Go...
 BOARD_EGL_NEEDS_LEGACY_FB := true
