@@ -2,7 +2,6 @@ on property:ro.debuggable=1
     setprop sys.usb.config mass_storage,adb
 
 on property:sys.usb.config=mass_storage,adb
-    write /sys/devices/platform/ab8500-i2c.0/ab8500-usb.0/boot_time_device 1
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 0FCE
     write /sys/class/android_usb/android0/idProduct 617E
