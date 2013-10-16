@@ -10,7 +10,6 @@ TARGET_SPECIFIC_HEADER_PATH += hardware/semc/bluetooth/bluez/lib
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
-BOARD_HAS_NO_MISC_PARTITION := true
 
 # Platform
 TARGET_BOARD_PLATFORM := montblanc
@@ -82,6 +81,16 @@ TARGET_PROVIDES_INIT_RC := true
 TARGET_RECOVERY_PRE_COMMAND := "touch /cache/recovery/boot;sync;"
 BOARD_CUSTOM_BOOTIMG_MK := device/sony/lotus/custombootimg.mk
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/sony/lotus/releasetools/semc_ota_from_target_files
+
+# Partition flags for CWM/TWRP
+BOARD_HAS_SDCARD_INTERNAL := true
+BOARD_USES_MMCUTILS := true
+BOARD_HAS_NO_MISC_PARTITION := true
+
+# better cwm graphic quality
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+
+# cwm specific
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/lotus/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
 TARGET_RECOVERY_FSTAB = device/sony/lotus/config/root/fstab.st-ericsson
@@ -100,6 +109,7 @@ BOARD_KERNEL_CMDLINE := cachepolicy=writealloc noinitrd init=init board_id=1 log
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000
 
 # Partition information
+BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 16
 
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x01400000
