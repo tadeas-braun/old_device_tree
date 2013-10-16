@@ -87,9 +87,6 @@ BOARD_HAS_SDCARD_INTERNAL := true
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 
-# better cwm graphic quality
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-
 # cwm specific
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/lotus/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
