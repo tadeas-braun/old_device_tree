@@ -114,7 +114,8 @@ PRODUCT_PACKAGES += \
     hcitool \
     l2ping \
     hciattach \
-    rfcomm
+    rfcomm \
+    btiotest
 
 # BT A2DP
 PRODUCT_PACKAGES += \
