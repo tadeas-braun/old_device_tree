@@ -55,6 +55,10 @@ PRODUCT_COPY_FILES += \
     device/sony/lotus/config/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
     device/sony/lotus/config/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf
 
+# Gralloc
+PRODUCT_PACKAGES += \
+    gralloc.montblanc
+
 # Filesystem management tools
 PRODUCT_PACKAGES += \
     make_ext4fs \
