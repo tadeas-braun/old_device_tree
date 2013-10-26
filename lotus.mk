@@ -146,27 +146,27 @@ PRODUCT_COPY_FILES += \
 
 # Configs
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/system/lib/egl/egl.cfg:system/lib/egl/egl.cfg \
-    $(LOCAL_PATH)/config/system/etc/media_codecs.xml:system/etc/media_codecs.xml \
-    $(LOCAL_PATH)/config/system/etc/media_profiles.xml:system/etc/media_profiles.xml \
-    $(LOCAL_PATH)/config/system/etc/asound.conf:system/etc/asound.conf \
-    $(LOCAL_PATH)/config/system/etc/dbus.conf:system/etc/dbus.conf \
-    $(LOCAL_PATH)/config/system/etc/sysmon.cfg:system/etc/sysmon.cfg \
-    $(LOCAL_PATH)/config/system/etc/dash.conf:system/etc/dash.conf \
-    $(LOCAL_PATH)/config/system/etc/wifi/hostapd.conf:system/etc/wifi/hostapd.conf \
-    $(LOCAL_PATH)/config/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    $(LOCAL_PATH)/config/system/etc/wifi/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf \
-    $(LOCAL_PATH)/config/system/etc/init.d/01stesetup:system/etc/init.d/01stesetup \
-    $(LOCAL_PATH)/config/system/etc/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
-    $(LOCAL_PATH)/config/system/etc/init.d/10hostapd:system/etc/init.d/10hostapd \
-    $(LOCAL_PATH)/config/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel
+    $(LOCAL_PATH)/prebuilt/system/lib/egl/egl.cfg:system/lib/egl/egl.cfg \
+    $(LOCAL_PATH)/prebuilt/system/etc/media_codecs.xml:system/etc/media_codecs.xml \
+    $(LOCAL_PATH)/prebuilt/system/etc/media_profiles.xml:system/etc/media_profiles.xml \
+    $(LOCAL_PATH)/prebuilt/system/etc/asound.conf:system/etc/asound.conf \
+    $(LOCAL_PATH)/prebuilt/system/etc/dbus.conf:system/etc/dbus.conf \
+    $(LOCAL_PATH)/prebuilt/system/etc/sysmon.cfg:system/etc/sysmon.cfg \
+    $(LOCAL_PATH)/prebuilt/system/etc/dash.conf:system/etc/dash.conf \
+    $(LOCAL_PATH)/prebuilt/system/etc/wifi/hostapd.conf:system/etc/wifi/hostapd.conf \
+    $(LOCAL_PATH)/prebuilt/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+    $(LOCAL_PATH)/prebuilt/system/etc/wifi/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf \
+    $(LOCAL_PATH)/prebuilt/system/etc/init.d/01stesetup:system/etc/init.d/01stesetup \
+    $(LOCAL_PATH)/prebuilt/system/etc/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
+    $(LOCAL_PATH)/prebuilt/system/etc/init.d/10hostapd:system/etc/init.d/10hostapd \
+    $(LOCAL_PATH)/prebuilt/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel
 
 # Custom init / uevent
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/root/init.rc:root/init.rc \
-    $(LOCAL_PATH)/config/root/fstab.st-ericsson:root/fstab.st-ericsson \
-    $(LOCAL_PATH)/config/root/init.st-ericsson.rc:root/init.st-ericsson.rc \
-    $(LOCAL_PATH)/config/root/ueventd.st-ericsson.rc:root/ueventd.st-ericsson.rc
+    $(LOCAL_PATH)/prebuilt/root/init.rc:root/init.rc \
+    $(LOCAL_PATH)/prebuilt/root/fstab.st-ericsson:root/fstab.st-ericsson \
+    $(LOCAL_PATH)/prebuilt/root/init.st-ericsson.rc:root/init.st-ericsson.rc \
+    $(LOCAL_PATH)/prebuilt/root/ueventd.st-ericsson.rc:root/ueventd.st-ericsson.rc
 
 # Recovery bootstrap script
 PRODUCT_COPY_FILES += \
@@ -177,15 +177,15 @@ PRODUCT_COPY_FILES += \
 
 # HW Configs
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/system/etc/omxloaders:system/etc/omxloaders \
-    $(LOCAL_PATH)/config/system/etc/ril_config:system/etc/ril_config \
-    $(LOCAL_PATH)/config/system/bin/install_wlan:system/bin/install_wlan \
-    $(LOCAL_PATH)/config/system/etc/ste_modem.sh:system/etc/ste_modem.sh
+    $(LOCAL_PATH)/prebuilt/system/etc/omxloaders:system/etc/omxloaders \
+    $(LOCAL_PATH)/prebuilt/system/etc/ril_config:system/etc/ril_config \
+    $(LOCAL_PATH)/prebuilt/system/bin/install_wlan:system/bin/install_wlan \
+    $(LOCAL_PATH)/prebuilt/system/etc/ste_modem.sh:system/etc/ste_modem.sh
 
 # GPS
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/config/system/etc/gps.conf:system/etc/gps.conf \
-    $(LOCAL_PATH)/config/system/etc/suplcert/cacert.txt:system/etc/suplcert/cacert.txt
+    $(LOCAL_PATH)/prebuilt/system/etc/gps.conf:system/etc/gps.conf \
+    $(LOCAL_PATH)/prebuilt/system/etc/suplcert/cacert.txt:system/etc/suplcert/cacert.txt
 
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_eu_supl.mk)
@@ -196,7 +196,7 @@ PRODUCT_COPY_FILES += \
 
 # Configuration scripts
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/root/init.st-ericsson.device.rc:root/init.st-ericsson.device.rc \
+   $(LOCAL_PATH)/prebuilt/root/init.st-ericsson.device.rc:root/init.st-ericsson.device.rc \
    $(LOCAL_PATH)/prebuilt/logo-320x480.rle:root/logo.rle
 
 # Configuration scripts
@@ -209,33 +209,33 @@ PRODUCT_COPY_FILES += \
 
 # USB function switching
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/root/init.st-ericsson.usb.rc:root/init.st-ericsson.usb.rc
+   $(LOCAL_PATH)/prebuilt/root/init.st-ericsson.usb.rc:root/init.st-ericsson.usb.rc
 
 # Key layouts and touchscreen
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/system/usr/keylayout/AB8500_Hs_Button.kl:system/usr/keylayout/AB8500_Hs_Button.kl \
-   $(LOCAL_PATH)/config/system/usr/keylayout/simple_remote.kl:system/usr/keylayout/simple_remote.kl \
-   $(LOCAL_PATH)/config/system/usr/keylayout/simple_remote_appkey.kl:system/usr/keylayout/simple_remote_appkey.kl \
-   $(LOCAL_PATH)/config/system/usr/keylayout/cyttsp_key.kl:system/usr/keylayout/cyttsp_key.kl \
-   $(LOCAL_PATH)/config/system/usr/keylayout/STMPE-keypad.kl:system/usr/keylayout/STMPE-keypad.kl \
-   $(LOCAL_PATH)/config/system/usr/keylayout/tc3589x-keypad.kl:system/usr/keylayout/tc3589x-keypad.kl \
-   $(LOCAL_PATH)/config/system/usr/keylayout/ux500-ske-keypad.kl:system/usr/keylayout/ux500-ske-keypad.kl.kl \
-   $(LOCAL_PATH)/config/system/usr/keylayout/ux500-ske-keypad-qwertz.kl:system/usr/keylayout/ux500-ske-keypad-qwertz.kl \
-   $(LOCAL_PATH)/config/system/usr/idc/cyttsp-spi.idc:system/usr/idc/cyttsp-spi.idc \
-   $(LOCAL_PATH)/config/system/usr/idc/synaptics_rmi4_i2c.idc:system/usr/idc/synaptics_rmi4_i2c.idc \
-   $(LOCAL_PATH)/config/system/usr/idc/sensor00_f11_sensor0.idc:system/usr/idc/sensor00_f11_sensor0.idc
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/AB8500_Hs_Button.kl:system/usr/keylayout/AB8500_Hs_Button.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/simple_remote.kl:system/usr/keylayout/simple_remote.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/simple_remote_appkey.kl:system/usr/keylayout/simple_remote_appkey.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/cyttsp_key.kl:system/usr/keylayout/cyttsp_key.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/STMPE-keypad.kl:system/usr/keylayout/STMPE-keypad.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/tc3589x-keypad.kl:system/usr/keylayout/tc3589x-keypad.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/ux500-ske-keypad.kl:system/usr/keylayout/ux500-ske-keypad.kl.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/ux500-ske-keypad-qwertz.kl:system/usr/keylayout/ux500-ske-keypad-qwertz.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/idc/cyttsp-spi.idc:system/usr/idc/cyttsp-spi.idc \
+   $(LOCAL_PATH)/prebuilt/system/usr/idc/synaptics_rmi4_i2c.idc:system/usr/idc/synaptics_rmi4_i2c.idc \
+   $(LOCAL_PATH)/prebuilt/system/usr/idc/sensor00_f11_sensor0.idc:system/usr/idc/sensor00_f11_sensor0.idc
 
 # Misc configuration files
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/system/etc/cflashlib.cfg:system/etc/cflashlib.cfg \
-   $(LOCAL_PATH)/config/system/etc/flashled_param_config.cfg:system/etc/flashled_param_config.cfg
+   $(LOCAL_PATH)/prebuilt/system/etc/cflashlib.cfg:system/etc/cflashlib.cfg \
+   $(LOCAL_PATH)/prebuilt/system/etc/flashled_param_config.cfg:system/etc/flashled_param_config.cfg
 
 # Vendor libs
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/vendor/lib/libwvdrm_L3.so:system/vendor/lib/libwvdrm_L3.so \
-   $(LOCAL_PATH)/config/vendor/lib/libwvm.so:system/vendor/lib/libwvm.so \
-   $(LOCAL_PATH)/config/vendor/lib/libWVStreamControlAPI_L3.so:system/vendor/lib/libWVStreamControlAPI_L3.so \
-   $(LOCAL_PATH)/config/vendor/lib/drm/libdrmwvmplugin.so:system/vendor/lib/drm/libdrmwvmplugin.so
+   $(LOCAL_PATH)/prebuilt/vendor/lib/libwvdrm_L3.so:system/vendor/lib/libwvdrm_L3.so \
+   $(LOCAL_PATH)/prebuilt/vendor/lib/libwvm.so:system/vendor/lib/libwvm.so \
+   $(LOCAL_PATH)/prebuilt/vendor/lib/libWVStreamControlAPI_L3.so:system/vendor/lib/libWVStreamControlAPI_L3.so \
+   $(LOCAL_PATH)/prebuilt/vendor/lib/drm/libdrmwvmplugin.so:system/vendor/lib/drm/libdrmwvmplugin.so
 
 # Bootanimation
 PRODUCT_COPY_FILES += \
