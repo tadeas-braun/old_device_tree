@@ -153,13 +153,16 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/dbus.conf:system/etc/dbus.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/sysmon.cfg:system/etc/sysmon.cfg \
     $(LOCAL_PATH)/prebuilt/system/etc/dash.conf:system/etc/dash.conf \
+    $(LOCAL_PATH)/prebuilt/system/etc/hw_config.sh:system/etc/hw_config.sh
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/hostapd.conf:system/etc/wifi/hostapd.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/01stesetup:system/etc/init.d/01stesetup \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/10hostapd:system/etc/init.d/10hostapd \
-    $(LOCAL_PATH)/prebuilt/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel
+    $(LOCAL_PATH)/prebuilt/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel \
+    $(LOCAL_PATH)/prebuilt/system/media/LMprec_508.emd:system/media/LMprec_508.emd \
+    $(LOCAL_PATH)/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd
 
 # Custom init / uevent
 PRODUCT_COPY_FILES += \
@@ -194,18 +197,14 @@ $(call inherit-product, device/common/gps/gps_eu_supl.mk)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
-# Configuration scripts
+# Ramdisk scripts
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/root/init.st-ericsson.device.rc:root/init.st-ericsson.device.rc \
    $(LOCAL_PATH)/prebuilt/logo-320x480.rle:root/logo.rle
 
-# Configuration scripts
-PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/prebuilt/hw_config.sh:system/etc/hw_config.sh
-
 # fake script needed for recovery
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/prebuilt/modelid_cfg.sh:system/bin/modelid_cfg.sh
+   $(LOCAL_PATH)/prebuilt/system/bin/modelid_cfg.sh:system/bin/modelid_cfg.sh
 
 # USB function switching
 PRODUCT_COPY_FILES += \
@@ -243,7 +242,7 @@ PRODUCT_COPY_FILES += \
 
 # patched JB cn_binary needed for mobile network for CM10.2 only
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/prebuilt/cn_server:system/bin/cn_server
+   $(LOCAL_PATH)/prebuilt/system/bin/cn_server:system/bin/cn_server
 
 # Copy the Bluetooth permissions file. The permissions file also enables Bluetooth menu in Settings?
 PRODUCT_COPY_FILES += \
