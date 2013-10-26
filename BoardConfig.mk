@@ -57,7 +57,7 @@ BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_wl12xx
 
 # Graphics
 USE_OPENGL_RENDERER := true
-BOARD_EGL_CFG := device/sony/lotus/config/egl.cfg
+BOARD_EGL_CFG := device/sony/lotus/prebuilt/system/lib/egl/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
 
 # jb camera
@@ -91,7 +91,7 @@ BOARD_HAS_NO_MISC_PARTITION := true
 # cwm specific
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/lotus/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
-TARGET_RECOVERY_FSTAB = device/sony/lotus/config/root/fstab.st-ericsson
+TARGET_RECOVERY_FSTAB = device/sony/lotus/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
 
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun%d/file"
