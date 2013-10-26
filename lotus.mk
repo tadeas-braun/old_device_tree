@@ -153,7 +153,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/dbus.conf:system/etc/dbus.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/sysmon.cfg:system/etc/sysmon.cfg \
     $(LOCAL_PATH)/prebuilt/system/etc/dash.conf:system/etc/dash.conf \
-    $(LOCAL_PATH)/prebuilt/system/etc/hw_config.sh:system/etc/hw_config.sh
+    $(LOCAL_PATH)/prebuilt/system/etc/hw_config.sh:system/etc/hw_config.sh \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/hostapd.conf:system/etc/wifi/hostapd.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf \
