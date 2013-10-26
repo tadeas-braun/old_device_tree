@@ -3,11 +3,12 @@ USE_CAMERA_STUB := true
 # inherit from the proprietary version
 -include vendor/sony/lotus/BoardConfigVendor.mk
 
-TARGET_SPECIFIC_HEADER_PATH := device/sony/lotus/include
-TARGET_SPECIFIC_HEADER_PATH += device/sony/lotus/hardware
-TARGET_SPECIFIC_HEADER_PATH += hardware/semc/bluetooth/glib
-TARGET_SPECIFIC_HEADER_PATH += hardware/semc/bluetooth/bluez/lib
-TARGET_SPECIFIC_HEADER_PATH += hardware/semc/bluetooth/bluez/btio
+TARGET_SPECIFIC_HEADER_PATH := \
+    device/sony/lotus/include \
+    device/sony/lotus/hardware \
+    hardware/semc/bluetooth/glib \
+    hardware/semc/bluetooth/bluez/lib \
+    hardware/semc/bluetooth/bluez/btio
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
@@ -50,6 +51,7 @@ BOARD_USES_LIBMEDIA_WITH_AUDIOPARAMETER := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 BOARD_HOSTAPD_DRIVER := NL80211
+USES_TI_MAC80211 := true
 COMMON_GLOBAL_CFLAGS += -DUSES_TI_MAC80211
 BOARD_WLAN_DEVICE := wl12xx_mac80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wl12xx
