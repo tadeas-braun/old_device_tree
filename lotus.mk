@@ -21,40 +21,6 @@ $(call inherit-product-if-exists, vendor/sony/lotus/lotus-vendor.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/sony/lotus/overlay
 
-# Permissions
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
-    frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
-    frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
-    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
-    frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
-    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
-    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
-    frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
-    frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
-    frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-    frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
-    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-    packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml
-
-# Configs
-PRODUCT_COPY_FILES += \
-    device/sony/lotus/config/media_codecs.xml:system/etc/media_codecs.xml \
-    device/sony/lotus/config/egl.cfg:system/lib/egl/egl.cfg \
-    device/sony/lotus/config/asound.conf:system/etc/asound.conf \
-    device/sony/lotus/config/dbus.conf:system/etc/dbus.conf \
-    device/sony/lotus/config/sysmon.cfg:system/etc/sysmon.cfg \
-    device/sony/lotus/config/hostapd.conf:system/etc/wifi/hostapd.conf \
-    device/sony/lotus/config/init.d/01stesetup:system/etc/init.d/01stesetup \
-    device/sony/lotus/config/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
-    device/sony/lotus/config/init.d/10hostapd:system/etc/init.d/10hostapd \
-    device/sony/lotus/config/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel \
-    device/sony/lotus/config/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    device/sony/lotus/config/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf
-
 # Filesystem management tools
 PRODUCT_PACKAGES += \
     make_ext4fs \
@@ -159,43 +125,67 @@ PRODUCT_PACKAGES += \
     audio_policy.default \
     audio.usb.default
 
-# We have enough storage space to hold precise GC data
-PRODUCT_TAGS += dalvik.gc.type-precise
+# Permissions
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
+    frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
+    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
+    frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
+    frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
+    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
+    frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
+    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
+    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
+    frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
+    frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
+    frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+    frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
+    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
+    packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml
 
-PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
+# Configs
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/config/system/lib/egl/egl.cfg:system/lib/egl/egl.cfg \
+    $(LOCAL_PATH)/config/system/etc/media_codecs.xml:system/etc/media_codecs.xml \
+    $(LOCAL_PATH)/config/system/etc/media_profiles.xml:system/etc/media_profiles.xml \
+    $(LOCAL_PATH)/config/system/etc/asound.conf:system/etc/asound.conf \
+    $(LOCAL_PATH)/config/system/etc/dbus.conf:system/etc/dbus.conf \
+    $(LOCAL_PATH)/config/system/etc/sysmon.cfg:system/etc/sysmon.cfg \
+    $(LOCAL_PATH)/config/system/etc/dash.conf:system/etc/dash.conf \
+    $(LOCAL_PATH)/config/system/etc/wifi/hostapd.conf:system/etc/wifi/hostapd.conf \
+    $(LOCAL_PATH)/config/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+    $(LOCAL_PATH)/config/system/etc/wifi/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf \
+    $(LOCAL_PATH)/config/system/etc/init.d/01stesetup:system/etc/init.d/01stesetup \
+    $(LOCAL_PATH)/config/system/etc/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
+    $(LOCAL_PATH)/config/system/etc/init.d/10hostapd:system/etc/init.d/10hostapd \
+    $(LOCAL_PATH)/config/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel
 
 # Custom init / uevent
 PRODUCT_COPY_FILES += \
-    device/sony/lotus/config/root/init.rc:root/init.rc \
-    device/sony/lotus/config/root/fstab.st-ericsson:root/fstab.st-ericsson \
-    device/sony/lotus/config/root/init.st-ericsson.rc:root/init.st-ericsson.rc \
-    device/sony/lotus/config/root/ueventd.st-ericsson.rc:root/ueventd.st-ericsson.rc
+    $(LOCAL_PATH)/config/root/init.rc:root/init.rc \
+    $(LOCAL_PATH)/config/root/fstab.st-ericsson:root/fstab.st-ericsson \
+    $(LOCAL_PATH)/config/root/init.st-ericsson.rc:root/init.st-ericsson.rc \
+    $(LOCAL_PATH)/config/root/ueventd.st-ericsson.rc:root/ueventd.st-ericsson.rc
 
 # Recovery bootstrap script
 PRODUCT_COPY_FILES += \
-    device/sony/lotus/recovery/bootrec:root/sbin/bootrec \
-    device/sony/lotus/recovery/usbid_init.sh:root/sbin/usbid_init.sh \
-    device/sony/lotus/recovery/postrecoveryboot.sh:root/sbin/postrecoveryboot.sh
+    $(LOCAL_PATH)/recovery/bootrec:root/sbin/bootrec \
+    $(LOCAL_PATH)/recovery/usbid_init.sh:root/sbin/usbid_init.sh \
+    $(LOCAL_PATH)/recovery/postrecoveryboot.sh:root/sbin/postrecoveryboot.sh
 
 
 # HW Configs
 PRODUCT_COPY_FILES += \
-    device/sony/lotus/config/omxloaders:system/etc/omxloaders \
-    device/sony/lotus/config/ril_config:system/etc/ril_config \
-    device/sony/lotus/config/install_wlan:system/bin/install_wlan \
-    device/sony/lotus/config/ste_modem.sh:system/etc/ste_modem.sh
+    $(LOCAL_PATH)/config/system/etc/omxloaders:system/etc/omxloaders \
+    $(LOCAL_PATH)/config/system/etc/ril_config:system/etc/ril_config \
+    $(LOCAL_PATH)/config/system/bin/install_wlan:system/bin/install_wlan \
+    $(LOCAL_PATH)/config/system/etc/ste_modem.sh:system/etc/ste_modem.sh
 
 # GPS
 PRODUCT_COPY_FILES += \
-    device/sony/lotus/config/gps.conf:system/etc/gps.conf\
-    device/sony/lotus/config/cacert.txt:system/etc/suplcert/cacert.txt
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    sys.mem.max_hidden_apps=10
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp \
-    wifi.interface=wlan0
+    $(LOCAL_PATH)/config/system/etc/gps.conf:system/etc/gps.conf \
+    $(LOCAL_PATH)/config/system/etc/suplcert/cacert.txt:system/etc/suplcert/cacert.txt
 
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_eu_supl.mk)
@@ -204,53 +194,41 @@ $(call inherit-product, device/common/gps/gps_eu_supl.mk)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
-# This device is mdpi.  However the platform doesn't
-# currently contain all of the bitmaps at mdpi density so
-# we do this little trick to fall back to the mdpi version
-# if the mdpi doesn't exist.
-PRODUCT_AAPT_CONFIG := normal mdpi mdpi
-PRODUCT_AAPT_PREF_CONFIG := mdpi
-
 # Configuration scripts
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/root/init.st-ericsson.device.rc:root/init.st-ericsson.device.rc \
-   device/sony/lotus/prebuilt/logo-320x480.rle:root/logo.rle
+   $(LOCAL_PATH)/prebuilt/logo-320x480.rle:root/logo.rle
 
 # Configuration scripts
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/dash.conf:system/etc/dash.conf \
    $(LOCAL_PATH)/prebuilt/hw_config.sh:system/etc/hw_config.sh
 
 # fake script needed for recovery
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/modelid_cfg.sh:system/bin/modelid_cfg.sh
 
-
 # USB function switching
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/root/init.st-ericsson.usb.rc:root/init.st-ericsson.usb.rc
 
-PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/media_profiles.xml:system/etc/media_profiles.xml
-
 # Key layouts and touchscreen
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/AB8500_Hs_Button.kl:system/usr/keylayout/AB8500_Hs_Button.kl \
-   $(LOCAL_PATH)/config/simple_remote.kl:system/usr/keylayout/simple_remote.kl \
-   $(LOCAL_PATH)/config/simple_remote_appkey.kl:system/usr/keylayout/simple_remote_appkey.kl \
-   $(LOCAL_PATH)/config/cyttsp_key.kl:system/usr/keylayout/cyttsp_key.kl \
-   $(LOCAL_PATH)/config/STMPE-keypad.kl:system/usr/keylayout/STMPE-keypad.kl \
-   $(LOCAL_PATH)/config/tc3589x-keypad.kl:system/usr/keylayout/tc3589x-keypad.kl \
-   $(LOCAL_PATH)/config/ux500-ske-keypad.kl:system/usr/keylayout/ux500-ske-keypad.kl.kl \
-   $(LOCAL_PATH)/config/ux500-ske-keypad-qwertz.kl:system/usr/keylayout/ux500-ske-keypad-qwertz.kl \
-   $(LOCAL_PATH)/config/cyttsp-spi.idc:system/usr/idc/cyttsp-spi.idc \
-   $(LOCAL_PATH)/config/synaptics_rmi4_i2c.idc:system/usr/idc/synaptics_rmi4_i2c.idc \
-   $(LOCAL_PATH)/config/sensor00_f11_sensor0.idc:system/usr/idc/sensor00_f11_sensor0.idc
+   $(LOCAL_PATH)/config/system/usr/keylayout/AB8500_Hs_Button.kl:system/usr/keylayout/AB8500_Hs_Button.kl \
+   $(LOCAL_PATH)/config/system/usr/keylayout/simple_remote.kl:system/usr/keylayout/simple_remote.kl \
+   $(LOCAL_PATH)/config/system/usr/keylayout/simple_remote_appkey.kl:system/usr/keylayout/simple_remote_appkey.kl \
+   $(LOCAL_PATH)/config/system/usr/keylayout/cyttsp_key.kl:system/usr/keylayout/cyttsp_key.kl \
+   $(LOCAL_PATH)/config/system/usr/keylayout/STMPE-keypad.kl:system/usr/keylayout/STMPE-keypad.kl \
+   $(LOCAL_PATH)/config/system/usr/keylayout/tc3589x-keypad.kl:system/usr/keylayout/tc3589x-keypad.kl \
+   $(LOCAL_PATH)/config/system/usr/keylayout/ux500-ske-keypad.kl:system/usr/keylayout/ux500-ske-keypad.kl.kl \
+   $(LOCAL_PATH)/config/system/usr/keylayout/ux500-ske-keypad-qwertz.kl:system/usr/keylayout/ux500-ske-keypad-qwertz.kl \
+   $(LOCAL_PATH)/config/system/usr/idc/cyttsp-spi.idc:system/usr/idc/cyttsp-spi.idc \
+   $(LOCAL_PATH)/config/system/usr/idc/synaptics_rmi4_i2c.idc:system/usr/idc/synaptics_rmi4_i2c.idc \
+   $(LOCAL_PATH)/config/system/usr/idc/sensor00_f11_sensor0.idc:system/usr/idc/sensor00_f11_sensor0.idc
 
 # Misc configuration files
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/cflashlib.cfg:system/etc/cflashlib.cfg \
-   $(LOCAL_PATH)/config/flashled_param_config.cfg:system/etc/flashled_param_config.cfg
+   $(LOCAL_PATH)/config/system/etc/cflashlib.cfg:system/etc/cflashlib.cfg \
+   $(LOCAL_PATH)/config/system/etc/flashled_param_config.cfg:system/etc/flashled_param_config.cfg
 
 # Vendor libs
 PRODUCT_COPY_FILES += \
@@ -275,9 +253,24 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml
 
+# This device is mdpi.  However the platform doesn't
+# currently contain all of the bitmaps at mdpi density so
+# we do this little trick to fall back to the mdpi version
+# if the mdpi doesn't exist.
+PRODUCT_AAPT_CONFIG := normal mdpi mdpi
+PRODUCT_AAPT_PREF_CONFIG := mdpi
+
+# We have enough storage space to hold precise GC data
+PRODUCT_TAGS += dalvik.gc.type-precise
+
+PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
+
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 
 $(call inherit-product-if-exists, vendor/sony/lotus/lotus-vendor.mk)
 
 PRODUCT_PROPERTY_OVERRIDES += \
+    sys.mem.max_hidden_apps=10 \
+    persist.sys.usb.config=mtp \
+    wifi.interface=wlan0 \
     ro.sf.lcd_density=160
