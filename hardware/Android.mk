@@ -273,47 +273,4 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
 include $(BUILD_SHARED_LIBRARY)
 
-# libUMP
-include $(CLEAR_VARS)
-SRC := ../../../../vendor/sony/lotus/proprietary/lib
-LOCAL_SRC_FILES := $(SRC)/libUMP.so
-LOCAL_MODULE := libUMP
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := SHARED_LIBRARIES
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)
-LOCAL_MODULE_SUFFIX := .so
-include $(BUILD_PREBUILT)
-
-# libMali
-include $(CLEAR_VARS)
-SRC := ../../../../vendor/sony/lotus/proprietary/lib
-LOCAL_SRC_FILES := $(SRC)/libMali.so
-LOCAL_MODULE := libMali
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := SHARED_LIBRARIES
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)
-LOCAL_MODULE_SUFFIX := .so
-include $(BUILD_PREBUILT)
-
-# HAL module implemenation, not prelinked and stored in
-# hw/<OVERLAY_HARDWARE_MODULE_ID>.<ro.product.board>.so
-include $(CLEAR_VARS)
-SRC := display/gralloc
-LOCAL_PRELINK_MODULE := false
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
-LOCAL_MODULE := gralloc.$(TARGET_BOARD_PLATFORM)
-#LOCAL_MODULE_TAGS := optional
-# Mali-200/300/400MP DDK
-LOCAL_SHARED_LIBRARIES := liblog libcutils libMali libGLESv1_CM libUMP
-# Include the UMP header files
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/display/gralloc/ump/include
-LOCAL_CFLAGS:= -DLOG_TAG=\"gralloc\" -DGRALLOC_32_BITS -DSTANDARD_LINUX_SCREEN
-LOCAL_SRC_FILES := \
-    $(SRC)/gralloc_module.cpp \
-    $(SRC)/alloc_device.cpp \
-    $(SRC)/framebuffer_device.cpp
-#LOCAL_CFLAGS+= -DMALI_VSYNC_EVENT_REPORT_ENABLE
-include $(BUILD_SHARED_LIBRARY)
-
-
 endif # BOARD_USES_STE_HARDWARE
