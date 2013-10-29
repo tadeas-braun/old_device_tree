@@ -438,13 +438,7 @@ service lbsd /system/bin/lbsd
     disabled
 
 service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
-    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
-### munjeni: this is needed but fail with log:
-# E/wpa_supplicant( 2185): Could not set interface p2p0 flags: Name not unique on network
-# E/wpa_supplicant( 2185): nl80211: Could not set interface 'p2p0' UP
-# E/wpa_supplicant( 2185): p2p0: Failed to initialize driver interface
-###
-    -N \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -N \
     -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
     -puse_p2p_group_interface=1
     class main
