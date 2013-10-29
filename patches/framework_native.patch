@@ -235,7 +235,7 @@ index 5bc759e..8c2cb51 100644
  ifeq ($(TARGET_USES_QCOM_BSP),true)
  ifneq ($(TARGET_QCOM_DISPLAY_VARIANT),)
 diff --git a/frameworks/native/libs/gui/GLConsumer.cpp b/frameworks/native/libs/gui/GLConsumer.cpp
-index bec0f90..4510326 100644
+index bec0f90..e584809 100644
 --- a/frameworks/native/libs/gui/GLConsumer.cpp
 +++ b/frameworks/native/libs/gui/GLConsumer.cpp
 @@ -94,13 +94,32 @@ GLConsumer::GLConsumer(GLuint tex, bool allowSynchronousMode,
@@ -343,7 +343,20 @@ index bec0f90..4510326 100644
      mCurrentCrop = item.mCrop;
      mCurrentTransform = item.mTransform;
      mCurrentScalingMode = item.mScalingMode;
-@@ -901,6 +977,54 @@ void GLConsumer::dumpLocked(String8& result, const char* prefix,
+@@ -269,6 +345,12 @@ status_t GLConsumer::releaseAndUpdateLocked(const BufferQueue::BufferItem& item)
+ 
+     computeCurrentTransformMatrixLocked();
+ 
++#ifdef STE_HARDWARE
++    if (mBlitEngine) {
++        copybit_close(mBlitEngine);
++    }
++#endif
++
+     return err;
+ }
+ 
+@@ -901,6 +983,54 @@ void GLConsumer::dumpLocked(String8& result, const char* prefix,
      ConsumerBase::dumpLocked(result, prefix, buffer, size);
  }
  
@@ -398,7 +411,7 @@ index bec0f90..4510326 100644
  static void mtxMul(float out[16], const float a[16], const float b[16]) {
      out[0] = a[0]*b[0] + a[4]*b[1] + a[8]*b[2] + a[12]*b[3];
      out[1] = a[1]*b[0] + a[5]*b[1] + a[9]*b[2] + a[13]*b[3];
-@@ -924,3 +1048,4 @@ static void mtxMul(float out[16], const float a[16], const float b[16]) {
+@@ -924,3 +1054,4 @@ static void mtxMul(float out[16], const float a[16], const float b[16]) {
  }
  
  }; // namespace android
