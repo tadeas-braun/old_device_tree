@@ -186,6 +186,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/bin/install_wlan:system/bin/install_wlan \
     $(LOCAL_PATH)/prebuilt/system/etc/ste_modem.sh:system/etc/ste_modem.sh
 
+# WiFi config utility
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/system/bin/iw:system/bin/iw \
+
 # GPS
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/gps.conf:system/etc/gps.conf \
