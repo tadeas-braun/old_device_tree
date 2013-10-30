@@ -1,7 +1,7 @@
 #!/bin/sh
 
 VENDOR=sony
-DEVICE=lotus
+DEVICE=pepper
 
 BASE=../../../vendor/$VENDOR/$DEVICE/proprietary
 
@@ -28,7 +28,7 @@ for FILE in `cat proprietary-files.txt | grep -v ^# | grep -v ^$`; do
         mkdir -p $BASE/$DIR
     fi
     adb pull /system/$FILE $BASE/$FILE
-    #unzip -p /root/aaaaaaaaaaaa/FXP235-cm-10-20130901-UNOFFICIAL-lotus system/$FILE > $BASE/$FILE
+    #unzip -p /root/aaaaaaaaaaaa/FXP235-cm-10-20130901-UNOFFICIAL-pepper system/$FILE > $BASE/$FILE
 done
 
 ./setup-makefiles.sh
