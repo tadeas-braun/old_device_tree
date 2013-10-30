@@ -33,7 +33,7 @@ int device_handle_key(int key_code, int visible) {
     if (visible) {
 
         if (!buttonlight) {
-            __system("/sbin/echo '255' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/button-backlight/brightness");
+            __system("/sbin/echo '255' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/button-brightness/brightness");
 
             buttonlight = 1;
         }
