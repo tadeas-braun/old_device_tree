@@ -1,11 +1,11 @@
 USE_CAMERA_STUB := true
 
 # inherit from the proprietary version
--include vendor/sony/lotus/BoardConfigVendor.mk
+-include vendor/sony/pepper/BoardConfigVendor.mk
 
 TARGET_SPECIFIC_HEADER_PATH := \
-    device/sony/lotus/include \
-    device/sony/lotus/hardware \
+    device/sony/pepper/include \
+    device/sony/pepper/hardware \
     hardware/semc/bluetooth/glib \
     hardware/semc/bluetooth/bluez/lib \
     hardware/semc/bluetooth/bluez/btio
@@ -35,8 +35,8 @@ TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_STE := true
 COMMON_GLOBAL_CFLAGS += -DSTE_BT
-BOARD_BLUEDROID_VENDOR_CONF := device/sony/lotus/hardware/bluetooth/vnd_u8500.txt
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/sony/lotus/hardware/bluetooth/include
+BOARD_BLUEDROID_VENDOR_CONF := device/sony/pepper/hardware/bluetooth/vnd_u8500.txt
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/sony/pepper/hardware/bluetooth/include
 
 # Audio
 BOARD_USES_GENERIC_AUDIO := false
@@ -60,7 +60,7 @@ BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_wl12xx
 
 # Graphics
 USE_OPENGL_RENDERER := true
-BOARD_EGL_CFG := device/sony/lotus/prebuilt/system/lib/egl/egl.cfg
+BOARD_EGL_CFG := device/sony/pepper/prebuilt/system/lib/egl/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
 
 # jb camera
@@ -78,13 +78,13 @@ COMMON_GLOBAL_CFLAGS += -DEGL_NEEDS_FNW
 TARGET_PROVIDES_LIBLIGHTS := true
 
 # ril implementation
-BOARD_RIL_CLASS := ../../../device/sony/lotus/telephony-common/
+BOARD_RIL_CLASS := ../../../device/sony/pepper/telephony-common/
 
 # Custom boot
 TARGET_PROVIDES_INIT_RC := true
 TARGET_RECOVERY_PRE_COMMAND := "touch /cache/recovery/boot;sync;"
-BOARD_CUSTOM_BOOTIMG_MK := device/sony/lotus/custombootimg.mk
-TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/sony/lotus/releasetools/semc_ota_from_target_files
+BOARD_CUSTOM_BOOTIMG_MK := device/sony/pepper/custombootimg.mk
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/sony/pepper/releasetools/semc_ota_from_target_files
 
 # Partition flags for CWM/TWRP
 BOARD_HAS_SDCARD_INTERNAL := true
@@ -92,15 +92,15 @@ BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 
 # cwm specific
-BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/lotus/recovery/recovery-keys.c
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/pepper/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
-TARGET_RECOVERY_FSTAB = device/sony/lotus/prebuilt/root/fstab.st-ericsson
+TARGET_RECOVERY_FSTAB = device/sony/pepper/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
 
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun%d/file"
 
 # Kernel information
-TARGET_KERNEL_CONFIG := xperiago_defconfig
+TARGET_KERNEL_CONFIG := xperiasola_defconfig
 TARGET_KERNEL_SOURCE := kernel/sony/u8500
 TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
 BOARD_KERNEL_BASE := 0x0
@@ -128,6 +128,6 @@ TARGET_USERIMAGES_USE_EXT4 := true
 
 BOARD_SDCARD_INTERNAL_DEVICE := /dev/block/mmcblk0p14
 
-PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=ST27i_1262-1120 BUILD_FINGERPRINT=SEMC/ST27i_1262-1120/ST27i:4.0.4/6.1.1.B.1.10/9bt3zw:user/release-keys PRIVATE_BUILD_DESC="ST27i-user 4.0.4 6.1.1.B.1.10 9bt3zw test-keys"
+PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=MT27i_1262-1120 BUILD_FINGERPRINT=SEMC/MT27i_1262-1120/MT27i:4.0.4/6.1.1.B.1.10/9bt3zw:user/release-keys PRIVATE_BUILD_DESC="MT27i-user 4.0.4 6.1.1.B.1.10 9bt3zw test-keys"
 
-TARGET_OTA_ASSERT_DEVICE := ST27i,ST27a,lotus
+TARGET_OTA_ASSERT_DEVICE := MT27i,MT27a,pepper
