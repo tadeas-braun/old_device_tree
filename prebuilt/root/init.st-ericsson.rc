@@ -175,7 +175,7 @@ on post-fs-data
     mkdir /data/ste-debug 0777 root root
 
     # give system access to wpa_supplicant.conf for backup and restore
-    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi 0770 system wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
 
     chmod 0770 /data/misc/wifi/wpa_supplicant.conf
@@ -186,7 +186,7 @@ on post-fs-data
 
     # Setup paths used for socket communication with the dhcp daemon(dhcpd)
     mkdir /data/misc/dhcp 0770 dhcp dhcp
-    chown dhcp system /data/misc/dhcp
+    chown dhcp dhcp /data/misc/dhcp
 
     # STE: Modem Log Relay runs as system
     chown system system /dev/db8500-modem-trace
