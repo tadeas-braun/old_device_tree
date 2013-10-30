@@ -17,9 +17,9 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Inherit the proprietary counterpart
-$(call inherit-product-if-exists, vendor/sony/lotus/lotus-vendor.mk)
+$(call inherit-product-if-exists, vendor/sony/pepper/pepper-vendor.mk)
 
-DEVICE_PACKAGE_OVERLAYS += device/sony/lotus/overlay
+DEVICE_PACKAGE_OVERLAYS += device/sony/pepper/overlay
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -205,7 +205,7 @@ PRODUCT_COPY_FILES += \
 # Ramdisk scripts
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/root/init.st-ericsson.device.rc:root/init.st-ericsson.device.rc \
-   $(LOCAL_PATH)/prebuilt/logo-320x480.rle:root/logo.rle
+   $(LOCAL_PATH)/prebuilt/logo-480x854.rle:root/logo.rle
 
 # fake script needed for recovery
 PRODUCT_COPY_FILES += \
@@ -220,7 +220,9 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/AB8500_Hs_Button.kl:system/usr/keylayout/AB8500_Hs_Button.kl \
    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/simple_remote.kl:system/usr/keylayout/simple_remote.kl \
    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/simple_remote_appkey.kl:system/usr/keylayout/simple_remote_appkey.kl \
-   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/cyttsp_key.kl:system/usr/keylayout/cyttsp_key.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/cyttsp-spi.kl:system/usr/keylayout/cyttsp-spi.kl \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/cyttsp-spi.kcm:system/usr/keylayout/cyttsp-spi.kcm \
+   $(LOCAL_PATH)/prebuilt/system/usr/keylayout/so34-buttons.kl:system/usr/keylayout/so34-buttons.kl \
    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/STMPE-keypad.kl:system/usr/keylayout/STMPE-keypad.kl \
    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/tc3589x-keypad.kl:system/usr/keylayout/tc3589x-keypad.kl \
    $(LOCAL_PATH)/prebuilt/system/usr/keylayout/ux500-ske-keypad.kl:system/usr/keylayout/ux500-ske-keypad.kl.kl \
@@ -233,6 +235,26 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/system/etc/cflashlib.cfg:system/etc/cflashlib.cfg \
    $(LOCAL_PATH)/prebuilt/system/etc/flashled_param_config.cfg:system/etc/flashled_param_config.cfg
+   
+# NFC Support
+PRODUCT_PACKAGES += \
+    libnfc \
+    libnfc_jni \
+    Nfc \
+    Tag \
+    com.android.nfc_extras
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml
+
+# NFCEE access control
+ifeq ($(TARGET_BUILD_VARIANT),user)
+    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/prebuilt/system/etc/nfcee_access.xml
+else
+    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/prebuilt/system/etc/nfcee_access_debug.xml
+endif
+PRODUCT_COPY_FILES += \
+    $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml
 
 # Vendor libs
 PRODUCT_COPY_FILES += \
@@ -243,7 +265,7 @@ PRODUCT_COPY_FILES += \
 
 # Bootanimation
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/../../../vendor/cm/prebuilt/common/bootanimation/320.zip:system/media/bootanimation.zip
+   $(LOCAL_PATH)/../../../vendor/cm/prebuilt/common/bootanimation/480.zip:system/media/bootanimation.zip
 
 # patched JB cn_binary needed for mobile network for CM10.2 only
 PRODUCT_COPY_FILES += \
@@ -257,12 +279,12 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml
 
-# This device is mdpi.  However the platform doesn't
-# currently contain all of the bitmaps at mdpi density so
-# we do this little trick to fall back to the mdpi version
-# if the mdpi doesn't exist.
-PRODUCT_AAPT_CONFIG := normal mdpi mdpi
-PRODUCT_AAPT_PREF_CONFIG := mdpi
+# This device is hdpi.  However the platform doesn't
+# currently contain all of the bitmaps at hdpi density so
+# we do this little trick to fall back to the hdpi version
+# if the hdpi doesn't exist.
+PRODUCT_AAPT_CONFIG := normal mdpi hdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 # We have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -271,10 +293,10 @@ PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 
-$(call inherit-product-if-exists, vendor/sony/lotus/lotus-vendor.mk)
+$(call inherit-product-if-exists, vendor/sony/pepper/pepper-vendor.mk)
 
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.mem.max_hidden_apps=10 \
     persist.sys.usb.config=mtp \
     wifi.interface=wlan0 \
-    ro.sf.lcd_density=160
+    ro.sf.lcd_density=240
