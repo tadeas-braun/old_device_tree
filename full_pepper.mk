@@ -30,14 +30,14 @@ PRODUCT_PACKAGES := \
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 #charging animation
-$(call inherit-product, device/sony/lotus/prebuilt/resources-320x480.mk)
+$(call inherit-product, device/sony/pepper/prebuilt/resources-480x854.mk)
 
-# Inherit from lotus device
-$(call inherit-product, device/sony/lotus/lotus.mk)
+# Inherit from pepper device
+$(call inherit-product, device/sony/pepper/pepper.mk)
 
 # Set those variables here to overwrite the inherited values.
-PRODUCT_NAME := full_lotus
-PRODUCT_DEVICE := lotus
+PRODUCT_NAME := full_pepper
+PRODUCT_DEVICE := pepper
 PRODUCT_BRAND := Sony
 PRODUCT_MANUFACTURER := Sony
-PRODUCT_MODEL := Xperia Go
+PRODUCT_MODEL := Xperia Sola
