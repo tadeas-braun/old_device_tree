@@ -1,1 +1,1 @@
-add_lunch_combo cm_pepper-userdebug
+add_lunch_combo omni_pepper-userdebug
