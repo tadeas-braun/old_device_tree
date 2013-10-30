@@ -9,7 +9,7 @@ echo "mass_storage,adb" >/sys/class/android_usb/android0/functions
 echo 1 >/sys/class/android_usb/android0/enable
 
 # triget button-backlight
-echo '255' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/button-backlight/brightness
+echo '255' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/button-brightness/brightness
 
 # trigger white, red, orange, yellow, green, blue, purple LED :)
 echo '255' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/red/brightness
@@ -45,14 +45,14 @@ usleep 300000
 echo '200' > /sys/class/timed_output/vibrator/enable
 
 # disable button-backlight
-echo '0' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/button-backlight/brightness
+echo '0' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/button-brightness/brightness
 
 # disable LEDs
 echo '0' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/red/brightness
 echo '0' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/green/brightness
 echo '0' > /sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/blue/brightness
 
-cat /dev/input/event2 > /dev/keycheck &
+cat /dev/input/event1 > /dev/keycheck &
 sleep 3
 
 kill -9 $!
