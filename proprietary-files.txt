@@ -93,6 +93,7 @@ lib/hw/gps.montblanc.so
 lib/hw/gralloc.montblanc.so
 lib/hw/hwcomposer.montblanc.so
 lib/hw/sensors.default.so
+lib/hw/nfc.montblanc.so
 lib/lib_asb_tee.so
 lib/libals.so
 lib/libarchive.so
@@ -585,5 +586,6 @@ vendor/camera/KMO05BN0_BH6476.dat
 vendor/camera/product.dat
 vendor/camera/STW05BN0.dat
 vendor/camera/STW05BN0_BH6476.dat
+vendor/firmware/libpn544_fw.so
 xbin/ste-cg29xx_ctrl
 xbin/watchdog-kicker
