@@ -455,7 +455,7 @@ service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -Dnl802
 
 service hostapd_bin /system/bin/hostapd -d /data/misc/wifi/hostapd.conf
     class main
-    socket p2p0 dgram 660 wifi wifi
+    socket wpa_wlan1 dgram 660 wifi wifi
     disabled
     oneshot
 
