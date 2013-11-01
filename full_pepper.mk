@@ -28,7 +28,7 @@ PRODUCT_PACKAGES := \
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
-$(call inherit-product, device/sony/lotus/device.mk)
+$(call inherit-product, device/sony/pepper/device.mk)
 
 #charging animation
 $(call inherit-product, device/sony/pepper/prebuilt/resources-480x854.mk)
@@ -37,9 +37,9 @@ $(call inherit-product, device/sony/pepper/prebuilt/resources-480x854.mk)
 $(call inherit-product, device/sony/pepper/pepper.mk)
 
 # Set those variables here to overwrite the inherited values.
-PRODUCT_NAME := full_lotus
-PRODUCT_DEVICE := lotus
+PRODUCT_NAME := full_pepper
+PRODUCT_DEVICE := pepper
 PRODUCT_BRAND := Android
-PRODUCT_MODEL := AOSP on Xperia Go
+PRODUCT_MODEL := AOSP on Xperia Sola
 PRODUCT_MANUFACTURER := Sony
 PRODUCT_RESTRICT_VENDOR_FILES := owner path
