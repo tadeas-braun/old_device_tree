@@ -39,7 +39,7 @@ $(call inherit-product, device/sony/lotus/lotus.mk)
 # Set those variables here to overwrite the inherited values.
 PRODUCT_NAME := full_lotus
 PRODUCT_DEVICE := lotus
-PRODUCT_BRAND := Sony
-PRODUCT_MANUFACTURER := Sony
+PRODUCT_BRAND := Android
 PRODUCT_MODEL := AOSP on Xperia Go
+PRODUCT_MANUFACTURER := Sony
 PRODUCT_RESTRICT_VENDOR_FILES := owner path
