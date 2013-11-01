@@ -15,20 +15,20 @@
 #
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-LOCAL_KERNEL := device/sony/lotus/prebuilt/kernel/zImage
+LOCAL_KERNEL := device/sony/pepper/prebuilt/kernel/zImage
 else
 LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
 
 PRODUCT_COPY_FILES := \
     $(LOCAL_KERNEL):kernel \
-    device/sony/lotus/prebuilt/kernel/modules/cifs.ko:system/lib/modules/cifs.ko \
-    device/sony/lotus/prebuilt/kernel/modules/cw1200_core.ko:system/lib/modules/cw1200_core.ko \
-    device/sony/lotus/prebuilt/kernel/modules/cw1200_wlan.ko:system/lib/modules/cw1200_wlan.ko \
-    device/sony/lotus/prebuilt/kernel/modules/mmc_test.ko:system/lib/modules/mmc_test.ko \
-    device/sony/lotus/prebuilt/kernel/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
-    device/sony/lotus/prebuilt/kernel/modules/oprofile.ko:system/lib/modules/oprofile.ko \
-    device/sony/lotus/prebuilt/kernel/modules/pwr.ko:system/lib/modules/pwr.ko \
-    device/sony/lotus/prebuilt/kernel/modules/rng-core.ko:system/lib/modules/rng-core.ko \
-    device/sony/lotus/prebuilt/kernel/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
-    device/sony/lotus/prebuilt/kernel/modules/tun.ko:system/lib/modules/tun.ko \
+    device/sony/pepper/prebuilt/kernel/modules/cifs.ko:system/lib/modules/cifs.ko \
+    device/sony/pepper/prebuilt/kernel/modules/cw1200_core.ko:system/lib/modules/cw1200_core.ko \
+    device/sony/pepper/prebuilt/kernel/modules/cw1200_wlan.ko:system/lib/modules/cw1200_wlan.ko \
+    device/sony/pepper/prebuilt/kernel/modules/mmc_test.ko:system/lib/modules/mmc_test.ko \
+    device/sony/pepper/prebuilt/kernel/modules/nls_utf8.ko:system/lib/modules/nls_utf8.ko \
+    device/sony/pepper/prebuilt/kernel/modules/oprofile.ko:system/lib/modules/oprofile.ko \
+    device/sony/pepper/prebuilt/kernel/modules/pwr.ko:system/lib/modules/pwr.ko \
+    device/sony/pepper/prebuilt/kernel/modules/rng-core.ko:system/lib/modules/rng-core.ko \
+    device/sony/pepper/prebuilt/kernel/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
+    device/sony/pepper/prebuilt/kernel/modules/tun.ko:system/lib/modules/tun.ko \
