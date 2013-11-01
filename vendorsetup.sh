@@ -1,1 +1,2 @@
-add_lunch_combo cm_pepper-userdebug
+add_lunch_combo aosp_lotus-userdebug
+
