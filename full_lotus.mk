@@ -27,7 +27,8 @@ PRODUCT_PACKAGES := \
     Torch
 
 # Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
+$(call inherit-product, device/sony/lotus/device.mk)
 
 #charging animation
 $(call inherit-product, device/sony/lotus/prebuilt/resources-320x480.mk)
@@ -40,4 +41,5 @@ PRODUCT_NAME := full_lotus
 PRODUCT_DEVICE := lotus
 PRODUCT_BRAND := Sony
 PRODUCT_MANUFACTURER := Sony
-PRODUCT_MODEL := Xperia Go
+PRODUCT_MODEL := AOSP on Xperia Go
+PRODUCT_RESTRICT_VENDOR_FILES := owner path
