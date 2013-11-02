@@ -234,7 +234,7 @@ index 225ef76..72b0328 100644
  
  };  // namespace android
 diff --git a/frameworks/av/include/media/AudioTrack.h b/frameworks/av/include/media/AudioTrack.h
-index f2f9c22..eb4ecc3 100644
+index f2f9c22..7dc1aca 100644
 --- a/frameworks/av/include/media/AudioTrack.h
 +++ b/frameworks/av/include/media/AudioTrack.h
 @@ -59,7 +59,11 @@ public:
@@ -242,7 +242,7 @@ index f2f9c22..eb4ecc3 100644
          EVENT_BUFFER_END = 5,       // Playback head is at the end of the buffer.
                                      // Not currently used by android.media.AudioTrack.
 +#ifdef STE_AUDIO
-+        EVENT_LATENCY_CHANGED = 6   // Audio sink latency has changed.
++        EVENT_LATENCY_CHANGED = 6,   // Audio sink latency has changed.
 +#else
          EVENT_NEW_IAUDIOTRACK = 6,  // IAudioTrack was re-created, either due to re-routing and
 +#endif
