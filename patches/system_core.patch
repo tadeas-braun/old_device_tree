@@ -30,10 +30,19 @@ index aa7ac02..3537e59 100644
   * - when an AudioTrack is created they indicate a "wish" to be connected to an
   * output stream with attributes corresponding to the specified flags
 diff --git a/system/core/include/system/graphics.h b/system/core/include/system/graphics.h
-index be86ae4..cca3eef 100644
+index be86ae4..a3b464d 100644
 --- a/system/core/include/system/graphics.h
 +++ b/system/core/include/system/graphics.h
-@@ -240,6 +240,23 @@ enum {
+@@ -54,6 +54,8 @@ enum {
+     HAL_PIXEL_FORMAT_RGB_888            = 3,
+     HAL_PIXEL_FORMAT_RGB_565            = 4,
+     HAL_PIXEL_FORMAT_BGRA_8888          = 5,
++    HAL_PIXEL_FORMAT_RGBA_5551          = 6,
++    HAL_PIXEL_FORMAT_RGBA_4444          = 7,
+ 
+     /*
+      * sRGB color pixel formats:
+@@ -240,6 +242,23 @@ enum {
      HAL_PIXEL_FORMAT_YCbCr_422_I        = 0x14, // YUY2
  };
  
