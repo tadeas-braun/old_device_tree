@@ -82,10 +82,10 @@ index c51f265..726cee2 100644
  void CameraParameters::set(const char *key, const char *value)
  {
 diff --git a/frameworks/av/include/camera/CameraParameters.h b/frameworks/av/include/camera/CameraParameters.h
-index d521543..a266df4 100644
+index d521543..18cf771 100644
 --- a/frameworks/av/include/camera/CameraParameters.h
 +++ b/frameworks/av/include/camera/CameraParameters.h
-@@ -674,6 +674,40 @@ public:
+@@ -674,6 +674,38 @@ public:
      // High-dynamic range mode
      static const char LIGHTFX_HDR[];
  
@@ -93,10 +93,6 @@ index d521543..a266df4 100644
 +    // keys for record stride and slice height
 +    static const char KEY_RECORD_STRIDE[];
 +    static const char KEY_RECORD_SLICE_HEIGHT[];
-+    static const char SCENE_MODE_BACKLIGHT[];
-+    static const char SCENE_MODE_DUSKDAWN[];
-+    static const char SCENE_MODE_FALLCOLOR[];
-+    static const char SCENE_MODE_TEXT[];
 +    static const char PIXEL_FORMAT_YUV420SPNV12[]; // NV12
 +    static const char PIXEL_FORMAT_YVU422SP[];
 +    static const char PIXEL_FORMAT_YVU422P[];
@@ -120,6 +116,8 @@ index d521543..a266df4 100644
 +    static const char SCENE_MODE_DUSKDAWN[];
 +    static const char SCENE_MODE_FALL[];
 +    static const char SCENE_MODE_FALL_COLOR[];
++    static const char SCENE_MODE_BACKLIGHT[];
++    static const char SCENE_MODE_FALLCOLOR[];
 +    static const char SCENE_MODE_TEXT[];
 +#endif
 +
@@ -234,22 +232,20 @@ index 225ef76..72b0328 100644
  
  };  // namespace android
 diff --git a/frameworks/av/include/media/AudioTrack.h b/frameworks/av/include/media/AudioTrack.h
-index f2f9c22..eb4ecc3 100644
+index f2f9c22..6156a18 100644
 --- a/frameworks/av/include/media/AudioTrack.h
 +++ b/frameworks/av/include/media/AudioTrack.h
-@@ -59,7 +59,11 @@ public:
+@@ -59,6 +59,9 @@ public:
                                      // (See setPositionUpdatePeriod()).
          EVENT_BUFFER_END = 5,       // Playback head is at the end of the buffer.
                                      // Not currently used by android.media.AudioTrack.
 +#ifdef STE_AUDIO
-+        EVENT_LATENCY_CHANGED = 6   // Audio sink latency has changed.
-+#else
-         EVENT_NEW_IAUDIOTRACK = 6,  // IAudioTrack was re-created, either due to re-routing and
++        EVENT_LATENCY_CHANGED = 6,   // Audio sink latency has changed.
 +#endif
+         EVENT_NEW_IAUDIOTRACK = 6,  // IAudioTrack was re-created, either due to re-routing and
                                      // voluntary invalidation by mediaserver, or mediaserver crash.
          EVENT_STREAM_END = 7,       // Sent after all the buffers queued in AF and HW are played
-                                     // back (after stop is called)
-@@ -647,6 +651,11 @@ protected:
+@@ -647,6 +650,11 @@ protected:
              // FIXME enum is faster than strcmp() for parameter 'from'
              status_t restoreTrack_l(const char *from);
  
@@ -261,7 +257,7 @@ index f2f9c22..eb4ecc3 100644
              bool     isOffloaded() const
                  { return (mFlags & AUDIO_OUTPUT_FLAG_COMPRESS_OFFLOAD) != 0; }
  
-@@ -726,6 +735,10 @@ protected:
+@@ -726,6 +734,10 @@ protected:
      int                     mPreviousPriority;          // before start()
      SchedPolicy             mPreviousSchedulingGroup;
      bool                    mAwaitBoost;    // thread should wait for priority boost before running
