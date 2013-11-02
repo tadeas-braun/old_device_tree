@@ -3,13 +3,6 @@ USE_CAMERA_STUB := true
 # inherit from the proprietary version
 -include vendor/sony/pepper/BoardConfigVendor.mk
 
-TARGET_SPECIFIC_HEADER_PATH := \
-    device/sony/pepper/include \
-    device/sony/pepper/hardware \
-    hardware/semc/bluetooth/glib \
-    hardware/semc/bluetooth/bluez/lib \
-    hardware/semc/bluetooth/bluez/btio
-
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
