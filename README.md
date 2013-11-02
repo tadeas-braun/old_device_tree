@@ -11,7 +11,7 @@ Getting Started :
     cd device
     mkdir sony
     cd sony
-    git clone https://github.com/tadeas482/android_device_sony_pepper -b aosp-4.4 pepper
+    git clone https://github.com/tadeas482/android_device_sony_pepper.git -b aosp-4.4 pepper
     cd pepper
 
 Now connect your phone which have runing FXP CM10 :
@@ -26,6 +26,7 @@ Patch android source code :
 
     patch -p1 < device/sony/pepper/patches/framework_av.patch
     patch -p1 < device/sony/pepper/patches/framework_native.patch
+    patch -p1 < device/sony/pepper/patches/framework_base.patch
     patch -p1 < device/sony/pepper/patches/hardware_libhardware.patch
     patch -p1 < device/sony/pepper/patches/hardware_libhardware_legacy.patch
     patch -p1 < device/sony/pepper/patches/system_core.patch
@@ -35,6 +36,7 @@ Our step is optional!!! Use only if you going to sync AOSP source code daily, th
 
     patch -p1 -R < device/sony/pepper/patches/framework_av.patch
     patch -p1 -R < device/sony/pepper/patches/framework_native.patch
+    patch -p1 -R < device/sony/pepper/patches/framework_base.patch
     patch -p1 -R < device/sony/pepper/patches/hardware_libhardware.patch
     patch -p1 -R < device/sony/pepper/patches/hardware_libhardware_legacy.patch
     patch -p1 -R < device/sony/pepper/patches/system_core.patch
@@ -43,6 +45,7 @@ Our step is optional!!! Use only if you going to sync AOSP source code daily, th
     repo sync
     patch -p1 < device/sony/pepper/patches/framework_av.patch
     patch -p1 < device/sony/pepper/patches/framework_native.patch
+    patch -p1 < device/sony/pepper/patches/framework_base.patch
     patch -p1 < device/sony/pepper/patches/hardware_libhardware.patch
     patch -p1 < device/sony/pepper/patches/hardware_libhardware_legacy.patch
     patch -p1 < device/sony/pepper/patches/system_core.patch
