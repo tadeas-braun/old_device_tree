@@ -82,10 +82,10 @@ index c51f265..726cee2 100644
  void CameraParameters::set(const char *key, const char *value)
  {
 diff --git a/frameworks/av/include/camera/CameraParameters.h b/frameworks/av/include/camera/CameraParameters.h
-index d521543..a266df4 100644
+index d521543..18cf771 100644
 --- a/frameworks/av/include/camera/CameraParameters.h
 +++ b/frameworks/av/include/camera/CameraParameters.h
-@@ -674,6 +674,40 @@ public:
+@@ -674,6 +674,38 @@ public:
      // High-dynamic range mode
      static const char LIGHTFX_HDR[];
  
@@ -93,10 +93,6 @@ index d521543..a266df4 100644
 +    // keys for record stride and slice height
 +    static const char KEY_RECORD_STRIDE[];
 +    static const char KEY_RECORD_SLICE_HEIGHT[];
-+    static const char SCENE_MODE_BACKLIGHT[];
-+    static const char SCENE_MODE_DUSKDAWN[];
-+    static const char SCENE_MODE_FALLCOLOR[];
-+    static const char SCENE_MODE_TEXT[];
 +    static const char PIXEL_FORMAT_YUV420SPNV12[]; // NV12
 +    static const char PIXEL_FORMAT_YVU422SP[];
 +    static const char PIXEL_FORMAT_YVU422P[];
@@ -120,6 +116,8 @@ index d521543..a266df4 100644
 +    static const char SCENE_MODE_DUSKDAWN[];
 +    static const char SCENE_MODE_FALL[];
 +    static const char SCENE_MODE_FALL_COLOR[];
++    static const char SCENE_MODE_BACKLIGHT[];
++    static const char SCENE_MODE_FALLCOLOR[];
 +    static const char SCENE_MODE_TEXT[];
 +#endif
 +
