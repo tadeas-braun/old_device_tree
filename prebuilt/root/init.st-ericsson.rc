@@ -637,10 +637,12 @@ service xssm /system/bin/xssm
     class main
     socket xssm stream 0660 root system
 
-# start logcat by volume down
 service logcat /system/bin/logcat -r 1000 -v long -f /data/local/tmp/logcat.log
-    class main
+    user system
+    group system
     disabled
     oneshot
-    keycodes 114
+
+on property:init.svc.bootanim=running   # I don't know if this is correct timing? Is data partition mounted???
+    start logcat
 
