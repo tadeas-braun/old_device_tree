@@ -79,9 +79,9 @@ on fs
 
     setprop ro.crypto.state unsupported
 
-    wait /dev/block/mmcblk0p14
-    mkdir /sde
-    mount vfat /dev/block/mmcblk0p14 /sde  rw wait
+#    wait /dev/block/mmcblk0p14
+#    mkdir /sde
+#    mount vfat /dev/block/mmcblk0p14 /sde  rw wait
 
     mount_all fstab.st-ericsson
 
@@ -637,10 +637,10 @@ service xssm /system/bin/xssm
     class main
     socket xssm stream 0660 root system
 
-service logcat /system/bin/logcat -r 1000 -v long -f /sde/logcat.log
-    class main
-    user system
-    group system
-    oneshot
+#service logcat /system/bin/logcat -r 1000 -v long -f /sde/logcat.log
+#    class main
+#    user system
+#    group system
+#    oneshot
 
 
