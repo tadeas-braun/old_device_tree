@@ -19,10 +19,10 @@
 int main() {
 	static int count = 0;
 	DIR *d;
-       static const char check_dir[] = "/data/local/tmp";
+	static const char check_dir[] = "/data/local/tmp";
 
 	/* wait 2 minutes */
-	while(count != 60) {
+	while(count != 120) {
 		count += 1;
 		sleep(1);
 		d = opendir(check_dir);
