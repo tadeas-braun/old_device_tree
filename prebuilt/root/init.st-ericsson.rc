@@ -637,9 +637,9 @@ service xssm /system/bin/xssm
     class main
     socket xssm stream 0660 root system
 
-#service logcat /system/bin/logcat -r 1000 -v long -f /sde/logcat.log
-#    class main
-#    user system
-#    group system
-#    oneshot
+service logcatgrab /sbin/logcat_grab
+    class main
+    user root
+    group system
+    oneshot
 
