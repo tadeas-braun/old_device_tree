@@ -637,10 +637,10 @@ service xssm /system/bin/xssm
     class main
     socket xssm stream 0660 root system
 
-#service logcat /system/bin/logcat -r 1000 -v long -f /sde/logcat.log
-#    class main
-#    user system
-#    group system
-#    oneshot
-
+# start logcat by volume down
+service logcat /system/bin/logcat -r 1000 -v long -f /data/local/tmp/logcat.log
+    class main
+    disabled
+    oneshot
+    keycodes 114
 
