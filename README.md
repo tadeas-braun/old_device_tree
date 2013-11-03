@@ -21,6 +21,10 @@ Now connect your phone which have runing FXP CM10 :
     cd hardware
     git clone https://github.com/munjeni/aosp_4.3_hardware_semc.git -b master semc
     cd ..
+    mkdir -p kernel/sony
+    cd kernel/sony
+    git clone https://github.com/munjeni/android_kernel_xperiago.git -b jb-dev u8500
+    cd ../..
 
 Patch android source code :
 
@@ -32,6 +36,7 @@ Patch android source code :
     patch -p1 < device/sony/pepper/patches/system_core.patch
     patch -p1 < device/sony/pepper/patches/system_netd.patch
     patch -p1 < device/sony/pepper/patches/frameworks_opt_telephony.patch
+    patch -p1 < device/sony/pepper/patches/build.patch
 
 Our step is optional!!! Use only if you going to sync AOSP source code daily, than simple revert each patch before you sync AOSP source code :
 
@@ -43,6 +48,7 @@ Our step is optional!!! Use only if you going to sync AOSP source code daily, th
     patch -p1 -R < device/sony/pepper/patches/system_core.patch
     patch -p1 -R < device/sony/pepper/patches/system_netd.patch
     patch -p1 -R < device/sony/pepper/patches/frameworks_opt_telephony.patch
+    patch -p1 -R < device/sony/pepper/patches/build.patch
     repo forall -p -c 'git checkout -f'
     repo sync
     patch -p1 < device/sony/pepper/patches/framework_av.patch
@@ -53,6 +59,7 @@ Our step is optional!!! Use only if you going to sync AOSP source code daily, th
     patch -p1 < device/sony/pepper/patches/system_core.patch
     patch -p1 < device/sony/pepper/patches/system_netd.patch
     patch -p1 < device/sony/pepper/patches/frameworks_opt_telephony.patch
+    patch -p1 < device/sony/pepper/patches/build.patch
 
 You are ready to build :
 

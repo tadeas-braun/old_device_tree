@@ -28,7 +28,6 @@ PRODUCT_PACKAGES := \
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
-$(call inherit-product, device/sony/pepper/device.mk)
 
 #charging animation
 $(call inherit-product, device/sony/pepper/prebuilt/resources-480x854.mk)
