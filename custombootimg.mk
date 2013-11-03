@@ -7,7 +7,9 @@ $(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(recovery_ramdisk) $(INSTA
 	$(hide) cp -R $(PRODUCT_OUT)/root/* $(PRODUCT_OUT)/combinedroot/
 	$(hide) rm -rf combinedroot_r && mkdir combinedroot_r && cd combinedroot_r && gunzip < ../$(PRODUCT_OUT)/../../../../device/sony/lotus/recovery/recovery_ramdisk.gz | cpio -i -d
 	$(hide) cp -fr combinedroot_r/sbin/* $(PRODUCT_OUT)/combinedroot/sbin/ && rm -rf combinedroot_r
+	$(hide) mv $(PRODUCT_OUT)/recovery/root/sbin/recovery $(PRODUCT_OUT)/recovery/root/
 	$(hide) cp -R $(PRODUCT_OUT)/recovery/root/sbin/* $(PRODUCT_OUT)/combinedroot/sbin/
+	$(hide) mv $(PRODUCT_OUT)/recovery/root/recovery $(PRODUCT_OUT)/recovery/root/sbin/
 	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/lotus/prebuilt/root/default.prop $(PRODUCT_OUT)/combinedroot/
 	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/lotus/recovery/recovery_ramdisk.gz $(PRODUCT_OUT)/combinedroot/sbin/recovery_ramdisk.gz
 	$(hide) $(MKBOOTFS) $(PRODUCT_OUT)/combinedroot > $(PRODUCT_OUT)/combinedroot.cpio
