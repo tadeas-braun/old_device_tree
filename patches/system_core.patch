@@ -119,7 +119,7 @@ index f0d5878..6de18e2 100644
      D("create_subprocess() ret_fd=%d pid=%d\n", ret_fd, pid);
  
 diff --git a/system/core/init/builtins.c b/system/core/init/builtins.c
-index e8c8f91..b33f4bd 100644
+index e8c8f91..9f60e6d 100644
 --- a/system/core/init/builtins.c
 +++ b/system/core/init/builtins.c
 @@ -15,6 +15,7 @@
@@ -138,8 +138,11 @@ index e8c8f91..b33f4bd 100644
  
  #include <selinux/selinux.h>
  #include <selinux/label.h>
-@@ -240,7 +242,57 @@ int do_domainname(int nargs, char **args)
+@@ -238,9 +240,60 @@ int do_domainname(int nargs, char **args)
+     return write_file("/proc/sys/kernel/domainname", args[1]);
+ }
  
++#define MAX_PARAMETERS 64
  int do_exec(int nargs, char **args)
  {
 -    return -1;
