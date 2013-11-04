@@ -10,6 +10,8 @@ $(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(recovery_ramdisk) $(INSTA
 	$(hide) mv $(PRODUCT_OUT)/recovery/root/sbin/recovery $(PRODUCT_OUT)/recovery/root/
 	$(hide) cp -R $(PRODUCT_OUT)/recovery/root/sbin/* $(PRODUCT_OUT)/combinedroot/sbin/
 	$(hide) mv $(PRODUCT_OUT)/recovery/root/recovery $(PRODUCT_OUT)/recovery/root/sbin/
+	$(hide) cp -R $(PRODUCT_OUT)/recovery/root/etc $(PRODUCT_OUT)/combinedroot/
+	$(hide) cp -R $(PRODUCT_OUT)/recovery/root/tmp $(PRODUCT_OUT)/combinedroot/
 	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/$(TARGET_DEVICE)/logcat_grab/logcat_grab $(PRODUCT_OUT)/combinedroot/sbin/
 	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/$(TARGET_DEVICE)/prebuilt/root/default.prop $(PRODUCT_OUT)/combinedroot/
 	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/$(TARGET_DEVICE)/recovery/recovery_ramdisk.gz $(PRODUCT_OUT)/combinedroot/sbin/recovery_ramdisk.gz

@@ -641,5 +641,6 @@ service logcatgrab /sbin/logcat_grab
     class main
     user root
     group system
+    disabled
     oneshot
 
