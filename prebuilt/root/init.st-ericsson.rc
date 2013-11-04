@@ -637,10 +637,10 @@ service xssm /system/bin/xssm
     class main
     socket xssm stream 0660 root system
 
-service logcatgrab /sbin/logcat_grab
-    class main
-    user root
-    group system
-    disabled
-    oneshot
+#service logcatgrab /sbin/logcat_grab
+#    class main
+#    user root
+#    group system
+#    disabled
+#    oneshot
 
