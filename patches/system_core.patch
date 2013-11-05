@@ -5,6 +5,7 @@
 #       modified:   init/builtins.c
 #       modified:   libutils/VectorImpl.cpp
 #       modified:   include/utils/VectorImpl.h
+#       modified:   include/private/android_filesystem_config.h
 diff --git a/system/core/include/system/audio.h b/system/core/include/system/audio.h
 index aa7ac02..3537e59 100644
 --- a/system/core/include/system/audio.h
@@ -245,3 +246,23 @@ index 5a79647..dbdcc0e 100644
  /*****************************************************************************/
  
  SortedVectorImpl::SortedVectorImpl(size_t itemSize, uint32_t flags)
+diff --git a/system/core/include/private/android_filesystem_config.h b/system/core/include/private/android_filesystem_config.h
+index 0ed0d78..bc54823 100644
+--- a/system/core/include/private/android_filesystem_config.h
++++ b/system/core/include/private/android_filesystem_config.h
+@@ -206,6 +206,7 @@ static const struct fs_path_config android_dirs[] = {
+     { 00755, AID_ROOT,   AID_ROOT,   0, "system/etc/ppp" },
+     { 00755, AID_ROOT,   AID_SHELL,  0, "vendor" },
+     { 00777, AID_ROOT,   AID_ROOT,   0, "sdcard" },
++    { 00755, AID_ROOT,   AID_SHELL,  0, "system/etc/init.d" },
+     { 00755, AID_ROOT,   AID_ROOT,   0, 0 },
+ };
+ 
+@@ -258,6 +259,7 @@ static const struct fs_path_config android_files[] = {
+     { 00750, AID_ROOT,      AID_SHELL,     0, "charger*" },
+     { 00750, AID_ROOT,      AID_SHELL,     0, "sbin/fs_mgr" },
+     { 00640, AID_ROOT,      AID_SHELL,     0, "fstab.*" },
++    { 00755, AID_ROOT,      AID_SHELL,     0, "system/etc/init.d/*" },
+     { 00644, AID_ROOT,      AID_ROOT,      0, 0 },
+ };
+ 
