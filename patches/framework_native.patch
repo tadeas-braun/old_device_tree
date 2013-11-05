@@ -458,10 +458,10 @@ index 7ee3081..a122283 100644
  }; // namespace android
 +
 diff --git a/frameworks/native/libs/gui/SurfaceComposerClient.cpp b/frameworks/native/libs/gui/SurfaceComposerClient.cpp
-index aafc4d2..7cf2b8c 100644
+index aafc4d2..fb35cc0 100644
 --- a/frameworks/native/libs/gui/SurfaceComposerClient.cpp
 +++ b/frameworks/native/libs/gui/SurfaceComposerClient.cpp
-@@ -609,6 +609,26 @@ status_t SurfaceComposerClient::getDisplayInfo(
+@@ -609,6 +609,30 @@ status_t SurfaceComposerClient::getDisplayInfo(
      return ComposerService::getComposerService()->getDisplayInfo(display, info);
  }
  
@@ -483,6 +483,10 @@ index aafc4d2..7cf2b8c 100644
 +    ComposerService::getComposerService()->getDisplayInfo(display, &info);
 +    return info.orientation;
 +}
++
++extern "C" void _ZN7android21SurfaceComposerClient15getDisplayWidthEi() __attribute__((alias("_ZN7android21SurfaceComposerClient15getDisplayWidthERKNS_2spINS_7IBinderEEE")));
++extern "C" void _ZN7android21SurfaceComposerClient16getDisplayHeightEi() __attribute__((alias("_ZN7android21SurfaceComposerClient16getDisplayHeightERKNS_2spINS_7IBinderEEE")));
++extern "C" void _ZN7android21SurfaceComposerClient16getDisplayOrientationEi() __attribute__((alias("_ZN7android21SurfaceComposerClient21getDisplayOrientationERKNS_2spINS_7IBinderEEE")));
 +#endif
 +
  void SurfaceComposerClient::blankDisplay(const sp<IBinder>& token) {
