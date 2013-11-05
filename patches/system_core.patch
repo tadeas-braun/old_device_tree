@@ -3,6 +3,8 @@
 #       modified:   adb/backup_service.c
 #       modified:   adb/services.c
 #       modified:   init/builtins.c
+#       modified:   libutils/VectorImpl.cpp
+#       modified:   include/utils/VectorImpl.h
 diff --git a/system/core/include/system/audio.h b/system/core/include/system/audio.h
 index aa7ac02..3537e59 100644
 --- a/system/core/include/system/audio.h
@@ -200,3 +202,46 @@ index e8c8f91..9f60e6d 100644
  }
  
  int do_export(int nargs, char **args)
+diff --git a/system/core/include/utils/VectorImpl.h b/system/core/include/utils/VectorImpl.h
+index 21ad71c..2baa1e0 100644
+--- a/system/core/include/utils/VectorImpl.h
++++ b/system/core/include/utils/VectorImpl.h
+@@ -105,6 +105,16 @@ protected:
+     virtual void            do_splat(void* dest, const void* item, size_t num) const = 0;
+     virtual void            do_move_forward(void* dest, const void* from, size_t num) const = 0;
+     virtual void            do_move_backward(void* dest, const void* from, size_t num) const = 0;
++
++    // take care of FBC...
++    virtual void            reservedVectorImpl1();
++    virtual void            reservedVectorImpl2();
++    virtual void            reservedVectorImpl3();
++    virtual void            reservedVectorImpl4();
++    virtual void            reservedVectorImpl5();
++    virtual void            reservedVectorImpl6();
++    virtual void            reservedVectorImpl7();
++    virtual void            reservedVectorImpl8();
+     
+ private:
+         void* _grow(size_t where, size_t amount);
+diff --git a/system/core/libutils/VectorImpl.cpp b/system/core/libutils/VectorImpl.cpp
+index 5a79647..dbdcc0e 100644
+--- a/system/core/libutils/VectorImpl.cpp
++++ b/system/core/libutils/VectorImpl.cpp
+@@ -504,6 +504,17 @@ void VectorImpl::_do_move_backward(void* dest, const void* from, size_t num) con
+     do_move_backward(dest, from, num);
+ }
+ 
++void VectorImpl::reservedVectorImpl1() { }
++void VectorImpl::reservedVectorImpl2() { }
++void VectorImpl::reservedVectorImpl3() { }
++void VectorImpl::reservedVectorImpl4() { }
++void VectorImpl::reservedVectorImpl5() { }
++void VectorImpl::reservedVectorImpl6() { }
++void VectorImpl::reservedVectorImpl7() { }
++void VectorImpl::reservedVectorImpl8() { }
++
++//extern "C" void _ZN7android10VectorImpl19reservedVectorImpl1Ev() __attribute__((alias("_ZN7android19reservedVectorImpl1Ev")));
++
+ /*****************************************************************************/
+ 
+ SortedVectorImpl::SortedVectorImpl(size_t itemSize, uint32_t flags)
