@@ -30,36 +30,39 @@ Patch android source code :
 
     patch -p1 < device/sony/lotus/patches/framework_av.patch
     patch -p1 < device/sony/lotus/patches/framework_native.patch
-    patch -p1 < device/sony/lotus/patches/framework_base.patch
+    patch -p1 < device/sony/lotus/patches/frameworks_base.patch
     patch -p1 < device/sony/lotus/patches/hardware_libhardware.patch
     patch -p1 < device/sony/lotus/patches/hardware_libhardware_legacy.patch
     patch -p1 < device/sony/lotus/patches/system_core.patch
     patch -p1 < device/sony/lotus/patches/system_netd.patch
     patch -p1 < device/sony/lotus/patches/frameworks_opt_telephony.patch
     patch -p1 < device/sony/lotus/patches/build.patch
+    patch -p1 < device/sony/lotus/patches/bionic.patch
 
 Our step is optional!!! Use only if you going to sync AOSP source code daily, than simple revert each patch before you sync AOSP source code :
 
     patch -p1 -R < device/sony/lotus/patches/framework_av.patch
     patch -p1 -R < device/sony/lotus/patches/framework_native.patch
-    patch -p1 -R < device/sony/lotus/patches/framework_base.patch
+    patch -p1 -R < device/sony/lotus/patches/frameworks_base.patch
     patch -p1 -R < device/sony/lotus/patches/hardware_libhardware.patch
     patch -p1 -R < device/sony/lotus/patches/hardware_libhardware_legacy.patch
     patch -p1 -R < device/sony/lotus/patches/system_core.patch
     patch -p1 -R < device/sony/lotus/patches/system_netd.patch
     patch -p1 -R < device/sony/lotus/patches/frameworks_opt_telephony.patch
     patch -p1 -R < device/sony/lotus/patches/build.patch
+    patch -p1 -R < device/sony/lotus/patches/bionic.patch
     repo forall -p -c 'git checkout -f'
     repo sync
     patch -p1 < device/sony/lotus/patches/framework_av.patch
     patch -p1 < device/sony/lotus/patches/framework_native.patch
-    patch -p1 < device/sony/lotus/patches/framework_base.patch
+    patch -p1 < device/sony/lotus/patches/frameworks_base.patch
     patch -p1 < device/sony/lotus/patches/hardware_libhardware.patch
     patch -p1 < device/sony/lotus/patches/hardware_libhardware_legacy.patch
     patch -p1 < device/sony/lotus/patches/system_core.patch
     patch -p1 < device/sony/lotus/patches/system_netd.patch
     patch -p1 < device/sony/lotus/patches/frameworks_opt_telephony.patch
     patch -p1 < device/sony/lotus/patches/build.patch
+    patch -p1 < device/sony/lotus/patches/bionic.patch
 
 You are ready to build :
 

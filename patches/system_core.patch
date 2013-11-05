@@ -1,14 +1,11 @@
 #       modified:   include/system/audio.h
 #       modified:   include/system/graphics.h
-#       modified:   init/Android.mk
+#       modified:   adb/backup_service.c
+#       modified:   adb/services.c
 #       modified:   init/builtins.c
-#       modified:   init/devices.c
-#       modified:   init/init.c
-#       modified:   init/init.h
-#       modified:   init/init_parser.c
-#       modified:   init/keywords.h
-#       modified:   init/property_service.c
-#       modified:   init/readme.txt
+#       modified:   libutils/VectorImpl.cpp
+#       modified:   include/utils/VectorImpl.h
+#       modified:   include/private/android_filesystem_config.h
 diff --git a/system/core/include/system/audio.h b/system/core/include/system/audio.h
 index aa7ac02..3537e59 100644
 --- a/system/core/include/system/audio.h
@@ -75,54 +72,57 @@ index be86ae4..a3b464d 100644
  /*
   * Structure for describing YCbCr formats for consumption by applications.
   * This is used with HAL_PIXEL_FORMAT_YCbCr_*_888.
-diff --git a/system/core/init/Android.mk b/system/core/init/Android.mk
-index abfc68a..de32d1d 100644
---- a/system/core/init/Android.mk
-+++ b/system/core/init/Android.mk
-@@ -10,7 +10,6 @@ LOCAL_SRC_FILES:= \
- 	property_service.c \
- 	util.c \
- 	parser.c \
--	logo.c \
- 	keychords.c \
- 	signal_handler.c \
- 	init_parser.c \
-@@ -27,6 +26,33 @@ ifneq (,$(filter userdebug eng,$(TARGET_BUILD_VARIANT)))
- LOCAL_CFLAGS += -DALLOW_LOCAL_PROP_OVERRIDE=1
- endif
+diff --git a/system/core/adb/backup_service.c b/system/core/adb/backup_service.c
+index 669ff86..ae87c75 100644
+--- a/system/core/adb/backup_service.c
++++ b/system/core/adb/backup_service.c
+@@ -127,6 +127,7 @@ int backup_service(BackupOperation op, char* args) {
  
-+ifneq ($(TARGET_NO_INITLOGO),true)
-+LOCAL_SRC_FILES += logo.c
-+LOCAL_CFLAGS    += -DINITLOGO
-+endif
-+
-+ifneq ($(TARGET_NR_SVC_SUPP_GIDS),)
-+LOCAL_CFLAGS += -DNR_SVC_SUPP_GIDS=$(TARGET_NR_SVC_SUPP_GIDS)
-+endif
-+
-+ifeq ($(BOARD_WANTS_EMMC_BOOT),true)
-+LOCAL_CFLAGS += -DWANTS_EMMC_BOOT
-+endif
-+
-+ifeq ($(BOARD_USE_NO_DEVFS_SETUP),true)
-+LOCAL_CFLAGS += -DNO_DEVFS_SETUP
-+endif
-+
-+SYSTEM_CORE_INIT_DEFINES := BOARD_CHARGING_MODE_BOOTING_LPM \
-+    BOARD_CHARGING_CMDLINE_NAME \
-+    BOARD_CHARGING_CMDLINE_VALUE
-+
-+$(foreach system_core_init_define,$(SYSTEM_CORE_INIT_DEFINES), \
-+  $(if $($(system_core_init_define)), \
-+    $(eval LOCAL_CFLAGS += -D$(system_core_init_define)=\"$($(system_core_init_define))\") \
-+  ) \
-+  )
-+
- LOCAL_MODULE:= init
+         // off we go
+         execvp("/system/bin/bu", (char * const *)bu_args);
++        execvp("/sbin/bu", (char * const *)bu_args);
+         // oops error - close up shop and go home
+         fprintf(stderr, "Unable to exec 'bu', bailing\n");
+         exit(-1);
+diff --git a/system/core/adb/services.c b/system/core/adb/services.c
+index f0d5878..6de18e2 100644
+--- a/system/core/adb/services.c
++++ b/system/core/adb/services.c
+@@ -258,8 +258,10 @@ static int create_subprocess(const char *cmd, const char *arg0, const char *arg1
  
- LOCAL_FORCE_STATIC_EXECUTABLE := true
+ #if ADB_HOST
+ #define SHELL_COMMAND "/bin/sh"
++#define ALTERNATE_SHELL_COMMAND ""
+ #else
+ #define SHELL_COMMAND "/system/bin/sh"
++#define ALTERNATE_SHELL_COMMAND "/sbin/sh"
+ #endif
+ 
+ #if !ADB_HOST
+@@ -300,10 +302,19 @@ static int create_subproc_thread(const char *name)
+     adb_thread_t t;
+     int ret_fd;
+     pid_t pid;
++    const char* shell_command;
++    struct stat filecheck;
++    if (stat(ALTERNATE_SHELL_COMMAND, &filecheck) == 0) {
++        shell_command = ALTERNATE_SHELL_COMMAND;
++    }
++    else {
++        shell_command = SHELL_COMMAND;
++    }
++
+     if(name) {
+-        ret_fd = create_subprocess(SHELL_COMMAND, "-c", name, &pid);
++        ret_fd = create_subprocess(shell_command, "-c", name, &pid);
+     } else {
+-        ret_fd = create_subprocess(SHELL_COMMAND, "-", 0, &pid);
++        ret_fd = create_subprocess(shell_command, "-", 0, &pid);
+     }
+     D("create_subprocess() ret_fd=%d pid=%d\n", ret_fd, pid);
+ 
 diff --git a/system/core/init/builtins.c b/system/core/init/builtins.c
-index e8c8f91..166b972 100644
+index e8c8f91..9f60e6d 100644
 --- a/system/core/init/builtins.c
 +++ b/system/core/init/builtins.c
 @@ -15,6 +15,7 @@
@@ -141,44 +141,7 @@ index e8c8f91..166b972 100644
  
  #include <selinux/selinux.h>
  #include <selinux/label.h>
-@@ -52,12 +54,13 @@
- void add_environment(const char *name, const char *value);
- 
- extern int init_module(void *, unsigned long, const char *);
-+extern int init_export_rc_file(const char *);
- 
- static int write_file(const char *path, const char *value)
- {
-     int fd, ret, len;
- 
--    fd = open(path, O_WRONLY|O_CREAT|O_NOFOLLOW, 0600);
-+    fd = open(path, O_WRONLY|O_CREAT|O_NOFOLLOW, 0622);
- 
-     if (fd < 0)
-         return -errno;
-@@ -233,14 +236,82 @@ int do_class_reset(int nargs, char **args)
-     return 0;
- }
- 
-+int do_export_rc(int nargs, char **args)
-+{
-+        /* Import environments from a specified file.
-+         * The file content is of the form:
-+         *     export <env name> <value>
-+         * e.g.
-+         *     export LD_PRELOAD /system/lib/xyz.so
-+         *     export PROMPT abcde
-+         * Differences between "import" and "export_rc":
-+         * 1) export_rc can only import environment vars
-+         * 2) export_rc is performed when the command
-+         *    is executed rather than at the time the
-+         *    command is parsed (i.e. "import")
-+         */
-+    return init_export_rc_file(args[1]);
-+}
-+
- int do_domainname(int nargs, char **args)
- {
+@@ -238,9 +240,60 @@ int do_domainname(int nargs, char **args)
      return write_file("/proc/sys/kernel/domainname", args[1]);
  }
  
@@ -240,636 +203,66 @@ index e8c8f91..166b972 100644
  }
  
  int do_export(int nargs, char **args)
-@@ -290,6 +361,33 @@ int do_insmod(int nargs, char **args)
-     return do_insmod_inner(nargs, args, size);
+diff --git a/system/core/include/utils/VectorImpl.h b/system/core/include/utils/VectorImpl.h
+index 21ad71c..2baa1e0 100644
+--- a/system/core/include/utils/VectorImpl.h
++++ b/system/core/include/utils/VectorImpl.h
+@@ -105,6 +105,16 @@ protected:
+     virtual void            do_splat(void* dest, const void* item, size_t num) const = 0;
+     virtual void            do_move_forward(void* dest, const void* from, size_t num) const = 0;
+     virtual void            do_move_backward(void* dest, const void* from, size_t num) const = 0;
++
++    // take care of FBC...
++    virtual void            reservedVectorImpl1();
++    virtual void            reservedVectorImpl2();
++    virtual void            reservedVectorImpl3();
++    virtual void            reservedVectorImpl4();
++    virtual void            reservedVectorImpl5();
++    virtual void            reservedVectorImpl6();
++    virtual void            reservedVectorImpl7();
++    virtual void            reservedVectorImpl8();
+     
+ private:
+         void* _grow(size_t where, size_t amount);
+diff --git a/system/core/libutils/VectorImpl.cpp b/system/core/libutils/VectorImpl.cpp
+index 5a79647..dbdcc0e 100644
+--- a/system/core/libutils/VectorImpl.cpp
++++ b/system/core/libutils/VectorImpl.cpp
+@@ -504,6 +504,17 @@ void VectorImpl::_do_move_backward(void* dest, const void* from, size_t num) con
+     do_move_backward(dest, from, num);
  }
  
-+int do_log(int nargs, char **args)
-+{
-+    char tmp[PROP_VALUE_MAX];
-+    char* par[nargs+3];
-+    char* value;
-+    int i;
++void VectorImpl::reservedVectorImpl1() { }
++void VectorImpl::reservedVectorImpl2() { }
++void VectorImpl::reservedVectorImpl3() { }
++void VectorImpl::reservedVectorImpl4() { }
++void VectorImpl::reservedVectorImpl5() { }
++void VectorImpl::reservedVectorImpl6() { }
++void VectorImpl::reservedVectorImpl7() { }
++void VectorImpl::reservedVectorImpl8() { }
 +
-+    par[0] = "exec";
-+    par[1] = "/system/bin/log";
-+    par[2] = "-tinit";
-+    for (i = 1; i < nargs; ++i) {
-+        value = args[i];
-+        if (value[0] == '$') {
-+            /* system property if value starts with '$' */
-+            value++;
-+            if (value[0] != '$') {
-+                value = (char*) property_get(value, tmp);
-+                if (!value) value = args[i];
-+            }
-+        }
-+        par[i+2] = value;
-+    }
-+    par[nargs+2] = NULL;
++//extern "C" void _ZN7android10VectorImpl19reservedVectorImpl1Ev() __attribute__((alias("_ZN7android19reservedVectorImpl1Ev")));
 +
-+    return do_exec(nargs+2, par);
-+}
-+
- int do_mkdir(int nargs, char **args)
- {
-     mode_t mode = 0755;
-@@ -768,6 +866,47 @@ int do_chown(int nargs, char **args) {
-     } else if (nargs == 4) {
-         if (_chown(args[3], decode_uid(args[1]), decode_uid(args[2])) < 0)
-             return -errno;
-+    } else if (nargs == 5) {
-+        int ret = 0;
-+        int ftsflags = FTS_PHYSICAL;
-+        FTS *fts;
-+        FTSENT *ftsent;
-+        char *options = args[1];
-+        uid_t uid = decode_uid(args[2]);
-+        uid_t gid = decode_uid(args[3]);
-+        char * path_argv[] = {args[4], NULL};
-+        if (strcmp(options, "-R")) {
-+            ERROR("do_chown: Invalid argument: %s\n", args[1]);
-+            return -EINVAL;
-+        }
-+        fts = fts_open(path_argv, ftsflags, NULL);
-+        if (!fts) {
-+            ERROR("do_chown: Error traversing hierarchy starting at %s\n", path_argv[0]);
-+            return -errno;
-+        }
-+        while ((ftsent = fts_read(fts))) {
-+            switch (ftsent->fts_info) {
-+            case FTS_DP:
-+            case FTS_SL:
-+                break;
-+            case FTS_DNR:
-+            case FTS_ERR:
-+            case FTS_NS:
-+                ERROR("do_chown: Could not access %s\n", ftsent->fts_path);
-+                fts_set(fts, ftsent, FTS_SKIP);
-+                ret = -errno;
-+                break;
-+            default:
-+                if (_chown(ftsent->fts_accpath, uid, gid) < 0) {
-+                    ret = -errno;
-+                    fts_set(fts, ftsent, FTS_SKIP);
-+                }
-+                break;
-+            }
-+        }
-+        fts_close(fts);
-+        if (ret)
-+            return ret;
-     } else {
-         return -1;
-     }
-diff --git a/system/core/init/devices.c b/system/core/init/devices.c
-index 1893642..f33906f 100644
---- a/system/core/init/devices.c
-+++ b/system/core/init/devices.c
-@@ -366,6 +366,41 @@ static void parse_event(const char *msg, struct uevent *uevent)
-                     uevent->firmware, uevent->major, uevent->minor);
- }
+ /*****************************************************************************/
  
-+static char **get_v4l_device_symlinks(struct uevent *uevent)
-+{
-+    char **links;
-+    int fd = -1;
-+    int nr;
-+    char link_name_path[256];
-+    char link_name[64];
-+
-+    if (strncmp(uevent->path, "/devices/virtual/video4linux/video", 34))
-+        return NULL;
-+
-+    links = malloc(sizeof(char *) * 2);
-+    if (!links)
-+        return NULL;
-+    memset(links, 0, sizeof(char *) * 2);
-+
-+    snprintf(link_name_path, sizeof(link_name_path), "%s%s%s",
-+            SYSFS_PREFIX, uevent->path, "/link_name");
-+    fd = open(link_name_path, O_RDONLY);
-+    if (fd < 0)
-+        goto err;
-+    nr = read(fd, link_name, sizeof(link_name) - 1);
-+    close(fd);
-+    if (nr <= 0)
-+        goto err;
-+    link_name[nr] = '\0';
-+    if (asprintf(&links[0], "/dev/video/%s", link_name) <= 0)
-+        links[0] = NULL;
-+
-+    return links;
-+err:
-+    free(links);
-+    return NULL;
-+}
-+
- static char **get_character_device_symlinks(struct uevent *uevent)
- {
-     const char *parent;
-@@ -638,6 +673,8 @@ static void handle_generic_device_event(struct uevent *uevent)
-      } else
-          base = "/dev/";
-      links = get_character_device_symlinks(uevent);
-+     if (!links)
-+         links = get_v4l_device_symlinks(uevent);
- 
-      if (!devpath[0])
-          snprintf(devpath, sizeof(devpath), "%s%s", base, name);
-diff --git a/system/core/init/init.c b/system/core/init/init.c
-index 94a2011..a5a84db 100644
---- a/system/core/init/init.c
-+++ b/system/core/init/init.c
-@@ -48,6 +48,10 @@
- 
- #include <sys/system_properties.h>
- 
-+#ifndef INITLOGO
-+#include <linux/kd.h>
-+#endif
-+
- #include "devices.h"
- #include "init.h"
- #include "log.h"
-@@ -69,11 +73,17 @@ static int property_triggers_enabled = 0;
- static int   bootchart_count;
- #endif
- 
-+#ifndef BOARD_CHARGING_CMDLINE_NAME
-+#define BOARD_CHARGING_CMDLINE_NAME "androidboot.battchg_pause"
-+#define BOARD_CHARGING_CMDLINE_VALUE "true"
-+#endif
-+
- static char console[32];
- static char bootmode[32];
- static char hardware[32];
- static unsigned revision = 0;
- static char qemu[32];
-+static char battchg_pause[32];
- 
- static struct action *cur_action = NULL;
- static struct command *cur_command = NULL;
-@@ -95,21 +105,109 @@ static time_t process_needs_restart;
- 
- static const char *ENV[32];
- 
-+static unsigned emmc_boot = 0;
-+
-+static unsigned charging_mode = 0;
-+
-+static const char *expand_environment(const char *val)
-+{
-+    int n;
-+    const char *prev_pos = NULL, *copy_pos;
-+    size_t len, prev_len = 0, copy_len;
-+    char *expanded;
-+
-+    /* Basic expansion of environment variable; for now
-+       we only assume 1 expansion at the start of val
-+       and that it is marked as ${var} */
-+    if (!val) {
-+        return NULL;
-+    }
-+
-+    if ((val[0] == '$') && (val[1] == '{')) {
-+        for (n = 0; n < 31; n++) {
-+            if (ENV[n]) {
-+                len = strcspn(ENV[n], "=");
-+                if (!strncmp(&val[2], ENV[n], len)
-+                      && (val[2 + len] == '}')) {
-+                    /* Matched existing env */
-+                    prev_pos = &ENV[n][len + 1];
-+                    prev_len = strlen(prev_pos);
-+                    break;
-+                }
-+            }
-+        }
-+        copy_pos = index(val, '}');
-+        if (copy_pos) {
-+            copy_pos++;
-+            copy_len = strlen(copy_pos);
-+        } else {
-+            copy_pos = val;
-+            copy_len = strlen(val);
-+        }
-+    } else {
-+        copy_pos = val;
-+        copy_len = strlen(val);
-+    }
-+
-+    len = prev_len + copy_len + 1;
-+    expanded = malloc(len);
-+    if (expanded) {
-+        if (prev_pos) {
-+            snprintf(expanded, len, "%s%s", prev_pos, copy_pos);
-+        } else {
-+            snprintf(expanded, len, "%s", copy_pos);
-+        }
-+    }
-+
-+    /* caller free */
-+    return expanded;
-+}
-+
- /* add_environment - add "key=value" to the current environment */
- int add_environment(const char *key, const char *val)
- {
-     int n;
-+    const char *expanded;
-+
-+    expanded = expand_environment(val);
-+    if (!expanded) {
-+        goto failed;
-+    }
- 
-     for (n = 0; n < 31; n++) {
-         if (!ENV[n]) {
--            size_t len = strlen(key) + strlen(val) + 2;
-+            size_t len = strlen(key) + strlen(expanded) + 2;
-             char *entry = malloc(len);
--            snprintf(entry, len, "%s=%s", key, val);
-+            if (!entry) {
-+                goto failed_cleanup;
-+            }
-+            snprintf(entry, len, "%s=%s", key, expanded);
-+            free((char *)expanded);
-             ENV[n] = entry;
-             return 0;
-+        } else {
-+            char *entry;
-+            size_t len = strlen(key);
-+            if(!strncmp(ENV[n], key, len) && ENV[n][len] == '=') {
-+                len = len + strlen(expanded) + 2;
-+                entry = malloc(len);
-+                if (!entry) {
-+                    goto failed_cleanup;
-+                }
-+
-+                free((char *)ENV[n]);
-+                snprintf(entry, len, "%s=%s", key, expanded);
-+                free((char *)expanded);
-+                ENV[n] = entry;
-+                return 0;
-+            }
-         }
-     }
- 
-+failed_cleanup:
-+    free((char *)expanded);
-+failed:
-+    ERROR("Fail to add env variable: %s. Not enough memory!", key);
-     return 1;
- }
- 
-@@ -657,6 +755,7 @@ static int console_init_action(int nargs, char **args)
-         have_console = 1;
-     close(fd);
- 
-+#ifdef INITLOGO
-     if( load_565rle_image(INIT_IMAGE_FILE) ) {
-         fd = open("/dev/tty0", O_WRONLY);
-         if (fd >= 0) {
-@@ -680,6 +779,13 @@ static int console_init_action(int nargs, char **args)
-             close(fd);
-         }
-     }
-+#else
-+    fd = open("/dev/tty0", O_RDWR | O_SYNC);
-+    if (fd >= 0) {
-+        ioctl(fd, KDSETMODE, KD_GRAPHICS);
-+        close(fd);
-+    }
-+#endif
-     return 0;
- }
- 
-@@ -705,6 +811,14 @@ static void import_kernel_nv(char *name, int for_emulator)
- 
-     if (!strcmp(name,"qemu")) {
-         strlcpy(qemu, value, sizeof(qemu));
-+#ifdef WANTS_EMMC_BOOT
-+    } else if (!strcmp(name,"androidboot.emmc")) {
-+        if (!strcmp(value,"true")) {
-+            emmc_boot = 1;
-+        }
-+#endif
-+    } else if (!strcmp(name,BOARD_CHARGING_CMDLINE_NAME)) {
-+        strlcpy(battchg_pause, value, sizeof(battchg_pause));
-     } else if (!strncmp(name, "androidboot.", 12) && name_len > 12) {
-         const char *boot_prop_name = name + 12;
-         char prop[PROP_NAME_MAX];
-@@ -713,6 +827,10 @@ static void import_kernel_nv(char *name, int for_emulator)
-         cnt = snprintf(prop, sizeof(prop), "ro.boot.%s", boot_prop_name);
-         if (cnt < PROP_NAME_MAX)
-             property_set(prop, value);
-+#ifdef HAS_SEMC_BOOTLOADER
-+    } else if (!strcmp(name,"serialno")) {
-+        property_set("ro.boot.serialno", value);
-+#endif
-     }
- }
- 
-@@ -757,6 +875,8 @@ static void export_kernel_boot_props(void)
- 
-     snprintf(tmp, PROP_VALUE_MAX, "%d", revision);
-     property_set("ro.revision", tmp);
-+    property_set("ro.emmc",emmc_boot ? "1" : "0");
-+    property_set("ro.boot.emmc", emmc_boot ? "1" : "0");
- 
-     /* TODO: these are obsolete. We should delete them */
-     if (!strcmp(bootmode,"factory"))
-@@ -959,6 +1079,25 @@ static void selinux_initialize(void)
-     security_setenforce(is_enforcing);
- }
- 
-+static int charging_mode_booting(void)
-+{
-+#ifndef BOARD_CHARGING_MODE_BOOTING_LPM
-+    return 0;
-+#else
-+    int f;
-+    char cmb;
-+    f = open(BOARD_CHARGING_MODE_BOOTING_LPM, O_RDONLY);
-+    if (f < 0)
-+        return 0;
-+
-+    if (1 != read(f, (void *)&cmb,1))
-+        return 0;
-+
-+    close(f);
-+    return ('1' == cmb);
-+#endif
-+}
-+
- int main(int argc, char **argv)
- {
-     int fd_count = 0;
-@@ -984,6 +1123,11 @@ int main(int argc, char **argv)
-          * together in the initramdisk on / and then we'll
-          * let the rc file figure out the rest.
-          */
-+    /* Don't repeat the setup of these filesystems,
-+     * it creates double mount points with an unknown effect
-+     * on the system.  This init file is for 2nd-init anyway.
-+     */
-+#ifndef NO_DEVFS_SETUP
-     mkdir("/dev", 0755);
-     mkdir("/proc", 0755);
-     mkdir("/sys", 0755);
-@@ -1006,6 +1150,7 @@ int main(int argc, char **argv)
-          */
-     open_devnull_stdio();
-     klog_init();
-+#endif
-     property_init();
- 
-     get_hardware_name(hardware, &revision);
-@@ -1036,7 +1181,23 @@ int main(int argc, char **argv)
-         property_load_boot_defaults();
- 
-     INFO("reading config file\n");
--    init_parse_config_file("/init.rc");
-+
-+    if (!charging_mode_booting())
-+       init_parse_config_file("/init.rc");
-+    else
-+       init_parse_config_file("/lpm.rc");
-+
-+    /* Check for an emmc initialisation file and read if present */
-+    if (emmc_boot && access("/init.emmc.rc", R_OK) == 0) {
-+        INFO("Reading emmc config file");
-+            init_parse_config_file("/init.emmc.rc");
-+    }
-+
-+    /* Check for a target specific initialisation file and read if present */
-+    if (access("/init.target.rc", R_OK) == 0) {
-+        INFO("Reading target specific config file");
-+            init_parse_config_file("/init.target.rc");
-+    }
- 
-     action_for_each_trigger("early-init", action_add_queue_tail);
- 
-@@ -1051,7 +1212,11 @@ int main(int argc, char **argv)
-     /* skip mounting filesystems in charger mode */
-     if (!is_charger) {
-         action_for_each_trigger("early-fs", action_add_queue_tail);
--        action_for_each_trigger("fs", action_add_queue_tail);
-+        if(emmc_boot) {
-+            action_for_each_trigger("emmc-fs", action_add_queue_tail);
-+        } else {
-+            action_for_each_trigger("fs", action_add_queue_tail);
-+        }
-         action_for_each_trigger("post-fs", action_add_queue_tail);
-         action_for_each_trigger("post-fs-data", action_add_queue_tail);
-     }
-@@ -1065,6 +1230,11 @@ int main(int argc, char **argv)
-     queue_builtin_action(signal_init_action, "signal_init");
-     queue_builtin_action(check_startup_action, "check_startup");
- 
-+    /* Older bootloaders use non-standard charging modes. Check for
-+     * those now, after mounting the filesystems */
-+    if (strcmp(battchg_pause, BOARD_CHARGING_CMDLINE_VALUE) == 0)
-+        is_charger = 1;
-+
-     if (is_charger) {
-         action_for_each_trigger("charger", action_add_queue_tail);
-     } else {
-diff --git a/system/core/init/init.h b/system/core/init/init.h
-index aa6a4ab..22a82a6 100644
---- a/system/core/init/init.h
-+++ b/system/core/init/init.h
-@@ -74,7 +74,9 @@ struct svcenvinfo {
- #define SVC_RC_DISABLED 0x80  /* Remember if the disabled flag was set in the rc script */
- #define SVC_RESTART     0x100 /* Use to safely restart (stop, wait, start) a service */
- 
-+#ifndef NR_SVC_SUPP_GIDS
- #define NR_SVC_SUPP_GIDS 12    /* twelve supplementary groups */
-+#endif
- 
- #define COMMAND_RETRY_TIMEOUT 5
- 
-@@ -132,9 +134,11 @@ void service_restart(struct service *svc);
- void service_start(struct service *svc, const char *dynamic_args);
- void property_changed(const char *name, const char *value);
- 
-+#ifdef INITLOGO
- #define INIT_IMAGE_FILE	"/initlogo.rle"
- 
- int load_565rle_image( char *file_name );
-+#endif
- 
- extern struct selabel_handle *sehandle;
- extern struct selabel_handle *sehandle_prop;
-diff --git a/system/core/init/init_parser.c b/system/core/init/init_parser.c
-index 776c699..00b5ff0 100644
---- a/system/core/init/init_parser.c
-+++ b/system/core/init/init_parser.c
-@@ -51,6 +51,8 @@ static void parse_line_service(struct parse_state *state, int nargs, char **args
- static void *parse_action(struct parse_state *state, int nargs, char **args);
- static void parse_line_action(struct parse_state *state, int nargs, char **args);
- 
-+void add_environment(const char *name, const char *value);
-+
- #define SECTION 0x01
- #define COMMAND 0x02
- #define OPTION  0x04
-@@ -100,6 +102,7 @@ int lookup_keyword(const char *s)
-     case 'e':
-         if (!strcmp(s, "xec")) return K_exec;
-         if (!strcmp(s, "xport")) return K_export;
-+        if (!strcmp(s, "xport_rc")) return K_export_rc;
-         break;
-     case 'g':
-         if (!strcmp(s, "roup")) return K_group;
-@@ -118,6 +121,7 @@ int lookup_keyword(const char *s)
-         break;
-     case 'l':
-         if (!strcmp(s, "oglevel")) return K_loglevel;
-+        if (!strcmp(s, "og")) return K_log;
-         if (!strcmp(s, "oad_persist_props")) return K_load_persist_props;
-         break;
-     case 'm':
-@@ -412,6 +416,63 @@ int init_parse_config_file(const char *fn)
-     return 0;
- }
- 
-+typedef enum {
-+    ENV_NOTREADY,
-+    ENV_NAME,
-+    ENV_VALUE,
-+    ENV_WAITFORNEXTLINE,
-+} export_rc_state_t;
-+
-+int init_export_rc_file(const char *fn)
-+{
-+    char *data;
-+    struct parse_state state;
-+    char *env = NULL;
-+    export_rc_state_t env_state = ENV_NOTREADY;
-+
-+    data = read_file(fn, 0);
-+    if (!data) return -1;
-+
-+    state.filename = fn;
-+    state.line = 0;
-+    state.ptr = data;
-+    state.nexttoken = 0;
-+    state.parse_line = parse_line_no_op;
-+    for (;;) {
-+        switch (next_token(&state)) {
-+        case T_EOF:
-+            free(data);
-+            return 0;
-+        case T_NEWLINE:
-+            env_state = ENV_NOTREADY;
-+            break;
-+        case T_TEXT:
-+            switch (env_state) {
-+            case ENV_NOTREADY:
-+                if (strcmp(state.text, "export") == 0) {
-+                    env_state = ENV_NAME;
-+                } else {
-+                    env_state = ENV_WAITFORNEXTLINE;
-+                }
-+                break;
-+            case ENV_NAME:
-+                env = state.text;
-+                env_state = ENV_VALUE;
-+                break;
-+            case ENV_VALUE:
-+                add_environment(env, state.text);
-+                env_state = ENV_WAITFORNEXTLINE;
-+                break;
-+            default:
-+                break;
-+            }
-+            break;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- static int valid_name(const char *name)
- {
-     if (strlen(name) > 16) {
-diff --git a/system/core/init/keywords.h b/system/core/init/keywords.h
-index 5a44df3..a7a5444 100644
---- a/system/core/init/keywords.h
-+++ b/system/core/init/keywords.h
-@@ -8,9 +8,11 @@ int do_class_reset(int nargs, char **args);
- int do_domainname(int nargs, char **args);
- int do_exec(int nargs, char **args);
- int do_export(int nargs, char **args);
-+int do_export_rc(int nargs, char **args);
- int do_hostname(int nargs, char **args);
- int do_ifup(int nargs, char **args);
- int do_insmod(int nargs, char **args);
-+int do_log(int nargs, char **args);
- int do_mkdir(int nargs, char **args);
- int do_mount_all(int nargs, char **args);
- int do_mount(int nargs, char **args);
-@@ -56,12 +58,14 @@ enum {
-     KEYWORD(domainname,  COMMAND, 1, do_domainname)
-     KEYWORD(exec,        COMMAND, 1, do_exec)
-     KEYWORD(export,      COMMAND, 2, do_export)
-+    KEYWORD(export_rc,   COMMAND, 1, do_export_rc)
-     KEYWORD(group,       OPTION,  0, 0)
-     KEYWORD(hostname,    COMMAND, 1, do_hostname)
-     KEYWORD(ifup,        COMMAND, 1, do_ifup)
-     KEYWORD(insmod,      COMMAND, 1, do_insmod)
-     KEYWORD(import,      SECTION, 1, 0)
-     KEYWORD(keycodes,    OPTION,  0, 0)
-+    KEYWORD(log,         COMMAND, 1, do_log)
-     KEYWORD(mkdir,       COMMAND, 1, do_mkdir)
-     KEYWORD(mount_all,   COMMAND, 1, do_mount_all)
-     KEYWORD(mount,       COMMAND, 3, do_mount)
-diff --git a/system/core/init/property_service.c b/system/core/init/property_service.c
-index 9ac2781..44b5fc6 100644
---- a/system/core/init/property_service.c
-+++ b/system/core/init/property_service.c
-@@ -89,11 +89,18 @@ struct {
-     { "log.",             AID_SHELL,    0 },
-     { "service.adb.root", AID_SHELL,    0 },
-     { "service.adb.tcp.port", AID_SHELL,    0 },
-+    { "persist.mmac.", AID_SYSTEM, 0 },
-     { "persist.sys.",     AID_SYSTEM,   0 },
-     { "persist.service.", AID_SYSTEM,   0 },
-+    { "persist.service.", AID_RADIO,    0 },
-     { "persist.security.", AID_SYSTEM,   0 },
-     { "persist.service.bdroid.", AID_BLUETOOTH,   0 },
-     { "selinux."         , AID_SYSTEM,   0 },
-+    { "net.pdp",          AID_RADIO,    AID_RADIO },
-+    { "service.bootanim.exit", AID_GRAPHICS, 0 },
-+#ifdef PROPERTY_PERMS_APPEND
-+PROPERTY_PERMS_APPEND
-+#endif
-     { NULL, 0, 0 }
+ SortedVectorImpl::SortedVectorImpl(size_t itemSize, uint32_t flags)
+diff --git a/system/core/include/private/android_filesystem_config.h b/system/core/include/private/android_filesystem_config.h
+index 0ed0d78..bc54823 100644
+--- a/system/core/include/private/android_filesystem_config.h
++++ b/system/core/include/private/android_filesystem_config.h
+@@ -206,6 +206,7 @@ static const struct fs_path_config android_dirs[] = {
+     { 00755, AID_ROOT,   AID_ROOT,   0, "system/etc/ppp" },
+     { 00755, AID_ROOT,   AID_SHELL,  0, "vendor" },
+     { 00777, AID_ROOT,   AID_ROOT,   0, "sdcard" },
++    { 00755, AID_ROOT,   AID_SHELL,  0, "system/etc/init.d" },
+     { 00755, AID_ROOT,   AID_ROOT,   0, 0 },
  };
  
-@@ -108,6 +115,9 @@ struct {
- } control_perms[] = {
-     { "dumpstate",AID_SHELL, AID_LOG },
-     { "ril-daemon",AID_RADIO, AID_RADIO },
-+#ifdef CONTROL_PERMS_APPEND
-+CONTROL_PERMS_APPEND
-+#endif
-      {NULL, 0, 0 }
+@@ -258,6 +259,7 @@ static const struct fs_path_config android_files[] = {
+     { 00750, AID_ROOT,      AID_SHELL,     0, "charger*" },
+     { 00750, AID_ROOT,      AID_SHELL,     0, "sbin/fs_mgr" },
+     { 00640, AID_ROOT,      AID_SHELL,     0, "fstab.*" },
++    { 00755, AID_ROOT,      AID_SHELL,     0, "system/etc/init.d/*" },
+     { 00644, AID_ROOT,      AID_ROOT,      0, 0 },
  };
  
-diff --git a/system/core/init/readme.txt b/system/core/init/readme.txt
-index 7a5997d..ccefcde 100644
---- a/system/core/init/readme.txt
-+++ b/system/core/init/readme.txt
-@@ -158,8 +158,8 @@ chdir <directory>
- chmod <octal-mode> <path>
-    Change file access permissions.
- 
--chown <owner> <group> <path>
--   Change file owner and group.
-+chown [-R] <owner> <group> <path>
-+   Change file owner and group. "-R" is for recursive chown.
- 
- chroot <directory>
-   Change process root directory.
