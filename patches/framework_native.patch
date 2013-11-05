@@ -1,6 +1,5 @@
 #       modified:   include/binder/MemoryBase.h
 #       modified:   include/gui/GLConsumer.h
-#       modified:   include/gui/ISurfaceComposer.h
 #       modified:   include/gui/SurfaceComposerClient.h
 #       modified:   include/media/openmax/OMX_IVCommon.h
 #       modified:   include/ui/GraphicBuffer.h
@@ -13,7 +12,6 @@
 #       modified:   opengl/include/EGL/eglext.h
 #       modified:   opengl/libs/EGL/eglApi.cpp
 #       modified:   opengl/libs/EGL/egl_entries.in
-#       modified:   services/surfaceflinger/Android.mk
 #       modified:   services/surfaceflinger/DisplayDevice.cpp
 #       modified:   services/surfaceflinger/SurfaceFlinger.cpp
 diff --git a/frameworks/native/include/binder/MemoryBase.h b/frameworks/native/include/binder/MemoryBase.h
@@ -101,35 +99,11 @@ index a5fdfb9..ade18b8 100644
      // mEglContext is the OpenGL ES context with which this GLConsumer is
      // currently associated.  It is initialized to EGL_NO_CONTEXT and gets set
      // to the current GL context when updateTexImage is called for the first
-diff --git a/frameworks/native/include/gui/ISurfaceComposer.h b/frameworks/native/include/gui/ISurfaceComposer.h
-index 5c3c99c..ea411c8 100644
---- a/frameworks/native/include/gui/ISurfaceComposer.h
-+++ b/frameworks/native/include/gui/ISurfaceComposer.h
-@@ -144,6 +144,9 @@ public:
-         GET_DISPLAY_INFO,
-         CONNECT_DISPLAY,
-         CAPTURE_SCREEN,
-+#ifdef BOARD_EGL_NEEDS_LEGACY_FB
-+        CAPTURE_SCREEN_DEPRECATED,
-+#endif
-     };
- 
-     virtual status_t onTransact(uint32_t code, const Parcel& data,
 diff --git a/frameworks/native/include/gui/SurfaceComposerClient.h b/frameworks/native/include/gui/SurfaceComposerClient.h
-index e982bcd..70fb3c4 100644
+index e982bcd..0f264c1 100644
 --- a/frameworks/native/include/gui/SurfaceComposerClient.h
 +++ b/frameworks/native/include/gui/SurfaceComposerClient.h
-@@ -39,6 +39,9 @@ namespace android {
- 
- class DisplayInfo;
- class Composer;
-+#ifdef BOARD_EGL_NEEDS_LEGACY_FB
-+class IMemoryHeap;
-+#endif
- class ISurfaceComposerClient;
- class IGraphicBufferProducer;
- class Region;
-@@ -74,6 +77,12 @@ public:
+@@ -74,6 +74,12 @@ public:
      /* triggers screen on and waits for it to complete */
      static void unblankDisplay(const sp<IBinder>& display);
  
@@ -584,21 +558,6 @@ index 70d0e52..138f41e 100644
  /* IMG extensions */
  
  EGL_ENTRY(EGLBoolean, eglHibernateProcessIMG, void)
-diff --git a/frameworks/native/services/surfaceflinger/Android.mk b/frameworks/native/services/surfaceflinger/Android.mk
-index c3daa64..7c2ad05 100644
---- a/frameworks/native/services/surfaceflinger/Android.mk
-+++ b/frameworks/native/services/surfaceflinger/Android.mk
-@@ -79,6 +79,10 @@ else
-     LOCAL_CFLAGS += -DPRESENT_TIME_OFFSET_FROM_VSYNC_NS=0
- endif
- 
-+ifeq ($(BOARD_EGL_NEEDS_LEGACY_FB),true)
-+	LOCAL_CFLAGS += -DBOARD_EGL_NEEDS_LEGACY_FB
-+endif
-+
- LOCAL_CFLAGS += -fvisibility=hidden
- 
- LOCAL_SHARED_LIBRARIES := \
 diff --git a/frameworks/native/services/surfaceflinger/DisplayDevice.cpp b/frameworks/native/services/surfaceflinger/DisplayDevice.cpp
 index 800137b..43526a7 100644
 --- a/frameworks/native/services/surfaceflinger/DisplayDevice.cpp
@@ -627,30 +586,18 @@ index 800137b..43526a7 100644
      int format;
      window->query(window, NATIVE_WINDOW_FORMAT, &format);
 diff --git a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-index 9d94c87..376bc0d 100644
+index 9d94c87..3438e27 100644
 --- a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-@@ -2637,6 +2637,9 @@ status_t SurfaceFlinger::onTransact(
+@@ -2637,6 +2637,7 @@ status_t SurfaceFlinger::onTransact(
              const int pid = ipc->getCallingPid();
              const int uid = ipc->getCallingUid();
              if ((uid != AID_GRAPHICS) &&
-+#ifdef BOARD_EGL_NEEDS_LEGACY_FB
-+                 (uid != AID_SYSTEM) &&
-+#endif
++                (uid != AID_SYSTEM) &&
                      !PermissionCache::checkPermission(sAccessSurfaceFlinger, pid, uid)) {
                  ALOGE("Permission Denial: "
                          "can't access SurfaceFlinger pid=%d, uid=%d", pid, uid);
-@@ -2645,6 +2648,9 @@ status_t SurfaceFlinger::onTransact(
-             break;
-         }
-         case CAPTURE_SCREEN:
-+#ifdef BOARD_EGL_NEEDS_LEGACY_FB
-+        case CAPTURE_SCREEN_DEPRECATED:
-+#endif
-         {
-             // codes that require permission check
-             IPCThreadState* ipc = IPCThreadState::self();
-@@ -2774,6 +2780,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -2774,6 +2775,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
      uint32_t code;
      Parcel const* data;
      Parcel* reply;
@@ -660,7 +607,7 @@ index 9d94c87..376bc0d 100644
  
      enum {
          MSG_API_CALL,
-@@ -2786,6 +2795,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -2786,6 +2790,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
       */
      virtual status_t transact(uint32_t code,
              const Parcel& data, Parcel* reply, uint32_t flags) {
@@ -670,7 +617,7 @@ index 9d94c87..376bc0d 100644
          this->code = code;
          this->data = &data;
          this->reply = reply;
-@@ -2798,6 +2810,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -2798,6 +2805,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
              looper->sendMessage(this, Message(MSG_API_CALL));
              barrier.wait();
          }
