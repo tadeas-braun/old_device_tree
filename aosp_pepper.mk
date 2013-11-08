@@ -13,6 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-$(call inherit-product, device/sony/pepper/omni_pepper.mk)
+$(call inherit-product, device/sony/pepper/full_pepper.mk)
 
 PRODUCT_NAME := aosp_pepper
