@@ -17,11 +17,14 @@
 # Sample: This is where we'd set a backup provider if we had one
 # $(call inherit-product, device/sample/products/backup_overlay.mk)
 
+TARGET_SCREEN_HEIGHT := 854
+TARGET_SCREEN_WIDTH  := 480
+
 # Inherit GSM configuration 
 $(call inherit-product, vendor/omni/config/gsm.mk)
 
-# Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
