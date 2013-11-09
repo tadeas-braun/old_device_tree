@@ -15,4 +15,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/full_pepper.mk $(LOCAL_DIR)/aosp_pepper.mk
+    $(LOCAL_DIR)/full_pepper.mk
