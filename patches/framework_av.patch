@@ -991,10 +991,10 @@ index b5d4e44..2eb5c9e 100644
  
  const char *MEDIA_MIMETYPE_AUDIO_AMR_NB = "audio/3gpp";
  const char *MEDIA_MIMETYPE_AUDIO_AMR_WB = "audio/amr-wb";
-diff --git a/media/libstagefright/OMXCodec.cpp b/media/libstagefright/OMXCodec.cpp
+diff --git a/frameworks/av/media/libstagefright/OMXCodec.cpp b/frameworks/av/media/libstagefright/OMXCodec.cpp
 index e3546a7..9056801 100644
---- a/media/libstagefright/OMXCodec.cpp
-+++ b/media/libstagefright/OMXCodec.cpp
+--- a/frameworks/av/media/libstagefright/OMXCodec.cpp
++++ b/frameworks/av/media/libstagefright/OMXCodec.cpp
 @@ -269,6 +269,20 @@ void OMXCodec::findMatchingCodecs(
      }
  }

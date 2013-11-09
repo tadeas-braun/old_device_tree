@@ -1,10 +1,10 @@
 #       modified:   include/system/audio.h
 #       modified:   include/system/graphics.h
 diff --git a/system/core/include/system/audio.h b/system/core/include/system/audio.h
-index cb92b42..b79fc3f 100755
+index 04238df..e5e581c 100755
 --- a/system/core/include/system/audio.h
 +++ b/system/core/include/system/audio.h
-@@ -510,6 +510,24 @@ enum {
+@@ -495,6 +495,24 @@ enum {
  
  typedef uint32_t audio_devices_t;
  
