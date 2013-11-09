@@ -1,20 +1,20 @@
 #       modified:   include/system/audio.h
 #       modified:   include/system/graphics.h
 diff --git a/system/core/include/system/audio.h b/system/core/include/system/audio.h
-index cb92b42..b79fc3f 100755
+index 04238df..e5e581c 100755
 --- a/system/core/include/system/audio.h
 +++ b/system/core/include/system/audio.h
-@@ -510,6 +510,24 @@ enum {
+@@ -495,6 +495,24 @@ enum {
  
  typedef uint32_t audio_devices_t;
  
 +#ifdef STE_AUDIO
 +
-+// AUDIO_INPUT_CLIENT_ID_BASE provide a means to refer to client Id´s not
++// AUDIO_INPUT_CLIENT_ID_BASE provide a means to refer to client IdÂ´s not
 +// explicitly defined in the enum audio_input_clients
 +#define AUDIO_INPUT_CLIENT_ID_BASE AUDIO_INPUT_CLIENT_ID1
 +
-+// AUDIO_INPUT_CLIENT_ID_BASE provide a means to refer to client Id´s not explicitly defined
++// AUDIO_INPUT_CLIENT_ID_BASE provide a means to refer to client IdÂ´s not explicitly defined
 +// in the enum audio_input_clients
 +typedef enum audio_input_clients {
 +        AUDIO_INPUT_CLIENT_ID1 = 0x1,

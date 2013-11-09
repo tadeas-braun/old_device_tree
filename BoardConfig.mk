@@ -4,7 +4,7 @@ USE_CAMERA_STUB := true
 -include vendor/sony/pepper/BoardConfigVendor.mk
 
 TARGET_SPECIFIC_HEADER_PATH := \
-    device/sony/lotus/include
+    device/sony/pepper/include
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
@@ -86,6 +86,7 @@ BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 
 # cwm specific
+RECOVERY_NAME := CWM-pepper
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/pepper/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
 TARGET_RECOVERY_FSTAB = device/sony/pepper/prebuilt/root/fstab.st-ericsson

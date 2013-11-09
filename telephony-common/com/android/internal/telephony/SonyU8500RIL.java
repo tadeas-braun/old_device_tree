@@ -85,3 +85,4 @@ public class SonyU8500RIL extends RIL implements CommandsInterface {
         setNetworkSelectionMode(operatorNumeric, response);
     }
 }
+
