@@ -1,16 +1,10 @@
 #       modified:   include/system/audio.h
 #       modified:   include/system/graphics.h
-#       modified:   adb/backup_service.c
-#       modified:   adb/services.c
-#       modified:   init/builtins.c
-#       modified:   libutils/VectorImpl.cpp
-#       modified:   include/utils/VectorImpl.h
-#       modified:   include/private/android_filesystem_config.h
 diff --git a/system/core/include/system/audio.h b/system/core/include/system/audio.h
-index aa7ac02..3537e59 100644
+index cb92b42..b79fc3f 100755
 --- a/system/core/include/system/audio.h
 +++ b/system/core/include/system/audio.h
-@@ -371,6 +371,24 @@ enum {
+@@ -510,6 +510,24 @@ enum {
  
  typedef uint32_t audio_devices_t;
  
@@ -36,19 +30,10 @@ index aa7ac02..3537e59 100644
   * - when an AudioTrack is created they indicate a "wish" to be connected to an
   * output stream with attributes corresponding to the specified flags
 diff --git a/system/core/include/system/graphics.h b/system/core/include/system/graphics.h
-index be86ae4..a3b464d 100644
+index fd7b681..a3b464d 100644
 --- a/system/core/include/system/graphics.h
 +++ b/system/core/include/system/graphics.h
-@@ -54,6 +54,8 @@ enum {
-     HAL_PIXEL_FORMAT_RGB_888            = 3,
-     HAL_PIXEL_FORMAT_RGB_565            = 4,
-     HAL_PIXEL_FORMAT_BGRA_8888          = 5,
-+    HAL_PIXEL_FORMAT_RGBA_5551          = 6,
-+    HAL_PIXEL_FORMAT_RGBA_4444          = 7,
- 
-     /*
-      * sRGB color pixel formats:
-@@ -240,6 +242,23 @@ enum {
+@@ -242,6 +242,23 @@ enum {
      HAL_PIXEL_FORMAT_YCbCr_422_I        = 0x14, // YUY2
  };
  
@@ -72,197 +57,3 @@ index be86ae4..a3b464d 100644
  /*
   * Structure for describing YCbCr formats for consumption by applications.
   * This is used with HAL_PIXEL_FORMAT_YCbCr_*_888.
-diff --git a/system/core/adb/backup_service.c b/system/core/adb/backup_service.c
-index 669ff86..ae87c75 100644
---- a/system/core/adb/backup_service.c
-+++ b/system/core/adb/backup_service.c
-@@ -127,6 +127,7 @@ int backup_service(BackupOperation op, char* args) {
- 
-         // off we go
-         execvp("/system/bin/bu", (char * const *)bu_args);
-+        execvp("/sbin/bu", (char * const *)bu_args);
-         // oops error - close up shop and go home
-         fprintf(stderr, "Unable to exec 'bu', bailing\n");
-         exit(-1);
-diff --git a/system/core/adb/services.c b/system/core/adb/services.c
-index f0d5878..6de18e2 100644
---- a/system/core/adb/services.c
-+++ b/system/core/adb/services.c
-@@ -258,8 +258,10 @@ static int create_subprocess(const char *cmd, const char *arg0, const char *arg1
- 
- #if ADB_HOST
- #define SHELL_COMMAND "/bin/sh"
-+#define ALTERNATE_SHELL_COMMAND ""
- #else
- #define SHELL_COMMAND "/system/bin/sh"
-+#define ALTERNATE_SHELL_COMMAND "/sbin/sh"
- #endif
- 
- #if !ADB_HOST
-@@ -300,10 +302,19 @@ static int create_subproc_thread(const char *name)
-     adb_thread_t t;
-     int ret_fd;
-     pid_t pid;
-+    const char* shell_command;
-+    struct stat filecheck;
-+    if (stat(ALTERNATE_SHELL_COMMAND, &filecheck) == 0) {
-+        shell_command = ALTERNATE_SHELL_COMMAND;
-+    }
-+    else {
-+        shell_command = SHELL_COMMAND;
-+    }
-+
-     if(name) {
--        ret_fd = create_subprocess(SHELL_COMMAND, "-c", name, &pid);
-+        ret_fd = create_subprocess(shell_command, "-c", name, &pid);
-     } else {
--        ret_fd = create_subprocess(SHELL_COMMAND, "-", 0, &pid);
-+        ret_fd = create_subprocess(shell_command, "-", 0, &pid);
-     }
-     D("create_subprocess() ret_fd=%d pid=%d\n", ret_fd, pid);
- 
-diff --git a/system/core/init/builtins.c b/system/core/init/builtins.c
-index e8c8f91..9f60e6d 100644
---- a/system/core/init/builtins.c
-+++ b/system/core/init/builtins.c
-@@ -15,6 +15,7 @@
-  */
- 
- #include <sys/types.h>
-+#include <sys/wait.h>
- #include <sys/stat.h>
- #include <fcntl.h>
- #include <unistd.h>
-@@ -35,6 +36,7 @@
- #include <cutils/android_reboot.h>
- #include <sys/system_properties.h>
- #include <fs_mgr.h>
-+#include <fts.h>
- 
- #include <selinux/selinux.h>
- #include <selinux/label.h>
-@@ -238,9 +240,60 @@ int do_domainname(int nargs, char **args)
-     return write_file("/proc/sys/kernel/domainname", args[1]);
- }
- 
-+#define MAX_PARAMETERS 64
- int do_exec(int nargs, char **args)
- {
--    return -1;
-+    pid_t pid;
-+    int status, i, j;
-+    char *par[MAX_PARAMETERS];
-+    char prop_val[PROP_VALUE_MAX];
-+    int len;
-+
-+    if (nargs > MAX_PARAMETERS)
-+    {
-+        return -1;
-+    }
-+
-+    for(i=0, j=1; i<(nargs-1) ;i++,j++)
-+    {
-+        if ((args[j])
-+            &&
-+            (!expand_props(prop_val, args[j], sizeof(prop_val))))
-+
-+        {
-+            len = strlen(args[j]);
-+            if (strlen(prop_val) <= len) {
-+                /* Overwrite arg with expansion.
-+                 *
-+                 * For now, only allow an expansion length that
-+                 * can fit within the original arg length to
-+                 * avoid extra allocations.
-+                 * On failure, use original argument.
-+                 */
-+                strncpy(args[j], prop_val, len + 1);
-+            }
-+        }
-+        par[i] = args[j];
-+    }
-+
-+    par[i] = (char*)0;
-+    pid = fork();
-+    if (!pid)
-+    {
-+        char tmp[32];
-+        int fd, sz;
-+        get_property_workspace(&fd, &sz);
-+        sprintf(tmp, "%d,%d", dup(fd), sz);
-+        setenv("ANDROID_PROPERTY_WORKSPACE", tmp, 1);
-+        execve(par[0], par, environ);
-+        exit(0);
-+    }
-+    else
-+    {
-+        while(wait(&status)!=pid);
-+    }
-+
-+    return 0;
- }
- 
- int do_export(int nargs, char **args)
-diff --git a/system/core/include/utils/VectorImpl.h b/system/core/include/utils/VectorImpl.h
-index 21ad71c..2baa1e0 100644
---- a/system/core/include/utils/VectorImpl.h
-+++ b/system/core/include/utils/VectorImpl.h
-@@ -105,6 +105,16 @@ protected:
-     virtual void            do_splat(void* dest, const void* item, size_t num) const = 0;
-     virtual void            do_move_forward(void* dest, const void* from, size_t num) const = 0;
-     virtual void            do_move_backward(void* dest, const void* from, size_t num) const = 0;
-+
-+    // take care of FBC...
-+    virtual void            reservedVectorImpl1();
-+    virtual void            reservedVectorImpl2();
-+    virtual void            reservedVectorImpl3();
-+    virtual void            reservedVectorImpl4();
-+    virtual void            reservedVectorImpl5();
-+    virtual void            reservedVectorImpl6();
-+    virtual void            reservedVectorImpl7();
-+    virtual void            reservedVectorImpl8();
-     
- private:
-         void* _grow(size_t where, size_t amount);
-diff --git a/system/core/libutils/VectorImpl.cpp b/system/core/libutils/VectorImpl.cpp
-index 5a79647..dbdcc0e 100644
---- a/system/core/libutils/VectorImpl.cpp
-+++ b/system/core/libutils/VectorImpl.cpp
-@@ -504,6 +504,17 @@ void VectorImpl::_do_move_backward(void* dest, const void* from, size_t num) con
-     do_move_backward(dest, from, num);
- }
- 
-+void VectorImpl::reservedVectorImpl1() { }
-+void VectorImpl::reservedVectorImpl2() { }
-+void VectorImpl::reservedVectorImpl3() { }
-+void VectorImpl::reservedVectorImpl4() { }
-+void VectorImpl::reservedVectorImpl5() { }
-+void VectorImpl::reservedVectorImpl6() { }
-+void VectorImpl::reservedVectorImpl7() { }
-+void VectorImpl::reservedVectorImpl8() { }
-+
-+//extern "C" void _ZN7android10VectorImpl19reservedVectorImpl1Ev() __attribute__((alias("_ZN7android19reservedVectorImpl1Ev")));
-+
- /*****************************************************************************/
- 
- SortedVectorImpl::SortedVectorImpl(size_t itemSize, uint32_t flags)
-diff --git a/system/core/include/private/android_filesystem_config.h b/system/core/include/private/android_filesystem_config.h
-index 0ed0d78..bc54823 100644
---- a/system/core/include/private/android_filesystem_config.h
-+++ b/system/core/include/private/android_filesystem_config.h
-@@ -206,6 +206,7 @@ static const struct fs_path_config android_dirs[] = {
-     { 00755, AID_ROOT,   AID_ROOT,   0, "system/etc/ppp" },
-     { 00755, AID_ROOT,   AID_SHELL,  0, "vendor" },
-     { 00777, AID_ROOT,   AID_ROOT,   0, "sdcard" },
-+    { 00755, AID_ROOT,   AID_SHELL,  0, "system/etc/init.d" },
-     { 00755, AID_ROOT,   AID_ROOT,   0, 0 },
- };
- 
-@@ -258,6 +259,7 @@ static const struct fs_path_config android_files[] = {
-     { 00750, AID_ROOT,      AID_SHELL,     0, "charger*" },
-     { 00750, AID_ROOT,      AID_SHELL,     0, "sbin/fs_mgr" },
-     { 00640, AID_ROOT,      AID_SHELL,     0, "fstab.*" },
-+    { 00755, AID_ROOT,      AID_SHELL,     0, "system/etc/init.d/*" },
-     { 00644, AID_ROOT,      AID_ROOT,      0, 0 },
- };
- 
