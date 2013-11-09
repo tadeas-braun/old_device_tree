@@ -1,17 +1,16 @@
 LOCAL_PATH := $(call my-dir)
 
 INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
-$(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(recovery_ramdisk) $(INSTALLED_RAMDISK_TARGET) $(MKBOOTIMG) $(MINIGZIP) $(INTERNAL_BOOTIMAGE_FILES)
+$(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/kernel $(recovery_ramdisk) $(INSTALLED_RAMDISK_TARGET) $(PRODUCT_OUT)/utilities/busybox $(MKBOOTIMG) $(MINIGZIP) $(INTERNAL_BOOTIMAGE_FILES)
 	$(call pretty,"Boot image: $@")
 	$(hide) mkdir -p $(PRODUCT_OUT)/combinedroot
 	$(hide) cp -R $(PRODUCT_OUT)/root/* $(PRODUCT_OUT)/combinedroot/
-	$(hide) rm -rf combinedroot_r && mkdir combinedroot_r && cd combinedroot_r && gunzip < ../$(PRODUCT_OUT)/../../../../device/sony/$(TARGET_DEVICE)/recovery/recovery_ramdisk.gz | cpio -i -d
-	$(hide) cp -fr combinedroot_r/sbin/* $(PRODUCT_OUT)/combinedroot/sbin/ && rm -rf combinedroot_r
-	$(hide) mv $(PRODUCT_OUT)/recovery/root/sbin/recovery $(PRODUCT_OUT)/recovery/root/
 	$(hide) cp -R $(PRODUCT_OUT)/recovery/root/sbin/* $(PRODUCT_OUT)/combinedroot/sbin/
-	$(hide) mv $(PRODUCT_OUT)/recovery/root/recovery $(PRODUCT_OUT)/recovery/root/sbin/
 	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/$(TARGET_DEVICE)/prebuilt/root/default.prop $(PRODUCT_OUT)/combinedroot/
-	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/$(TARGET_DEVICE)/recovery/recovery_ramdisk.gz $(PRODUCT_OUT)/combinedroot/sbin/recovery_ramdisk.gz
+	$(hide) cp -R $(PRODUCT_OUT)/../../../../device/sony/lotus/recovery/init.rc $(PRODUCT_OUT)/recovery/root/
+	$(hide) $(MKBOOTFS) $(PRODUCT_OUT)/recovery/root > $(PRODUCT_OUT)/recoveryforkexec.cpio
+	$(hide) cat $(PRODUCT_OUT)/recoveryforkexec.cpio | gzip > $(PRODUCT_OUT)/recoveryforkexec.fs
+	$(hide) cp -R $(PRODUCT_OUT)/recoveryforkexec.fs $(PRODUCT_OUT)/combinedroot/sbin/recovery_ramdisk.gz
 	$(hide) $(MKBOOTFS) $(PRODUCT_OUT)/combinedroot > $(PRODUCT_OUT)/combinedroot.cpio
 	$(hide) cat $(PRODUCT_OUT)/combinedroot.cpio | gzip > $(PRODUCT_OUT)/combinedroot.fs
 	$(hide) rm -rf $(PRODUCT_OUT)/system/bin/recovery

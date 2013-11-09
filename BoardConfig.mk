@@ -3,6 +3,9 @@ USE_CAMERA_STUB := true
 # inherit from the proprietary version
 -include vendor/sony/lotus/BoardConfigVendor.mk
 
+TARGET_SPECIFIC_HEADER_PATH := \
+    device/sony/lotus/include
+
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
@@ -93,7 +96,7 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc
 # Kernel information
 TARGET_KERNEL_CONFIG := xperiago_defconfig
 TARGET_KERNEL_SOURCE := kernel/sony/u8500
-TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.6
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
 BOARD_KERNEL_BASE := 0x0
 BOARD_RECOVERY_BASE := 0x0
 BOARD_KERNEL_PAGESIZE := 2048
@@ -101,7 +104,6 @@ BOARD_KERNEL_CMDLINE := cachepolicy=writealloc noinitrd init=init board_id=1 log
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000
 
 # Partition information
-BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 16
 
 # partition size is dec=16777216 hex=01000000 so 0x01000000 is correct one!
