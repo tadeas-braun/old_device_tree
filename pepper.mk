@@ -263,6 +263,10 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/vendor/lib/libWVStreamControlAPI_L3.so:system/vendor/lib/libWVStreamControlAPI_L3.so \
    $(LOCAL_PATH)/prebuilt/vendor/lib/drm/libdrmwvmplugin.so:system/vendor/lib/drm/libdrmwvmplugin.so
 
+# Bootanimation
+PRODUCT_COPY_FILES += \
+   $(LOCAL_PATH)/../../../vendor/cm/prebuilt/common/bootanimation/480.zip:system/media/bootanimation.zip
+   
 # patched JB cn_binary needed for mobile network for CM10.2 only
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/system/bin/cn_server:system/bin/cn_server
