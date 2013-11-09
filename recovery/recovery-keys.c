@@ -211,6 +211,17 @@ int device_handle_key(int key_code, int visible) {
 
     if (visible) {
 
+        if (!buttonlight) {
+            char buttonlights_command[100];
+            snprintf(buttonlights_command, sizeof(buttonlights_command), "/sbin/echo 255 > %s", BUTTON_BACKLIGHT);
+            __system(buttonlights_command);
+
+            pthread_t t;
+            pthread_create(&t, NULL, leds_thread, NULL);
+
+            buttonlight = 1;
+        }
+
         switch (key_code) {
             case KEY_CAPSLOCK:
             case KEY_DOWN:
@@ -262,17 +273,6 @@ int device_handle_key(int key_code, int visible) {
                     vibrate(VIBRATOR_TIME_MS);
                     return GO_BACK;
                 }
-        }
-
-        if (!buttonlight) {
-            char buttonlights_command[100];
-            snprintf(buttonlights_command, sizeof(buttonlights_command), "/sbin/echo 255 > %s", BUTTON_BACKLIGHT);
-            __system(buttonlights_command);
-
-            pthread_t t;
-            pthread_create(&t, NULL, leds_thread, NULL);
-
-            buttonlight = 1;
         }
     }
 
