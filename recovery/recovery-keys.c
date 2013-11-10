@@ -74,13 +74,18 @@ int device_handle_key(int key_code, int visible) {
                 return HIGHLIGHT_UP;
 
             case KEY_POWER:
+#ifndef XPERIA_CWM_TOUCH
                 if (ui_get_showing_back_button()) {
+#endif
                     return SELECT_ITEM;
+#ifndef XPERIA_CWM_TOUCH
                 }
                 if (!ui_root_menu) {
                     return GO_BACK;
                 }
+#endif
                 break;
+
 #ifndef XPERIA_CWM_TOUCH
             case KEY_HOME:
 #endif
@@ -92,6 +97,7 @@ int device_handle_key(int key_code, int visible) {
             case KEY_SEND:
                 vibrate(VIBRATOR_TIME_MS);
                 return SELECT_ITEM;
+
             case KEY_END:
             case KEY_BACKSPACE:
             case KEY_SEARCH:
