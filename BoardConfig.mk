@@ -92,11 +92,11 @@ BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
 TARGET_RECOVERY_FSTAB = device/sony/lotus/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
 
-# uncoment to enable back button in cwm
+# uncoment to enable back button in cwm (disable them if you commented XPERIA_CWM_TOUCH)
 #BOARD_HAS_NO_SELECT_BUTTON := true
 
-# uncomment this only if you have external sdcard (needed for recovery)!
-COMMON_GLOBAL_CFLAGS += -DHAVE_EXTERNAL_SDCARD
+# coment this if you no want xperia touch enabled cwm
+COMMON_GLOBAL_CFLAGS += -DXPERIA_CWM_TOUCH
 
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun%d/file"
 
