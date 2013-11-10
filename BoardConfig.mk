@@ -92,6 +92,9 @@ BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
 TARGET_RECOVERY_FSTAB = device/sony/pepper/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
 
+# uncomment this only if you have external sdcard (needed for recovery)!
+COMMON_GLOBAL_CFLAGS += -DHAVE_EXTERNAL_SDCARD
+
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun%d/file"
 
 # Kernel information
