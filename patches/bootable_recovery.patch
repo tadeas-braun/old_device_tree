@@ -1,0 +1,104 @@
+#       modified:   extendedcommands.c
+diff --git a/bootable/recovery/extendedcommands.c b/bootable/recovery/extendedcommands.c
+index 00c1660..08cd1c3 100644
+--- a/bootable/recovery/extendedcommands.c
++++ b/bootable/recovery/extendedcommands.c
+@@ -510,28 +510,85 @@ static int control_usb_storage(bool on)
+ 
+ void show_mount_usb_storage_menu()
+ {
+-    // Enable USB storage using vold
+-    if (!control_usb_storage(true))
+-        return;
+-
+-    static const char* headers[] = {  "USB Mass Storage device",
+-                                "Leaving this menu unmounts",
+-                                "your SD card from your PC.",
++    static char* sdheaders[] = {  "SD card mounts",
+                                 "",
+                                 NULL
+     };
+ 
+-    static char* list[] = { "Unmount", NULL };
++    static char* sdlist[] = { "Mount int SD",
++#ifdef HAVE_EXTERNAL_SDCARD
++                            "Mount ext SD",
++#endif
++                            NULL
++    };
+ 
+     for (;;)
+     {
+-        int chosen_item = get_menu_selection(headers, list, 0, 0);
+-        if (chosen_item == GO_BACK || chosen_item == 0)
++        int chosen_item = get_menu_selection(sdheaders, sdlist, 0, 0);
++        if (chosen_item == GO_BACK)
+             break;
+-    }
++        switch (chosen_item)
++        {
++            case 0:
++            {
++                // Enable USB storage using vold
++                if (!control_usb_storage(true))
++                    return;
++
++                static const char* headers[] = {  "USB Mass Storage device",
++                                           "Leaving this menu unmounts",
++                                           "your int SD card from your PC.",
++                                            "",
++                                            NULL
++                };
++
++                __system("echo \"/dev/block/vold/179:14\" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file");
++                static char* list[] = { "Unmount", NULL };
++
++                for (;;)
++                {
++                    int chosen_item = get_menu_selection(headers, list, 0, 0);
++                    if (chosen_item == GO_BACK || chosen_item == 0)
++                        break;
++                }
+ 
+-    // Disable USB storage
+-    control_usb_storage(false);
++                // Disable USB storage
++                __system("echo \"\" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file");
++                control_usb_storage(false);
++                break;
++            }
++#ifdef HAVE_EXTERNAL_SDCARD
++            case 1:
++            {
++                // Enable USB storage using vold
++                if (!control_usb_storage(true))
++                    return;
++
++                static const char* headers[] = {  "USB Mass Storage device",
++                                           "Leaving this menu unmounts",
++                                           "your ext SD card from your PC.",
++                                            "",
++                                            NULL
++                };
++
++                __system("echo \"/dev/block/vold/179:97\" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file");
++                static char* list[] = { "Unmount", NULL };
++
++                for (;;)
++                {
++                    int chosen_item = get_menu_selection(headers, list, 0, 0);
++                    if (chosen_item == GO_BACK || chosen_item == 0)
++                        break;
++                }
++
++                // Disable USB storage
++                __system("echo \"\" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file");
++                control_usb_storage(false);
++                break;
++            }
++#endif
++        }
++    }
+ }
+ 
+ int confirm_selection(const char* title, const char* confirm)
