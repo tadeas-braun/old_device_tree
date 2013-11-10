@@ -17,5 +17,5 @@ endif
 
 ifeq ($(TARGET_PRODUCT),cm_nypon)
 PRODUCT_COPY_FILES += \
-    device/sony/nypon/recovery/res/images/stitch_sola.png:recovery/root/res/images/stitch_p.png
+    device/sony/nypon/recovery/res/images/stitch_p.png:recovery/root/res/images/stitch_p.png
 endif
