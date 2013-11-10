@@ -93,7 +93,7 @@ TARGET_RECOVERY_FSTAB = device/sony/lotus/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
 
 # uncoment to enable back button in cwm
-//BOARD_HAS_NO_SELECT_BUTTON := true
+#BOARD_HAS_NO_SELECT_BUTTON := true
 
 # uncomment this only if you have external sdcard (needed for recovery)!
 COMMON_GLOBAL_CFLAGS += -DHAVE_EXTERNAL_SDCARD
