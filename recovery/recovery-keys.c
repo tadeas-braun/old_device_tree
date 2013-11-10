@@ -19,9 +19,6 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include <linux/input.h>
-#include <string.h>
-#include <time.h>
-#include <pthread.h>
 
 #include "recovery_ui.h"
 #include "common.h"
@@ -65,19 +62,16 @@ int device_handle_key(int key_code, int visible) {
                 vibrate(VIBRATOR_TIME_MS);
                 return HIGHLIGHT_DOWN;
 
-#ifndef XPERIA_CWM_TOUCH
             case KEY_VOLUMEDOWN:
                 return HIGHLIGHT_DOWN;
-#endif
 
             case KEY_LEFTSHIFT:
             case KEY_UP:
                 vibrate(VIBRATOR_TIME_MS);
                 return HIGHLIGHT_UP;
-#ifndef XPERIA_CWM_TOUCH
+
             case KEY_VOLUMEUP:
                 return HIGHLIGHT_UP;
-#endif
 
             case KEY_POWER:
                 if (ui_get_showing_back_button()) {
@@ -99,9 +93,7 @@ int device_handle_key(int key_code, int visible) {
                 vibrate(VIBRATOR_TIME_MS);
                 return SELECT_ITEM;
             case KEY_END:
-#ifndef XPERIA_CWM_TOUCH
             case KEY_BACKSPACE:
-#endif
             case KEY_SEARCH:
                 if (ui_get_showing_back_button()) {
                     vibrate(VIBRATOR_TIME_MS);
@@ -113,14 +105,11 @@ int device_handle_key(int key_code, int visible) {
                 }
 #ifndef XPERIA_CWM_TOUCH
             case KEY_BACK:
-#endif
-#ifdef XPERIA_CWM_TOUCH
-            case KEY_BACKSPACE:
-#endif
                 if (!ui_root_menu) {
                     vibrate(VIBRATOR_TIME_MS);
                     return GO_BACK;
                 }
+#endif
         }
     }
 
