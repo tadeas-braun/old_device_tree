@@ -112,7 +112,7 @@ index 00c1660..ccc58bc 100644
 -    // Disable USB storage
 -    control_usb_storage(false);
 +                // Disable USB storage
-+                 
++
 +                __system(lun_command_disable_int);
 +                control_usb_storage(false);
 +                break;
@@ -603,7 +603,7 @@ index 0000000..d5d265d
 +#define BATTERY_STATUS_CHARGING_FILE_USB  "/sys/devices/platform/ab8500-i2c.0/ab8500-charger.0/power_supply/ab8500_usb/online"
 +#define BATTERY_STATUS_CHARGING_FILE_AC  "/sys/devices/platform/ab8500-i2c.0/ab8500-charger.0/power_supply/ab8500_ac/online"
 +
-+# comment to disable the installation animation
++/* comment to disable the installation animation */
 +#define CWM_INST_ANIM
 +
 +#define BATTERY_LEVEL_FILE  "/sys/devices/platform/ab8500-i2c.0/ab8500-fg.0/power_supply/ab8500_fg/capacity"
