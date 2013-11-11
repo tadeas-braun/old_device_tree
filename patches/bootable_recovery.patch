@@ -165,7 +165,7 @@ index fbbb06b..ea31d6a 100644
  }
  
 diff --git a/bootable/recovery/ui.c b/bootable/recovery/ui.c
-index a0dc289..fb1d5e5 100644
+index a0dc289..f74eb0b 100644
 --- a/bootable/recovery/ui.c
 +++ b/bootable/recovery/ui.c
 @@ -33,6 +33,7 @@
@@ -271,7 +271,7 @@ index a0dc289..fb1d5e5 100644
              redraw = 1;
          }
  
-@@ -393,12 +434,24 @@ static void *progress_thread(void *cookie)
+@@ -393,12 +434,23 @@ static void *progress_thread(void *cookie)
  }
  
  static int rel_sum = 0;
@@ -280,7 +280,6 @@ index a0dc289..fb1d5e5 100644
 +int touch_y = 0;
 +int rcnt = 0;
 +int touch_released = 1;
-+extern int vibrate(int timeout_ms);
 +#endif
  
  static int input_callback(int fd, short revents, void *data)
@@ -296,7 +295,7 @@ index a0dc289..fb1d5e5 100644
  
      ret = ev_get_input(fd, revents, &ev);
      if (ret)
-@@ -414,6 +467,21 @@ static int input_callback(int fd, short revents, void *data)
+@@ -414,6 +466,21 @@ static int input_callback(int fd, short revents, void *data)
  #endif
  
      if (ev.type == EV_SYN) {
@@ -318,7 +317,7 @@ index a0dc289..fb1d5e5 100644
          return 0;
      } else if (ev.type == EV_REL) {
          if (ev.code == REL_Y) {
-@@ -440,6 +508,75 @@ static int input_callback(int fd, short revents, void *data)
+@@ -440,6 +507,75 @@ static int input_callback(int fd, short revents, void *data)
          rel_sum = 0;
      }
  
@@ -345,7 +344,11 @@ index a0dc289..fb1d5e5 100644
 +                else
 +                    touch_val_x = 0;
 +
++#ifdef XPERIA_GO
 +      if (touch_y >= (gr_fb_height()-50) && touch_y <= gr_fb_height())
++#else
++      if (touch_y >= (gr_fb_height()-75) && touch_y <= gr_fb_height())
++#endif
 +                    touch_val_y = 1;
 +                else
 +                    touch_val_y = 0;
@@ -356,7 +359,6 @@ index a0dc289..fb1d5e5 100644
 +                            ev.type = EV_KEY;
 +                            ev.code = KEY_UP;
 +                            ev.value = 1;
-+                            vibrate(10);
 +                        }
 +                        break;
 +                    case 2:
@@ -364,15 +366,13 @@ index a0dc289..fb1d5e5 100644
 +                            ev.type = EV_KEY;
 +                            ev.code = KEY_DOWN;
 +                            ev.value = 1;
-+                            vibrate(10);
 +                        }
 +                        break;
 +                    case 3:
 +                        if (touch_val_y) {
 +                            ev.type = EV_KEY;
-+                            ev.code = KEY_POWER;
++                            ev.code = KEY_ENTER;
 +                            ev.value = 1;
-+                            vibrate(10);
 +                        }
 +                        break;
 +                    case 4:
@@ -380,7 +380,6 @@ index a0dc289..fb1d5e5 100644
 +                            ev.type = EV_KEY;
 +                            ev.code = KEY_BACKSPACE;
 +                            ev.value = 1;
-+                            vibrate(10);
 +                        }
 +                        break;
 +                    default:
@@ -394,7 +393,7 @@ index a0dc289..fb1d5e5 100644
      if (ev.type != EV_KEY || ev.code > KEY_MAX)
          return 0;
  
-@@ -495,6 +632,136 @@ static void *input_thread(void *cookie)
+@@ -495,6 +631,136 @@ static void *input_thread(void *cookie)
      return NULL;
  }
  
@@ -531,7 +530,7 @@ index a0dc289..fb1d5e5 100644
  void ui_init(void)
  {
      ui_has_initialized = 1;
-@@ -589,6 +856,34 @@ void ui_init(void)
+@@ -589,6 +855,34 @@ void ui_init(void)
      pthread_t t;
      pthread_create(&t, NULL, progress_thread, NULL);
      pthread_create(&t, NULL, input_thread, NULL);
@@ -566,7 +565,7 @@ index a0dc289..fb1d5e5 100644
  }
  
  char *ui_copy_image(int icon, int *width, int *height, int *bpp) {
-@@ -753,7 +1048,11 @@ void ui_printlogtail(int nb_lines) {
+@@ -753,7 +1047,11 @@ void ui_printlogtail(int nb_lines) {
      ui_log_stdout=1;
  }
  

@@ -92,9 +92,8 @@ BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
 TARGET_RECOVERY_FSTAB = device/sony/lotus/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
 
-# uncoment to enable back button in cwm (disable them if you commented XPERIA_CWM_TOUCH)
+# uncoment to enable back button in cwm (only if you commented XPERIA_CWM_TOUCH)
 #BOARD_HAS_NO_SELECT_BUTTON := true
-
 # coment this if you no want xperia touch enabled cwm
 COMMON_GLOBAL_CFLAGS += -DXPERIA_CWM_TOUCH
 
