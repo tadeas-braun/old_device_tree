@@ -112,7 +112,7 @@ index 00c1660..ccc58bc 100644
 -    // Disable USB storage
 -    control_usb_storage(false);
 +                // Disable USB storage
-+
++                 
 +                __system(lun_command_disable_int);
 +                control_usb_storage(false);
 +                break;
@@ -153,7 +153,7 @@ index 00c1660..ccc58bc 100644
  
  int confirm_selection(const char* title, const char* confirm)
 diff --git a/bootable/recovery/recovery.c b/bootable/recovery/recovery.c
-index fbbb06b..ea31d6a 100644
+index fbbb06b..af1b095 100644
 --- a/bootable/recovery/recovery.c
 +++ b/bootable/recovery/recovery.c
 @@ -776,6 +776,7 @@ wipe_data(int confirm) {
@@ -164,8 +164,16 @@ index fbbb06b..ea31d6a 100644
      ui_print("Data wipe complete.\n");
  }
  
+@@ -832,6 +833,7 @@ prompt_and_wait() {
+                         ui_print("\n-- Wiping cache...\n");
+                         erase_volume("/cache");
+                         ui_print("Cache wipe complete.\n");
++                        ui_set_background(BACKGROUND_ICON_CLOCKWORK);
+                         if (!ui_text_visible()) return;
+                     }
+                     break;
 diff --git a/bootable/recovery/ui.c b/bootable/recovery/ui.c
-index a0dc289..f74eb0b 100644
+index a0dc289..9abb608 100644
 --- a/bootable/recovery/ui.c
 +++ b/bootable/recovery/ui.c
 @@ -33,6 +33,7 @@

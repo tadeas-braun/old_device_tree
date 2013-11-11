@@ -89,7 +89,7 @@ BOARD_HAS_NO_MISC_PARTITION := true
 RECOVERY_NAME := CWM-Touch-Lotus
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/lotus/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
-TARGET_RECOVERY_FSTAB = device/sony/lotus/prebuilt/root/fstab.st-ericsson
+TARGET_RECOVERY_FSTAB = device/sony/lotus/prebuilt/recovery/recovery.fstab
 RECOVERY_FSTAB_VERSION := 2
 
 # uncoment to enable back button in cwm (only if you commented XPERIA_CWM_TOUCH)
