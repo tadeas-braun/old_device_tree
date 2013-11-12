@@ -92,8 +92,10 @@ BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
 TARGET_RECOVERY_FSTAB = device/sony/pepper/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
 
-# uncomment this only if you have external sdcard (needed for recovery)!
-COMMON_GLOBAL_CFLAGS += -DHAVE_EXTERNAL_SDCARD
+# uncoment to enable back button in cwm (only if you commented XPERIA_CWM_TOUCH)
+#BOARD_HAS_NO_SELECT_BUTTON := true
+# coment this if you no want xperia touch enabled cwm
+COMMON_GLOBAL_CFLAGS += -DXPERIA_CWM_TOUCH
 
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun%d/file"
 
@@ -120,7 +122,6 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 
 COMMON_GLOBAL_CFLAGS += -DNEW_NOTIFICATION
 
-BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
 BOARD_SDCARD_INTERNAL_DEVICE := /dev/block/mmcblk0p14
