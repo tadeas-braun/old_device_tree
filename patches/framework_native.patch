@@ -110,7 +110,7 @@ index 96a4396..b8e5f01 100644
      OMX_QCOM_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka = 0x7FA30C03,
      OMX_SEC_COLOR_FormatNV12Tiled = 0x7FC00002,
 diff --git a/frameworks/native/include/ui/GraphicBuffer.h b/frameworks/native/include/ui/GraphicBuffer.h
-index 68f302a..ee8b4d1 100644
+index 7f8cde6..bca366f 100644
 --- a/frameworks/native/include/ui/GraphicBuffer.h
 +++ b/frameworks/native/include/ui/GraphicBuffer.h
 @@ -38,7 +38,12 @@ class GraphicBufferMapper;
@@ -227,21 +227,22 @@ index 5c82330..830623d 100644
  }; // namespace android
  
 diff --git a/frameworks/native/libs/gui/Android.mk b/frameworks/native/libs/gui/Android.mk
-index f142e5d..b35312f 100644
+index d931bc0..970179d 100644
 --- a/frameworks/native/libs/gui/Android.mk
 +++ b/frameworks/native/libs/gui/Android.mk
-@@ -39,6 +39,11 @@ LOCAL_SHARED_LIBRARIES := \
+@@ -39,6 +39,12 @@ LOCAL_SHARED_LIBRARIES := \
  	libutils \
  	liblog
  
 +#ifdef STE_HARDWARE
 +LOCAL_SHARED_LIBRARIES += \
-+	libhardware \
-+	libhardware_legacy
++       libhardware \
++       libhardware_legacy
 +#endif
- 
- LOCAL_MODULE:= libgui
- 
++
+ # Executed only on QCOM BSPs
+ ifeq ($(TARGET_USES_QCOM_BSP),true)
+     LOCAL_C_INCLUDES += hardware/qcom/display/libgralloc
 diff --git a/frameworks/native/libs/gui/GLConsumer.cpp b/frameworks/native/libs/gui/GLConsumer.cpp
 index 7ee3081..a122283 100644
 --- a/frameworks/native/libs/gui/GLConsumer.cpp
@@ -537,10 +538,10 @@ index 5fa513c..f75a508 100644
      int format;
      window->query(window, NATIVE_WINDOW_FORMAT, &format);
 diff --git a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-index bd42f5f..cdeb019 100644
+index 529461e..7ae858e 100644
 --- a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
-@@ -2662,6 +2662,7 @@ status_t SurfaceFlinger::onTransact(
+@@ -2771,6 +2771,7 @@ status_t SurfaceFlinger::onTransact(
              const int pid = ipc->getCallingPid();
              const int uid = ipc->getCallingUid();
              if ((uid != AID_GRAPHICS) &&
@@ -548,7 +549,7 @@ index bd42f5f..cdeb019 100644
                      !PermissionCache::checkPermission(sAccessSurfaceFlinger, pid, uid)) {
                  ALOGE("Permission Denial: "
                          "can't access SurfaceFlinger pid=%d, uid=%d", pid, uid);
-@@ -2799,6 +2800,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -2908,6 +2909,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
      uint32_t code;
      Parcel const* data;
      Parcel* reply;
@@ -558,7 +559,7 @@ index bd42f5f..cdeb019 100644
  
      enum {
          MSG_API_CALL,
-@@ -2811,6 +2815,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -2920,6 +2924,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
       */
      virtual status_t transact(uint32_t code,
              const Parcel& data, Parcel* reply, uint32_t flags) {
@@ -568,7 +569,7 @@ index bd42f5f..cdeb019 100644
          this->code = code;
          this->data = &data;
          this->reply = reply;
-@@ -2823,6 +2830,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
+@@ -2932,6 +2939,9 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
              looper->sendMessage(this, Message(MSG_API_CALL));
              barrier.wait();
          }
