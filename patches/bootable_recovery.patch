@@ -32,7 +32,7 @@ index 9b66f54..586957d 100644
  
  LOCAL_CFLAGS += -DRECOVERY_VERSION="$(RECOVERY_VERSION)"
 diff --git a/bootable/recovery/extendedcommands.c b/bootable/recovery/extendedcommands.c
-index 00c1660..ccc58bc 100644
+index 00c1660..f32530c 100644
 --- a/bootable/recovery/extendedcommands.c
 +++ b/bootable/recovery/extendedcommands.c
 @@ -32,6 +32,7 @@
@@ -50,6 +50,12 @@ index 00c1660..ccc58bc 100644
 -    // Enable USB storage using vold
 -    if (!control_usb_storage(true))
 -        return;
+-
+-    static const char* headers[] = {  "USB Mass Storage device",
+-                                "Leaving this menu unmounts",
+-                                "your SD card from your PC.",
+-                                "",
+-                                NULL
 +    static char lun_command_enable_int[100];
 +    static char lun_command_disable_int[100];
 +    static char lun_command_enable_ext[100];
@@ -59,13 +65,10 @@ index 00c1660..ccc58bc 100644
 +    snprintf(lun_command_disable_int, sizeof(lun_command_disable_int), "/sbin/echo \"\" > %s", BOARD_UMS_LUNFILE);
 +    snprintf(lun_command_enable_ext, sizeof(lun_command_enable_ext), "/sbin/echo \"%s\" > %s", BOARD_VOLD_SDCARD_VOLUME_EXT, BOARD_UMS_LUNFILE);
 +    snprintf(lun_command_disable_ext, sizeof(lun_command_disable_ext), "/sbin/echo \"\" > %s", BOARD_UMS_LUNFILE);
- 
--    static const char* headers[] = {  "USB Mass Storage device",
--                                "Leaving this menu unmounts",
--                                "your SD card from your PC.",
-+    static char* sdheaders[] = {  "SD card mounts",
-                                 "",
-                                 NULL
++
++    static const char* sdheaders[] = {  "SD card mounts",
++                                        "",
++                                        NULL
      };
  
 -    static char* list[] = { "Unmount", NULL };
@@ -112,7 +115,7 @@ index 00c1660..ccc58bc 100644
 -    // Disable USB storage
 -    control_usb_storage(false);
 +                // Disable USB storage
-+                 
++
 +                __system(lun_command_disable_int);
 +                control_usb_storage(false);
 +                break;
@@ -173,7 +176,7 @@ index fbbb06b..af1b095 100644
                      }
                      break;
 diff --git a/bootable/recovery/ui.c b/bootable/recovery/ui.c
-index a0dc289..9abb608 100644
+index a0dc289..c29e17a 100644
 --- a/bootable/recovery/ui.c
 +++ b/bootable/recovery/ui.c
 @@ -33,6 +33,7 @@
@@ -200,7 +203,32 @@ index a0dc289..9abb608 100644
  
  #define MENU_MAX_COLS 64
  #define MENU_MAX_ROWS 250
-@@ -87,7 +96,22 @@ static const struct { gr_surface* surface; const char *name; } BITMAPS[] = {
+@@ -78,6 +87,24 @@ static int ui_log_stdout = 1;
+ static int boardEnableKeyRepeat = 0;
+ static int boardRepeatableKeys[64], boardNumRepeatableKeys = 0;
+ 
++enum {
++    A0,
++    A1,
++    A2,
++    A3,
++    A4,
++    A5,
++    A6,
++    A7,
++    A8,
++    A9,
++    A10,
++    AP,
++    AT,
++    NUM_A_ICONS
++};
++static gr_surface gAicon[NUM_A_ICONS];
++
+ static const struct { gr_surface* surface; const char *name; } BITMAPS[] = {
+     { &gBackgroundIcon[BACKGROUND_ICON_INSTALLING], "icon_installing" },
+     { &gBackgroundIcon[BACKGROUND_ICON_ERROR],      "icon_error" },
+@@ -87,7 +114,35 @@ static const struct { gr_surface* surface; const char *name; } BITMAPS[] = {
      { &gBackgroundIcon[BACKGROUND_ICON_FIRMWARE_ERROR], "icon_firmware_error" },
      { &gProgressBarEmpty,               "progress_empty" },
      { &gProgressBarFill,                "progress_fill" },
@@ -220,10 +248,23 @@ index a0dc289..9abb608 100644
 +    { &gBackground,                "stitch_u" },
 +#endif
 +#endif
++    { &gAicon[A0], "a0" },
++    { &gAicon[A1], "a1" },
++    { &gAicon[A2], "a2" },
++    { &gAicon[A3], "a3" },
++    { &gAicon[A4], "a4" },
++    { &gAicon[A5], "a5" },
++    { &gAicon[A6], "a6" },
++    { &gAicon[A7], "a7" },
++    { &gAicon[A8], "a8" },
++    { &gAicon[A9], "a9" },
++    { &gAicon[A10], "a10" },
++    { &gAicon[AP], "ap" },
++    { &gAicon[AT], "at" },
      { NULL,                             NULL },
  };
  
-@@ -209,7 +233,11 @@ static void draw_progress_locked()
+@@ -209,7 +264,11 @@ static void draw_progress_locked()
          int height = gr_get_height(gProgressBarEmpty);
  
          int dx = (gr_fb_width() - width)/2;
@@ -235,7 +276,7 @@ index a0dc289..9abb608 100644
  
          // Erase behind the progress bar (in case this was a progress-only update)
          gr_color(0, 0, 0, 255);
-@@ -304,6 +332,10 @@ static void draw_screen_locked(void)
+@@ -304,6 +363,10 @@ static void draw_screen_locked(void)
          }
  
          gr_color(NORMAL_TEXT_COLOR);
@@ -246,7 +287,7 @@ index a0dc289..9abb608 100644
          int cur_row = text_row;
          int available_rows = total_rows - row - 1;
          int start_row = row + 1;
-@@ -315,6 +347,7 @@ static void draw_screen_locked(void)
+@@ -315,6 +378,7 @@ static void draw_screen_locked(void)
          int r;
          for (r = 0; r < (available_rows < MAX_ROWS ? available_rows : MAX_ROWS); r++) {
              draw_text_line(start_row + r, text[(cur_row + r) % MAX_ROWS]);
@@ -254,7 +295,7 @@ index a0dc289..9abb608 100644
          }
      }
  }
-@@ -355,8 +388,12 @@ static void *progress_thread(void *cookie)
+@@ -355,8 +419,12 @@ static void *progress_thread(void *cookie)
          // update the installation animation, if active
          // skip this if we have a text overlay (too expensive to update)
          if (gCurrentIcon == BACKGROUND_ICON_INSTALLING &&
@@ -267,7 +308,7 @@ index a0dc289..9abb608 100644
              gInstallingFrame =
                  (gInstallingFrame + 1) % ui_parameters.installing_frames;
              redraw = 1;
-@@ -364,7 +401,11 @@ static void *progress_thread(void *cookie)
+@@ -364,7 +432,11 @@ static void *progress_thread(void *cookie)
  
          // update the progress bar animation, if active
          // skip this if we have a text overlay (too expensive to update)
@@ -279,7 +320,7 @@ index a0dc289..9abb608 100644
              redraw = 1;
          }
  
-@@ -393,12 +434,23 @@ static void *progress_thread(void *cookie)
+@@ -393,12 +465,23 @@ static void *progress_thread(void *cookie)
  }
  
  static int rel_sum = 0;
@@ -303,7 +344,7 @@ index a0dc289..9abb608 100644
  
      ret = ev_get_input(fd, revents, &ev);
      if (ret)
-@@ -414,6 +466,21 @@ static int input_callback(int fd, short revents, void *data)
+@@ -414,6 +497,21 @@ static int input_callback(int fd, short revents, void *data)
  #endif
  
      if (ev.type == EV_SYN) {
@@ -325,7 +366,7 @@ index a0dc289..9abb608 100644
          return 0;
      } else if (ev.type == EV_REL) {
          if (ev.code == REL_Y) {
-@@ -440,6 +507,75 @@ static int input_callback(int fd, short revents, void *data)
+@@ -440,6 +538,75 @@ static int input_callback(int fd, short revents, void *data)
          rel_sum = 0;
      }
  
@@ -401,7 +442,7 @@ index a0dc289..9abb608 100644
      if (ev.type != EV_KEY || ev.code > KEY_MAX)
          return 0;
  
-@@ -495,6 +631,136 @@ static void *input_thread(void *cookie)
+@@ -495,6 +662,295 @@ static void *input_thread(void *cookie)
      return NULL;
  }
  
@@ -535,15 +576,175 @@ index a0dc289..9abb608 100644
 +    return NULL;
 +}
 +
++int get_time_from_kernel(int get_hour, int get_minute) {
++    char buf[10];
++    char *hour_str, *minute_str;
++    int hour, minute;
++    int fd;
++    ssize_t nbytes;
++
++    fd = open(KERNEL_TIME_SYSFS, O_RDONLY);
++    if (fd < 0) return 0;
++
++    nbytes = read(fd, buf, sizeof(buf) - 1);
++    close(fd);
++    if (nbytes < 0) return 0;
++    buf[nbytes] = '\0';
++
++    hour_str = strndup(buf, 2);
++    minute_str = strndup(buf+3, 2);
++    hour = atoi(hour_str);
++    minute = atoi(minute_str);
++
++    if (get_hour) return hour;
++    if (get_minute) return minute;
++
++    return 0;
++}
++
++static void draw_battery_and_clock() {
++    if (!ui_has_initialized || gProgressBarType != PROGRESSBAR_TYPE_NONE
++        || gCurrentIcon != BACKGROUND_ICON_CLOCKWORK)
++        return;
++
++    int hour = get_time_from_kernel(1, 0);
++    if (!hour) hour = 1;
++    int minute = get_time_from_kernel(0, 1);
++    if (!minute) minute = 1;
++
++    int level = get_battery_level();
++    if (!level) level = 1;
++
++    static short lookup_table_first[] = {
++         A0, A0, A0, A0, A0, A0, A0, A0, A0, A1,
++         A1, A1, A1, A1, A1, A1, A1, A1, A1, A2,
++         A2, A2, A2, A2, A2, A2, A2, A2, A2, A3,
++         A3, A3, A3, A3, A3, A3, A3, A3, A3, A4,
++         A4, A4, A4, A4, A4, A4, A4, A4, A4, A5,
++         A5, A5, A5, A5, A5, A5, A5, A5, A5, A6,
++         A6, A6, A6, A6, A6, A6, A6, A6, A6, A7,
++         A7, A7, A7, A7, A7, A7, A7, A7, A7, A8,
++         A8, A8, A8, A8, A8, A8, A8, A8, A8, A9,
++         A9, A9, A9, A9, A9, A9, A9, A9, A9, A10
++    };
++
++    static short lookup_table_seccond[] = {
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0,
++         A1, A2, A3, A4, A5, A6, A7, A8, A9, A0
++    };
++
++    gr_surface gAicon_bat_first = gAicon[lookup_table_first[level-1]];
++    gr_surface gAicon_bat_seccond = gAicon[lookup_table_seccond[level-1]];
++    gr_surface gAicon_percent = gAicon[AP];
++    gr_surface gAicon_hour_first = gAicon[lookup_table_first[hour-1]];
++    gr_surface gAicon_hour_seccond = gAicon[lookup_table_seccond[hour-1]];
++    gr_surface gAicon_separator = gAicon[AT];
++    gr_surface gAicon_minute_first = gAicon[lookup_table_first[minute-1]];
++    gr_surface gAicon_minute_seccond = gAicon[lookup_table_seccond[minute-1]];
++
++    int iconWidthBatFirst = gr_get_width(gAicon_bat_first);
++    int iconHeightBatFirst = gr_get_height(gAicon_bat_first);
++    int iconWidthBatSeccond = gr_get_width(gAicon_bat_seccond);
++    int iconHeightBatSeccond = gr_get_height(gAicon_bat_seccond);
++    int iconWidthPercent = gr_get_width(gAicon_percent);
++    int iconHeightPercent = gr_get_height(gAicon_percent);
++    int iconWidthHourFirst = gr_get_width(gAicon_hour_first);
++    int iconHeightHourFirst = gr_get_height(gAicon_hour_first);
++    int iconWidthHourSeccond = gr_get_width(gAicon_hour_seccond);
++    int iconHeightHourSeccond = gr_get_height(gAicon_hour_seccond);
++    int iconWidthSeparator = gr_get_width(gAicon_separator);
++    int iconHeightSeparator = gr_get_height(gAicon_separator);
++    int iconWidthMinuteFirst = gr_get_width(gAicon_minute_first);
++    int iconHeightMinuteFirst = gr_get_height(gAicon_minute_first);
++    int iconWidthMinuteSeccond = gr_get_width(gAicon_minute_seccond);
++    int iconHeightMinuteSeccond = gr_get_height(gAicon_minute_seccond);
++
++    int XBatFirst = (gr_fb_width() - iconWidthBatFirst - iconWidthBatSeccond
++                            - iconWidthPercent -3 - iconWidthHourFirst - iconWidthHourSeccond
++                            - iconWidthSeparator - iconWidthMinuteFirst
++                            - iconWidthMinuteSeccond - 5);
++    int XBatSeccond = (gr_fb_width() - iconWidthBatSeccond
++                            - iconWidthPercent -3 - iconWidthHourFirst - iconWidthHourSeccond
++                            - iconWidthSeparator - iconWidthMinuteFirst
++                            - iconWidthMinuteSeccond - 5);
++    int XPercent = (gr_fb_width() - iconWidthPercent -3 - iconWidthHourFirst - iconWidthHourSeccond
++                            - iconWidthSeparator - iconWidthMinuteFirst
++                            - iconWidthMinuteSeccond - 5);
++    int XHourFirst = (gr_fb_width() - iconWidthHourFirst - iconWidthHourSeccond
++                            - iconWidthSeparator - iconWidthMinuteFirst
++                            - iconWidthMinuteSeccond - 5);
++    int XHourSeccond = (gr_fb_width() - iconWidthHourSeccond
++                            - iconWidthSeparator - iconWidthMinuteFirst
++                            - iconWidthMinuteSeccond - 5);
++    int XSeparator = (gr_fb_width() - iconWidthSeparator - iconWidthMinuteFirst
++                            - iconWidthMinuteSeccond - 5);
++    int XMinuteFirst = (gr_fb_width() - iconWidthMinuteFirst
++                            - iconWidthMinuteSeccond - 5);
++    int XMinuteSeccond = (gr_fb_width() - iconWidthMinuteSeccond - 5);
++
++    gr_color(NORMAL_TEXT_COLOR);
++    gr_fill(XBatFirst, 0, iconWidthBatFirst, iconHeightBatFirst);
++    gr_blit(gAicon_bat_first, 0, 0, iconWidthBatFirst, iconHeightBatFirst, XBatFirst, 0);
++
++    gr_color(NORMAL_TEXT_COLOR);
++    gr_fill(XBatSeccond, 0, iconWidthBatSeccond, iconHeightBatSeccond);
++    gr_blit(gAicon_bat_seccond, 0, 0, iconWidthBatSeccond, iconHeightBatSeccond, XBatSeccond, 0);
++
++    gr_color(NORMAL_TEXT_COLOR);
++    gr_fill(XPercent, 0, iconWidthPercent, iconHeightPercent);
++    gr_blit(gAicon_percent, 0, 0, iconWidthPercent, iconHeightPercent, XPercent, 0);
++
++    gr_color(NORMAL_TEXT_COLOR);
++    gr_fill(XHourFirst, 0, iconWidthHourFirst, iconHeightHourFirst);
++    gr_blit(gAicon_hour_first, 0, 0, iconWidthHourFirst, iconHeightHourFirst, XHourFirst, 0);
++
++    gr_color(NORMAL_TEXT_COLOR);
++    gr_fill(XHourSeccond, 0, iconWidthHourSeccond, iconHeightHourSeccond);
++    gr_blit(gAicon_hour_seccond, 0, 0, iconWidthHourSeccond, iconHeightHourSeccond, XHourSeccond, 0);
++
++    gr_color(NORMAL_TEXT_COLOR);
++    gr_fill(XSeparator, 0, iconWidthSeparator, iconHeightSeparator);
++    gr_blit(gAicon_separator, 0, 0, iconWidthSeparator, iconHeightSeparator, XSeparator, 0);
++
++    gr_color(NORMAL_TEXT_COLOR);
++    gr_fill(XMinuteFirst, 0, iconWidthMinuteFirst, iconHeightMinuteFirst);
++    gr_blit(gAicon_minute_first, 0, 0, iconWidthMinuteFirst, iconHeightMinuteFirst, XMinuteFirst, 0);
++
++    gr_color(NORMAL_TEXT_COLOR);
++    gr_fill(XMinuteSeccond, 0, iconWidthMinuteSeccond, iconHeightMinuteSeccond);
++    gr_blit(gAicon_minute_seccond, 0, 0, iconWidthMinuteSeccond, iconHeightMinuteSeccond, XMinuteSeccond, 0);
++
++    gr_flip();
++}
++
++static void *battery_and_clock_thread(void *cookie) {
++    for (;;) {
++        pthread_mutex_lock(&gUpdateMutex);
++        draw_battery_and_clock();
++        pthread_mutex_unlock(&gUpdateMutex);
++        usleep(1000000);
++    }
++    return NULL;
++}
++
  void ui_init(void)
  {
      ui_has_initialized = 1;
-@@ -589,6 +855,34 @@ void ui_init(void)
+@@ -589,6 +1045,35 @@ void ui_init(void)
      pthread_t t;
      pthread_create(&t, NULL, progress_thread, NULL);
      pthread_create(&t, NULL, input_thread, NULL);
 +    pthread_create(&t, NULL, leds_thread, NULL);
-+#ifdef XPERIA_CWM_TOUCH
++    pthread_create(&t, NULL, battery_and_clock_thread, NULL);
++#ifndef XPERIA_CWM_TOUCH
 +    char buttonlights_command[100];
 +#endif
 +#ifdef XPERIA_GO
@@ -573,7 +774,7 @@ index a0dc289..9abb608 100644
  }
  
  char *ui_copy_image(int icon, int *width, int *height, int *bpp) {
-@@ -753,7 +1047,11 @@ void ui_printlogtail(int nb_lines) {
+@@ -753,7 +1238,11 @@ void ui_printlogtail(int nb_lines) {
      ui_log_stdout=1;
  }
  
@@ -587,10 +788,10 @@ index a0dc289..9abb608 100644
  int ui_start_menu(const char** headers, char** items, int initial_selection) {
 diff --git a/bootable/recovery/adefines.h b/bootable/recovery/adefines.h
 new file mode 100644
-index 0000000..d5d265d
+index 0000000..7a7168c
 --- /dev/null
 +++ b/bootable/recovery/adefines.h
-@@ -0,0 +1,45 @@
+@@ -0,0 +1,47 @@
 +#ifndef ADEFINES_H
 +#define ADEFINES_H
 +
@@ -634,5 +835,7 @@ index 0000000..d5d265d
 +#define RED_LED_FILE "/sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/pwr-red/brightness"
 +#define GREEN_LED_FILE "/sys/devices/platform/nmk-i2c.2/i2c-2/2-0040/leds/pwr-green/brightness"
 +#endif
++
++#define KERNEL_TIME_SYSFS "/sys/devices/platform/ab8500-i2c.0/ab8500-rtc.0/rtc/rtc0/time"
 +
 +#endif
