@@ -56,9 +56,9 @@ index 00c1660..f32530c 100644
 -                                "your SD card from your PC.",
 -                                "",
 -                                NULL
-+    static char lun_command_enable_int[100];
++    static char lun_command_enable_int[120];
 +    static char lun_command_disable_int[100];
-+    static char lun_command_enable_ext[100];
++    static char lun_command_enable_ext[120];
 +    static char lun_command_disable_ext[100];
 +
 +    snprintf(lun_command_enable_int, sizeof(lun_command_enable_int), "/sbin/echo \"%s\" > %s", BOARD_VOLD_SDCARD_VOLUME_INT, BOARD_UMS_LUNFILE);
