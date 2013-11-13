@@ -198,7 +198,7 @@ index 5c82330..830623d 100644
  // ---------------------------------------------------------------------------
  
 +#ifdef STE_HARDWARE
-+extern "C" void _ZN7android10MemoryBaseC2ERKNS_2spINS_11IMemoryHeapEEElj() __attribute__((alias("_ZN7android10MemoryBaseC1ERKNS_2spINS_11IMemoryHeapEEEij")));
++extern "C" void _ZN7android10MemoryBaseC2ERKNS_2spINS_11IMemoryHeapEEElj() __attribute__((alias("_ZN7android10MemoryBaseC1ERKNS_2spINS_11IMemoryHeapEEElj")));
 +#endif
 +
  MemoryBase::MemoryBase(const sp<IMemoryHeap>& heap,
