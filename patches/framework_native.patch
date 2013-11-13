@@ -10,7 +10,9 @@
 #       modified:   opengl/include/EGL/eglext.h
 #       modified:   opengl/libs/EGL/eglApi.cpp
 #       modified:   opengl/libs/EGL/egl_entries.in
+#       modified:   services/surfaceflinger/Android.mk
 #       modified:   services/surfaceflinger/DisplayDevice.cpp
+#       modified:   services/surfaceflinger/DisplayHardware/HWComposer.cpp
 #       modified:   services/surfaceflinger/SurfaceFlinger.cpp
 diff --git a/frameworks/native/include/binder/MemoryBase.h b/frameworks/native/include/binder/MemoryBase.h
 index 463e26d..286e0d3 100644
@@ -190,7 +192,7 @@ index d906dbb..be60767 100644
  }; // namespace android
  
 diff --git a/frameworks/native/libs/binder/MemoryBase.cpp b/frameworks/native/libs/binder/MemoryBase.cpp
-index 5c82330..830623d 100644
+index 5c82330..105c5df 100644
 --- a/frameworks/native/libs/binder/MemoryBase.cpp
 +++ b/frameworks/native/libs/binder/MemoryBase.cpp
 @@ -26,6 +26,10 @@ namespace android {
@@ -510,15 +512,30 @@ index 70d0e52..138f41e 100644
  /* IMG extensions */
  
  EGL_ENTRY(EGLBoolean, eglHibernateProcessIMG, void)
+diff --git a/frameworks/native/services/surfaceflinger/Android.mk b/frameworks/native/services/surfaceflinger/Android.mk
+index ee24d27..4a131bd 100644
+--- a/frameworks/native/services/surfaceflinger/Android.mk
++++ b/frameworks/native/services/surfaceflinger/Android.mk
+@@ -48,6 +48,10 @@ ifeq ($(TARGET_DISABLE_TRIPLE_BUFFERING),true)
+ 	LOCAL_CFLAGS += -DTARGET_DISABLE_TRIPLE_BUFFERING
+ endif
+ 
++ifeq ($(BOARD_EGL_NEEDS_LEGACY_FB),true)
++  LOCAL_CFLAGS += -DBOARD_EGL_NEEDS_LEGACY_FB
++endif
++
+ ifneq ($(NUM_FRAMEBUFFER_SURFACE_BUFFERS),)
+   LOCAL_CFLAGS += -DNUM_FRAMEBUFFER_SURFACE_BUFFERS=$(NUM_FRAMEBUFFER_SURFACE_BUFFERS)
+ endif
 diff --git a/frameworks/native/services/surfaceflinger/DisplayDevice.cpp b/frameworks/native/services/surfaceflinger/DisplayDevice.cpp
-index 5fa513c..f75a508 100644
+index 5fa513c..69af894 100644
 --- a/frameworks/native/services/surfaceflinger/DisplayDevice.cpp
 +++ b/frameworks/native/services/surfaceflinger/DisplayDevice.cpp
 @@ -29,6 +29,10 @@
  
  #include <gui/Surface.h>
  
-+#ifdef EGL_NEEDS_FNW
++#ifdef BOARD_EGL_NEEDS_LEGACY_FB
 +#include <ui/FramebufferNativeWindow.h>
 +#endif
 +
@@ -529,7 +546,7 @@ index 5fa513c..f75a508 100644
        mOrientation()
  {
      mNativeWindow = new Surface(producer, false);
-+#ifndef EGL_NEEDS_FNW
++#ifndef BOARD_EGL_NEEDS_LEGACY_FB
      ANativeWindow* const window = mNativeWindow.get();
 +#else
 +    ANativeWindow* const window = new FramebufferNativeWindow();
@@ -537,6 +554,20 @@ index 5fa513c..f75a508 100644
  
      int format;
      window->query(window, NATIVE_WINDOW_FORMAT, &format);
+diff --git a/frameworks/native/services/surfaceflinger/DisplayHardware/HWComposer.cpp b/frameworks/native/services/surfaceflinger/DisplayHardware/HWComposer.cpp
+index f9e619c..fc8a0d1 100644
+--- a/frameworks/native/services/surfaceflinger/DisplayHardware/HWComposer.cpp
++++ b/frameworks/native/services/surfaceflinger/DisplayHardware/HWComposer.cpp
+@@ -628,7 +628,8 @@ void HWComposer::eventControl(int disp, int event, int enabled) {
+             break;
+         case EVENT_ORIENTATION:
+             // Orientation event
+-            err = mHwc->eventControl(mHwc, disp, event, enabled);
++            if (hwcHasApiVersion(mHwc, HWC_DEVICE_API_VERSION_1_0))
++                err = mHwc->eventControl(mHwc, disp, event, enabled);
+             break;
+         default:
+             ALOGW("eventControl got unexpected event %d (disp=%d en=%d)",
 diff --git a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp b/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
 index 529461e..7ae858e 100644
 --- a/frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp
