@@ -891,10 +891,10 @@ index 4be3c09..5397875 100644
              return NO_ERROR;
          } break;
 diff --git a/frameworks/av/media/libstagefright/ACodec.cpp b/frameworks/av/media/libstagefright/ACodec.cpp
-index 7315075..1907b17 100644
+index f315d04..9cff4f4 100644
 --- a/frameworks/av/media/libstagefright/ACodec.cpp
 +++ b/frameworks/av/media/libstagefright/ACodec.cpp
-@@ -578,8 +578,12 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
+@@ -582,8 +582,12 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,
@@ -907,7 +907,7 @@ index 7315075..1907b17 100644
  
      if (err != 0) {
          ALOGE("native_window_set_buffers_geometry failed: %s (%d)",
-@@ -1713,6 +1717,20 @@ status_t ACodec::setSupportedOutputFormat() {
+@@ -1717,6 +1721,20 @@ status_t ACodec::setSupportedOutputFormat() {
      CHECK_EQ(err, (status_t)OK);
      CHECK_EQ((int)format.eCompressionFormat, (int)OMX_VIDEO_CodingUnused);
  
@@ -929,10 +929,10 @@ index 7315075..1907b17 100644
              mNode, OMX_IndexParamVideoPortFormat,
              &format, sizeof(format));
 diff --git a/frameworks/av/media/libstagefright/CameraSource.cpp b/frameworks/av/media/libstagefright/CameraSource.cpp
-index ddb4c62..34f8117 100644
+index f139637..2bc1d62 100644
 --- a/frameworks/av/media/libstagefright/CameraSource.cpp
 +++ b/frameworks/av/media/libstagefright/CameraSource.cpp
-@@ -119,10 +119,16 @@ static int32_t getColorFormat(const char* colorFormat) {
+@@ -123,10 +123,16 @@ static int32_t getColorFormat(const char* colorFormat) {
      if (!strcmp(colorFormat, "OMX_TI_COLOR_FormatYUV420PackedSemiPlanar")) {
         return OMX_TI_COLOR_FormatYUV420PackedSemiPlanar;
      }
@@ -950,7 +950,7 @@ index ddb4c62..34f8117 100644
  
      ALOGE("Uknown color format (%s), please add it to "
           "CameraSource::getColorFormat", colorFormat);
-@@ -568,13 +574,22 @@ status_t CameraSource::initWithCameraAccess(
+@@ -572,13 +578,22 @@ status_t CameraSource::initWithCameraAccess(
  
      // XXX: query camera for the stride and slice height
      // when the capability becomes available.
@@ -993,10 +993,10 @@ index b5d4e44..2eb5c9e 100644
  const char *MEDIA_MIMETYPE_AUDIO_AMR_NB = "audio/3gpp";
  const char *MEDIA_MIMETYPE_AUDIO_AMR_WB = "audio/amr-wb";
 diff --git a/frameworks/av/media/libstagefright/OMXCodec.cpp b/frameworks/av/media/libstagefright/OMXCodec.cpp
-index e3546a7..29a89a7 100644
+index 9aa77fc..c0050da 100644
 --- a/frameworks/av/media/libstagefright/OMXCodec.cpp
 +++ b/frameworks/av/media/libstagefright/OMXCodec.cpp
-@@ -269,6 +269,20 @@ void OMXCodec::findMatchingCodecs(
+@@ -276,6 +276,20 @@ void OMXCodec::findMatchingCodecs(
      }
  }
  
@@ -1017,7 +1017,7 @@ index e3546a7..29a89a7 100644
  // static
  uint32_t OMXCodec::getComponentQuirks(
          const MediaCodecList *list, size_t index) {
-@@ -316,6 +330,12 @@ uint32_t OMXCodec::getComponentQuirks(
+@@ -323,6 +337,12 @@ uint32_t OMXCodec::getComponentQuirks(
        quirks |= kInputBufferSizesAreBogus;
      }
  #endif
@@ -1030,7 +1030,7 @@ index e3546a7..29a89a7 100644
  
      return quirks;
  }
-@@ -814,6 +834,9 @@ static size_t getFrameSize(
+@@ -821,6 +841,9 @@ static size_t getFrameSize(
          case OMX_COLOR_FormatYUV420Planar:
          case OMX_COLOR_FormatYUV420SemiPlanar:
          case OMX_TI_COLOR_FormatYUV420PackedSemiPlanar:
@@ -1040,7 +1040,7 @@ index e3546a7..29a89a7 100644
          /*
          * FIXME: For the Opaque color format, the frame size does not
          * need to be (w*h*3)/2. It just needs to
-@@ -1562,6 +1585,10 @@ void OMXCodec::setComponentRole(
+@@ -1569,6 +1592,10 @@ void OMXCodec::setComponentRole(
              "video_decoder.mpeg4", "video_encoder.mpeg4" },
          { MEDIA_MIMETYPE_VIDEO_H263,
              "video_decoder.h263", "video_encoder.h263" },
@@ -1051,7 +1051,7 @@ index e3546a7..29a89a7 100644
          { MEDIA_MIMETYPE_VIDEO_VP8,
              "video_decoder.vp8", "video_encoder.vp8" },
          { MEDIA_MIMETYPE_VIDEO_VP9,
-@@ -1641,6 +1668,16 @@ status_t OMXCodec::init() {
+@@ -1648,6 +1675,16 @@ status_t OMXCodec::init() {
      CHECK_EQ((int)mState, (int)LOADED);
  
      status_t err;
@@ -1068,7 +1068,7 @@ index e3546a7..29a89a7 100644
      if (!(mQuirks & kRequiresLoadedToIdleAfterAllocation)) {
          err = mOMX->sendCommand(mNode, OMX_CommandStateSet, OMX_StateIdle);
          CHECK_EQ(err, (status_t)OK);
-@@ -1696,7 +1733,12 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
+@@ -1703,7 +1740,12 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
      }
  
      status_t err = OK;
@@ -1081,7 +1081,7 @@ index e3546a7..29a89a7 100644
              && portIndex == kPortIndexInput) {
          err = mOMX->storeMetaDataInBuffers(mNode, kPortIndexInput, OMX_TRUE);
          if (err != OK) {
-@@ -1896,7 +1938,11 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
+@@ -1903,7 +1945,11 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,
@@ -1093,7 +1093,7 @@ index e3546a7..29a89a7 100644
  #else
      OMX_COLOR_FORMATTYPE eColorFormat;
  
-@@ -4342,6 +4388,9 @@ static const char *videoCompressionFormatString(OMX_VIDEO_CODINGTYPE type) {
+@@ -4349,6 +4395,9 @@ static const char *videoCompressionFormatString(OMX_VIDEO_CODINGTYPE type) {
          "OMX_VIDEO_CodingRV",
          "OMX_VIDEO_CodingAVC",
          "OMX_VIDEO_CodingMJPEG",
