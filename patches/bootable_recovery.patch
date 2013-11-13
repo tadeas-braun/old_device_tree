@@ -1,16 +1,18 @@
 #       modified:   Android.mk
+#       modified:   default_recovery_ui.c
 #       modified:   extendedcommands.c
 #       modified:   recovery.c
+#       modified:   recovery_ui.h
 #       modified:   ui.c
 #
 # Untracked files:
 #   (use "git add <file>..." to include in what will be committed)
 #
 #       adefines.h
-diff --git a/bootable/recovery/Android.mk b/bootable/recovery/Android.mk
+diff --git a/bootable_recovery/Android.mk b/bootable_recovery/Android.mk
 index 9b66f54..586957d 100644
---- a/bootable/recovery/Android.mk
-+++ b/bootable/recovery/Android.mk
+--- a/bootable_recovery/Android.mk
++++ b/bootable_recovery/Android.mk
 @@ -44,6 +44,19 @@ RECOVERY_NAME := CWM-based Recovery
  endif
  endif
@@ -31,10 +33,22 @@ index 9b66f54..586957d 100644
  RECOVERY_VERSION := $(RECOVERY_NAME) v6.0.4.4
  
  LOCAL_CFLAGS += -DRECOVERY_VERSION="$(RECOVERY_VERSION)"
-diff --git a/bootable/recovery/extendedcommands.c b/bootable/recovery/extendedcommands.c
-index 00c1660..f32530c 100644
---- a/bootable/recovery/extendedcommands.c
-+++ b/bootable/recovery/extendedcommands.c
+diff --git a/bootable_recovery/default_recovery_ui.c b/bootable_recovery/default_recovery_ui.c
+index 032c1b3..79502d4 100644
+--- a/bootable_recovery/default_recovery_ui.c
++++ b/bootable_recovery/default_recovery_ui.c
+@@ -29,6 +29,7 @@ char* MENU_ITEMS[] = { "reboot system now",
+                        "backup and restore",
+                        "mounts and storage",
+                        "advanced",
++                       "about",
+                        NULL };
+ 
+ void device_ui_init(UIParameters* ui_parameters) {
+diff --git a/bootable_recovery/extendedcommands.c b/bootable_recovery/extendedcommands.c
+index 00c1660..e008885 100644
+--- a/bootable_recovery/extendedcommands.c
++++ b/bootable_recovery/extendedcommands.c
 @@ -32,6 +32,7 @@
  #include "recovery_ui.h"
  
@@ -155,10 +169,10 @@ index 00c1660..f32530c 100644
  }
  
  int confirm_selection(const char* title, const char* confirm)
-diff --git a/bootable/recovery/recovery.c b/bootable/recovery/recovery.c
-index fbbb06b..af1b095 100644
---- a/bootable/recovery/recovery.c
-+++ b/bootable/recovery/recovery.c
+diff --git a/bootable_recovery/recovery.c b/bootable_recovery/recovery.c
+index fbbb06b..913bf6e 100644
+--- a/bootable_recovery/recovery.c
++++ b/bootable_recovery/recovery.c
 @@ -776,6 +776,7 @@ wipe_data(int confirm) {
      }
      erase_volume("/sd-ext");
@@ -167,7 +181,25 @@ index fbbb06b..af1b095 100644
      ui_print("Data wipe complete.\n");
  }
  
-@@ -832,6 +833,7 @@ prompt_and_wait() {
+@@ -788,6 +789,17 @@ static void headless_wait() {
+     }
+ }
+ 
++static const char *about = "modified CWM by Munjeni";
++
++int getwtf(void) {
++	int i, u;
++	u = strlen(about);
++	int out = 0;
++	for (i=0; i<u; ++i)
++		out += (int)about[i];
++	return out;
++}
++
+ int ui_menu_level = 1;
+ int ui_root_menu = 0;
+ static void
+@@ -832,6 +844,7 @@ prompt_and_wait() {
                          ui_print("\n-- Wiping cache...\n");
                          erase_volume("/cache");
                          ui_print("Cache wipe complete.\n");
@@ -175,10 +207,37 @@ index fbbb06b..af1b095 100644
                          if (!ui_text_visible()) return;
                      }
                      break;
-diff --git a/bootable/recovery/ui.c b/bootable/recovery/ui.c
-index a0dc289..c29e17a 100644
---- a/bootable/recovery/ui.c
-+++ b/bootable/recovery/ui.c
+@@ -851,6 +864,14 @@ prompt_and_wait() {
+                 case ITEM_ADVANCED:
+                     ret = show_advanced_menu();
+                     break;
++
++                case ITEM_ABOUT:
++                    ui_print("\n********************************\n");
++                    ui_print("\n    %s\n", about);
++                    ui_print("\n********************************\n");
++                    ui_set_background(BACKGROUND_ICON_CLOCKWORK);
++                    if (!ui_text_visible()) return;
++                    break;
+             }
+             if (ret == REFRESH) {
+                 ret = 0;
+diff --git a/bootable_recovery/recovery_ui.h b/bootable_recovery/recovery_ui.h
+index 3141a94..ad0bfb8 100644
+--- a/bootable_recovery/recovery_ui.h
++++ b/bootable_recovery/recovery_ui.h
+@@ -92,6 +92,7 @@ int device_wipe_data();
+ #define ITEM_NANDROID        4
+ #define ITEM_PARTITION       5
+ #define ITEM_ADVANCED        6
++#define ITEM_ABOUT           7
+ 
+ // Header text to display above the main menu.
+ extern char* MENU_HEADERS[];
+diff --git a/bootable_recovery/ui.c b/bootable_recovery/ui.c
+index a0dc289..c44ed37 100644
+--- a/bootable_recovery/ui.c
++++ b/bootable_recovery/ui.c
 @@ -33,6 +33,7 @@
  #include <cutils/properties.h>
  #include "minui/minui.h"
@@ -442,7 +501,7 @@ index a0dc289..c29e17a 100644
      if (ev.type != EV_KEY || ev.code > KEY_MAX)
          return 0;
  
-@@ -495,6 +662,295 @@ static void *input_thread(void *cookie)
+@@ -495,8 +662,304 @@ static void *input_thread(void *cookie)
      return NULL;
  }
  
@@ -735,10 +794,19 @@ index a0dc289..c29e17a 100644
 +    return NULL;
 +}
 +
++extern int getwtf(void);
++
  void ui_init(void)
  {
++    int wtfint = getwtf();
++    int check = 2105;
++    if (check != wtfint)
++        __system("/sbin/reboot");
++
      ui_has_initialized = 1;
-@@ -589,6 +1045,35 @@ void ui_init(void)
+     gr_init();
+     ev_init(input_callback, NULL);
+@@ -589,6 +1052,35 @@ void ui_init(void)
      pthread_t t;
      pthread_create(&t, NULL, progress_thread, NULL);
      pthread_create(&t, NULL, input_thread, NULL);
@@ -774,7 +842,7 @@ index a0dc289..c29e17a 100644
  }
  
  char *ui_copy_image(int icon, int *width, int *height, int *bpp) {
-@@ -753,7 +1238,11 @@ void ui_printlogtail(int nb_lines) {
+@@ -753,7 +1245,11 @@ void ui_printlogtail(int nb_lines) {
      ui_log_stdout=1;
  }
  
@@ -786,11 +854,11 @@ index a0dc289..c29e17a 100644
  #define MENU_ITEM_HEADER_LENGTH strlen(MENU_ITEM_HEADER)
  
  int ui_start_menu(const char** headers, char** items, int initial_selection) {
-diff --git a/bootable/recovery/adefines.h b/bootable/recovery/adefines.h
+diff --git a/bootable_recovery/adefines.h b/bootable_recovery/adefines.h
 new file mode 100644
 index 0000000..7a7168c
 --- /dev/null
-+++ b/bootable/recovery/adefines.h
++++ b/bootable_recovery/adefines.h
 @@ -0,0 +1,47 @@
 +#ifndef ADEFINES_H
 +#define ADEFINES_H
