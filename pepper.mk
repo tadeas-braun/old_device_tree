@@ -163,7 +163,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/10hostapd:system/etc/init.d/10hostapd \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel \
     $(LOCAL_PATH)/prebuilt/system/media/LMprec_508.emd:system/media/LMprec_508.emd \
-    $(LOCAL_PATH)/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd
+    $(LOCAL_PATH)/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd \
+    $(LOCAL_PATH)/prebuilt/system/omxloaders:system/omxloaders
 
 # Custom init / uevent
 PRODUCT_COPY_FILES += \
