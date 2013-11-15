@@ -188,8 +188,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/ste_modem.sh:system/etc/ste_modem.sh
 
 # WiFi config utility
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/system/bin/iw:system/bin/iw \
+PRODUCT_PACKAGES += \
+    iw
 
 # GPS
 PRODUCT_COPY_FILES += \
