@@ -46,7 +46,7 @@ index 032c1b3..79502d4 100644
  
  void device_ui_init(UIParameters* ui_parameters) {
 diff --git a/bootable/recovery/extendedcommands.c b/bootable/recovery/extendedcommands.c
-index 00c1660..ba1b0b5 100644
+index 00c1660..0804941 100644
 --- a/bootable/recovery/extendedcommands.c
 +++ b/bootable/recovery/extendedcommands.c
 @@ -32,6 +32,7 @@
@@ -193,11 +193,11 @@ index 00c1660..ba1b0b5 100644
 +        switch (action) {
 +            case HIGHLIGHT_UP:
 +                time_adj += 1;
-+                ui_print("time zone %d\n", time_adj);
++                ui_print("time zone + (%d)\n", time_adj);
 +                break;
 +            case HIGHLIGHT_DOWN:
 +                time_adj -= 1;
-+                ui_print("time zone %d\n", time_adj);
++                ui_print("time zone - (%d)\n", time_adj);
 +                break;
 +            default:
 +                break;
@@ -307,7 +307,7 @@ index 3141a94..984df62 100644
  // Header text to display above the main menu.
  extern char* MENU_HEADERS[];
 diff --git a/bootable/recovery/ui.c b/bootable/recovery/ui.c
-index a0dc289..56c3ab4 100644
+index a0dc289..93bae82 100644
 --- a/bootable/recovery/ui.c
 +++ b/bootable/recovery/ui.c
 @@ -33,6 +33,7 @@
@@ -573,7 +573,7 @@ index a0dc289..56c3ab4 100644
      if (ev.type != EV_KEY || ev.code > KEY_MAX)
          return 0;
  
-@@ -495,8 +662,330 @@ static void *input_thread(void *cookie)
+@@ -495,8 +662,331 @@ static void *input_thread(void *cookie)
      return NULL;
  }
  
@@ -768,6 +768,7 @@ index a0dc289..56c3ab4 100644
 +    if (!minute) minute = 1;
 +
 +    hour += time_zone;
++    if (hour > 25) hour = 25;
 +
 +    int level = get_battery_level();
 +    if (!level) level = 1;
@@ -904,7 +905,7 @@ index a0dc289..56c3ab4 100644
      ui_has_initialized = 1;
      gr_init();
      ev_init(input_callback, NULL);
-@@ -589,6 +1078,35 @@ void ui_init(void)
+@@ -589,6 +1079,35 @@ void ui_init(void)
      pthread_t t;
      pthread_create(&t, NULL, progress_thread, NULL);
      pthread_create(&t, NULL, input_thread, NULL);
@@ -940,7 +941,7 @@ index a0dc289..56c3ab4 100644
  }
  
  char *ui_copy_image(int icon, int *width, int *height, int *bpp) {
-@@ -753,7 +1271,11 @@ void ui_printlogtail(int nb_lines) {
+@@ -753,7 +1272,11 @@ void ui_printlogtail(int nb_lines) {
      ui_log_stdout=1;
  }
  
