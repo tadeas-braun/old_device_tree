@@ -86,7 +86,6 @@ BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 
 # cwm specific
-<<<<<<< HEAD
 RECOVERY_NAME := CWM-pepper
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/pepper/recovery/recovery-keys.c
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"lucidaconsole_10x18.h\"
