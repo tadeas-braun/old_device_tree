@@ -37,7 +37,9 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/sony/lotus/hardware/blueto
 # Audio
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := true
-BOARD_USE_TINYALSA_AUDIO := true
+COMMON_GLOBAL_CFLAGS += -DSTE_AUDIO
+# hack for audio
+COMMON_GLOBAL_CFLAGS += -DMR0_AUDIO_BLOB
 # seems needed for sink latency
 BOARD_USES_LIBMEDIA_WITH_AUDIOPARAMETER := true
 
@@ -86,7 +88,7 @@ BOARD_HAS_NO_MISC_PARTITION := true
 # cwm specific
 RECOVERY_NAME := CWM-Lotus
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/lotus/recovery/recovery-keys.c
-BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
+BOARD_USE_CUSTOM_RECOVERY_FONT := \"lucidaconsole_10x18.h\"
 TARGET_RECOVERY_FSTAB = device/sony/lotus/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
 

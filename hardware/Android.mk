@@ -323,37 +323,4 @@ LOCAL_SHARED_LIBRARIES := libnl
 LOCAL_MODULE:=iw
 include $(BUILD_EXECUTABLE)
 
-# Copyright (C) 2012 Paul Kocialkowski <contact@paulk.fr>
-#
-include $(CLEAR_VARS)
-SRC := audio
-LOCAL_SRC_FILES := \
-    ${SRC}/audio_hw.c \
-    ${SRC}/audio_out.c \
-    ${SRC}/audio_in.c \
-    ${SRC}/audio_ril_interface.c \
-    ${SRC}/mixer.c
-
-LOCAL_C_INCLUDES += \
-	external/tinyalsa/include \
-	external/expat/lib \
-	system/media/audio_utils/include \
-	system/media/audio_effects/include \
-	hardware/tinyalsa-audio/include
-
-LOCAL_SHARED_LIBRARIES := \
-	libc \
-	libcutils \
-	libutils \
-	libexpat \
-	libtinyalsa \
-	libaudioutils \
-	libdl
-
-LOCAL_PRELINK_MODULE := false
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE := audio.primary.$(TARGET_BOARD_PLATFORM)
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
-include $(BUILD_SHARED_LIBRARY)
-
 endif # BOARD_USES_STE_HARDWARE
