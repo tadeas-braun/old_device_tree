@@ -1,0 +1,112 @@
+<tinyalsa-audio device="lotus">
+	<output card="0" device="0" rate="48000" channels="2" format="PCM_16" period_size="1024" period_count="4">
+		<device type="default">
+			<path type="enable">
+				<ctrl name="IHF Master Gain Playback Volume" value="63" />
+				<ctrl name="IHF Digital Gain Playback Volume" value="15" />
+			</path>
+		</device>
+		<device type="earpiece">
+			<path type="enable">               
+				<ctrl name="Headset Master Gain Playback Volume" value="40" />
+				<ctrl name="Earpiece" value="Enabled" />
+			</path>
+			<path type="disable">                             
+				<ctrl name="Headset Master Gain Playback Volume" value="0" />
+				<ctrl name="Earpiece" value="Disabled" />
+			</path>
+		</device>
+		<device type="speaker">
+			<path type="enable">
+				<ctrl name="IHF Master Gain Playback Volume" value="63" />
+				<ctrl name="IHF Digital Gain Playback Volume" value="15" />
+				<ctrl name="IHF Right" value="Enabled" />
+			</path>
+			<path type="disable">
+				<ctrl name="IHF Master Gain Playback Volume" value="0" />
+				<ctrl name="IHF Digital Gain Playback Volume" value="0" />
+				<ctrl name="IHF Right" value="Disabled" />
+			</path>
+		</device>
+		<device type="wired-headphone">
+			<path type="enable">             
+				<ctrl name="Headset Master Gain Playback Volume" value="57" />
+				<ctrl name="Headset Gain Playback Volume" value="10" />
+				<ctrl name="Headset Right" value="Enabled" />
+				<ctrl name="Headset Left" value="Enabled" />
+			</path>
+			<path type="disable">                           
+				<ctrl name="Headset Master Gain Playback Volume" value="0" />
+				<ctrl name="Headset Gain Playback Volume" value="0" />
+				<ctrl name="Headset Right" value="Disabled" />
+				<ctrl name="Headset Left" value="Disabled" />
+			</path>
+		</device>
+		<device type="wired-headset">
+			<path type="enable">
+				<ctrl name="Headset Master Gain Playback Volume" value="57" />
+				<ctrl name="Headset Gain Playback Volume" value="10" />
+				<ctrl name="Headset Right" value="Enabled" />
+				<ctrl name="Headset Left" value="Enabled" />
+			</path>
+			<path type="disable">
+				<ctrl name="Headset Master Gain Playback Volume" value="0" />
+				<ctrl name="Headset Gain Playback Volume" value="0" />
+				<ctrl name="Headset Right" value="Disabled" />
+				<ctrl name="Headset Left" value="Disabled" />
+			</path>
+		</device>
+	</output>
+	
+  <input card="0" device="1" rate="8000" channels="1" format="PCM_16" period_size="1024" period_count="4">
+		<device type="builtin-mic">
+			<path type="enable">
+				<ctrl name="Headset Low Power Playback Switch" value="Disabled" />
+				<ctrl name="Headset DAC Low Power Playback Switch" value="Disabled" />
+				<ctrl name="Headset DAC Drv Low Power Playback Switch" value="Disabled" />
+				<ctrl name="Charge Pump Envelope Detection" value="Disabled" />
+				<ctrl name="Charge Pump Envelope Detection Decay Time" value="26.6us" />
+				<ctrl name="LineIn Master Gain Capture Volume" value="32" />
+				<ctrl name="Mic Master Gain Capture Volume" value="60" />
+				<ctrl name="Headset Master Gain Playback Volume" value="61" />
+				<ctrl name="Headset Digital Gain Playback Volume" value="9" />
+				<ctrl name="Mic 1 Capture Volume" value="30" />
+				<ctrl name="Mic 2 Capture Volume" value="26" />
+				<ctrl name="Digital Interface Master Generator Switch" value="Enabled" />
+				<ctrl name="Digital Interface AD To Slot 0 Map" value="AD_OUT2" />
+				<ctrl name="Digital Interface AD To Slot 1 Map" value="AD_OUT2" />
+				<ctrl name="Mic 1A or 1B Select Capture Route" value="Mic 1A" />
+				<ctrl name="Mic 2 or LINR Select Capture Route" value="Mic 2" />
+				<ctrl name="Mic 2" value="Enabled" />
+				<ctrl name="IHF or LineOut Select" value="LineOut" />
+			</path>
+			<path type="disable">
+				<ctrl name="Headset Low Power Playback Switch" value="Enabled" />
+				<ctrl name="Headset DAC Low Power Playback Switch" value="Enabled" />
+				<ctrl name="Headset DAC Drv Low Power Playback Switch" value="Enabled" />
+				<ctrl name="Charge Pump Envelope Detection" value="Enabled" />
+				<ctrl name="Charge Pump Envelope Detection Decay Time" value="426us" />
+				<ctrl name="Mic Master Gain Capture Volume" value="0" />
+				<ctrl name="Headset Master Gain Playback Volume" value="0" />
+				<ctrl name="Headset Digital Gain Playback Volume" value="0" />
+				<ctrl name="Mic 1 Capture Volume" value="15" />
+				<ctrl name="Mic 2 Capture Volume" value="15" />
+				<ctrl name="Digital Interface Master Generator Switch" value="Disabled" />
+				<ctrl name="Mic 1A or 1B Select Capture Route" value="Mic 1B" />
+				<ctrl name="Mic 2 or LINR Select Capture Route" value="LineIn Right" />
+				<ctrl name="Mic 2" value="Disabled" />
+				<ctrl name="IHF or LineOut Select" value="IHF" />
+			</path>
+		</device>
+		<device type="wired-headset">
+			<path type="enable">
+				<ctrl name="Mic 2" value="Enabled" />
+			</path>
+			<path type="disable">
+				<ctrl name="Mic 2" value="Disabled" />
+			</path>
+		</device>
+	</input>
+</tinyalsa-audio>
+
+

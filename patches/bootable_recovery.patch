@@ -717,10 +717,10 @@ index a0dc289..16c125c 100644
 +        level = 1;
 +
 +    if (charging_usb || charging_ac) {
-+        if (level <= 95) {
++        if (level <= 90) {
 +            status = command_update_leds(RED_LED_FILE, val);
 +            status = command_update_leds(GREEN_LED_FILE, val_off);
-+        } else if (level > 95 && level != 100) {
++        } else if (level > 90 && level != 100) {
 +            status = command_update_leds(RED_LED_FILE, val_thin);
 +            status = command_update_leds(GREEN_LED_FILE, val_thin);
 +        } else  {

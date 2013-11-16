@@ -123,7 +123,12 @@ PRODUCT_PACKAGES += \
     tinyalsa \
     libtinyalsa \
     audio_policy.default \
+    audio.primary.montblanc \
     audio.usb.default
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/system/etc/tinyalsa-audio.xml:system/etc/tinyalsa-audio.xml \
+    $(LOCAL_PATH)/prebuilt/system/etc/audio_policy.conf:system/etc/audio_policy.conf
 
 # Permissions
 PRODUCT_COPY_FILES += \
