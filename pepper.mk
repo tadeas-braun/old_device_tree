@@ -26,9 +26,6 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     setup_fs
 
-#512MB ram devices(https://source.android.com/devices/low-ram.html)
-PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
-
 # Hostapd
 PRODUCT_PACKAGES += \
     hostapd_cli \
@@ -166,8 +163,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/10hostapd:system/etc/init.d/10hostapd \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel \
     $(LOCAL_PATH)/prebuilt/system/media/LMprec_508.emd:system/media/LMprec_508.emd \
-    $(LOCAL_PATH)/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd \
-    $(LOCAL_PATH)/prebuilt/system/omxloaders:system/omxloaders
+    $(LOCAL_PATH)/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd
 
 # Custom init / uevent
 PRODUCT_COPY_FILES += \
@@ -304,3 +300,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp \
     wifi.interface=wlan0 \
     ro.sf.lcd_density=240
+
+#512MB ram devices(https://source.android.com/devices/low-ram.html)
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.low_ram=true
+
