@@ -26,9 +26,6 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     setup_fs
 
-#512MB ram devices(https://source.android.com/devices/low-ram.html)
-PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true
-
 # Hostapd
 PRODUCT_PACKAGES += \
     hostapd_cli \
@@ -281,3 +278,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp \
     wifi.interface=wlan0 \
     ro.sf.lcd_density=160
+
+#512MB ram devices(https://source.android.com/devices/low-ram.html)
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.low_ram=true
