@@ -57,6 +57,9 @@ USE_OPENGL_RENDERER := true
 BOARD_EGL_CFG := device/sony/lotus/prebuilt/system/lib/egl/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
 
+# libutils backward compatibility for hals
+COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+
 # jb camera
 COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
 
