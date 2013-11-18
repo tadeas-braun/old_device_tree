@@ -38,13 +38,6 @@ ro.telephony.call_ring.multiple=false
 ro.semc.product.user_storage=emmc_only
 ro.build.characteristics=nosdcard
 
-# NFC
-ro.nfc.on.default=false
-ro.nfc.se.sim.enable=true
-ro.nfc.se.smx.enable=false
-ro.nfc.icon.enable=true
-ro.nfc.vendor.name=nxp
-
 #STE: Hardware video codecs configuration
 ste.video.dec.mpeg4.in.size=8192
 ste.video.enc.out.buffercnt=5
