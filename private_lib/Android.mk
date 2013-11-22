@@ -57,7 +57,7 @@ INCLUDES = $(WPA_SUPPL_DIR) \
 include $(CLEAR_VARS)
 LOCAL_MODULE := private_lib_nl80211_cmd
 LOCAL_MODULE_TAGS := eng
-LOCAL_SHARED_LIBRARIES := libc libcutils libnl
+LOCAL_SHARED_LIBRARIES := libc libcutils libnl_2
 LOCAL_CFLAGS := $(L_CFLAGS)
 LOCAL_SRC_FILES := $(L_SRC)
 LOCAL_C_INCLUDES := $(INCLUDES)

@@ -33,7 +33,7 @@ PRODUCT_PACKAGES += \
 
 # Netlink
 PRODUCT_PACKAGES += \
-    libnl
+    libnl_2
 
 # Dbus
 PRODUCT_PACKAGES += \
