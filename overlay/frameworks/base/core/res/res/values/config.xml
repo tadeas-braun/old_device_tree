@@ -196,8 +196,5 @@
 
     <!-- Disable lockscreen translucent decor by default -->
     <bool name="config_enableLockScreenTranslucentDecor">true</bool>
-   
-    <!-- Disable homescreen translucent decor by default -->
-    <bool name="config_enableTranslucentDecor">true</bool>
 
 </resources>
