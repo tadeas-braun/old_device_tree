@@ -185,22 +185,30 @@ on post-fs-data
     # Create directory for STE OMX debug logs
     mkdir /data/ste-debug 0777 root root
 
+    ### WIFI THINGS ###
     # give system access to wpa_supplicant.conf for backup and restore
-    mkdir /data/misc/wifi 0770 system wifi
+    mkdir /data/misc/wifi 0770 wifi wifi
+
     # CTRL_IFACE_CLIENT_DIR
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
-    # CTRL_IFACE_DIR
-    mkdir /data/system/wpa_supplicant 0770 wifi wifi
 
-    chmod 0770 /data/misc/wifi/wpa_supplicant.conf
+    # CTRL_IFACE_DIR
+    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
 
     # Setup paths used for socket communication with the wpa supplicant.
     mkdir /data/system 0775 system system
     chown system system /data/system
 
+    # Create the symlink to wpa_supplicant folder for wpa_supplicant
+    symlink /data/misc/wifi/wpa_supplicant /data/system/wpa_supplicant
+
+    # is needed ?
+    mkdir /data/misc/wifi/hostap 0770 wifi wifi
+
     # Setup paths used for socket communication with the dhcp daemon(dhcpd)
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
+    ### WIFI THINGS END ###
 
     # STE: Modem Log Relay runs as system
     chown system system /dev/db8500-modem-trace
