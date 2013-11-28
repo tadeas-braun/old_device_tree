@@ -14,7 +14,7 @@ Getting Started :
     git clone https://github.com/munjeni/aosp_4.3_device_sony_lotus.git -b cm-11.0 lotus
     cd lotus
 
-Now connect your phone which have runing FXP CM10 :
+Now connect your phone which have runing CM11 :
 
     ./extract-files.sh
     cd ../../..
