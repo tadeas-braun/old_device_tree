@@ -282,4 +282,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 #512MB ram devices(https://source.android.com/devices/low-ram.html)
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.config.low_ram=true
+    ro.config.low_ram=false
