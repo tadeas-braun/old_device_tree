@@ -471,7 +471,7 @@ service lbsd /system/bin/lbsd
 service p2p_supplicant /system/bin/wpa_supplicant \
     -Dnl80211 -iwlan0 -c/system/etc/wifi/wpa_supplicant.conf \
     -O/data/misc/wifi/sockets \
-#    -N -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
+    -N -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
     -puse_p2p_group_interface=1 \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0 -ddd
     user root
