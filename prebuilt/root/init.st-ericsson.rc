@@ -209,10 +209,10 @@ on post-fs-data
     mkdir /data/system 0775 system system
     chown system system /data/system
 
-    # is needed ?
-    mkdir /data/misc/wifi/hostapd 0770 wifi wifi
-    chmod 0770 /data/misc/wifi/hostapd
-    chown wifi wifi /data/misc/wifi/hostapd
+    # if needed
+    #mkdir /data/misc/wifi/hostapd 0770 wifi wifi
+    #chmod 0770 /data/misc/wifi/hostapd
+    #chown wifi wifi /data/misc/wifi/hostapd
 
     # Setup paths used for socket communication with the dhcp daemon(dhcpd)
     mkdir /data/misc/dhcp 0770 dhcp dhcp
@@ -325,10 +325,6 @@ on boot
     # Permissions for LM3560 flash LED
     chown system system /sys/bus/i2c/devices/2-0053/privacy_enable
     chown system system /sys/bus/i2c/devices/2-0053/privacy_current
-
-    # NFC
-    chown nfc nfc /dev/pn544
-    chmod 0600 /dev/pn544
 
     # SEMC: USB Host support
     mkdir /dev/bus/ 0711 system system
@@ -469,9 +465,8 @@ service lbsd /system/bin/lbsd
     disabled
 
 service p2p_supplicant /system/bin/wpa_supplicant \
-    -Dnl80211 -iwlan0 -c/system/etc/wifi/wpa_supplicant.conf \
+    -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf \
     -O/data/misc/wifi/sockets \
-    -N -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
     -puse_p2p_group_interface=1 \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0 -ddd
     class main
@@ -481,7 +476,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
     oneshot
 
 service wpa_supplicant /system/bin/wpa_supplicant \
-    -Dnl80211 -iwlan0 -c/system/etc/wifi/wpa_supplicant.conf \
+    -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf \
     -O/data/misc/wifi/sockets \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0 -ddd
     class main
@@ -502,11 +497,11 @@ service dhcpcd_wlan0 /system/bin/dhcpcd -aABDKL
     disabled
     oneshot
 
-#service dhcpcd_p2p /system/bin/dhcpcd -aABKL
-#    class main
-#    group dhcp
-#    disabled
-#    oneshot
+service dhcpcd_p2p /system/bin/dhcpcd -aABKL
+    class main
+    group dhcp
+    disabled
+    oneshot
 
 service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
     class main
@@ -518,10 +513,10 @@ service iprenew_wlan0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-#service iprenew_p2p /system/bin/dhcpcd -n
-#    class main
-#    disabled
-#    oneshot
+service iprenew_p2p /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
 
 service iprenew_bnep0 /system/bin/dhcpcd -n
     class main
@@ -543,7 +538,7 @@ service initial_regdom /system/bin/iw reg set US
 on property:wlan.driver.status=ok
     start initial_regdom
 
-on property:init.svc.wpa_supplicant=stopped
+on property:init.svc.p2p_supplicant=stopped
     start initial_regdom
     stop dhcpcd
     start dhcpcd_fix

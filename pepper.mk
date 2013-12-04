@@ -144,6 +144,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+    frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml
@@ -162,8 +163,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/01stesetup:system/etc/init.d/01stesetup \
-    $(LOCAL_PATH)/prebuilt/system/etc/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
-    $(LOCAL_PATH)/prebuilt/system/etc/init.d/10hostapd:system/etc/init.d/10hostapd \
+    $(LOCAL_PATH)/prebuilt/system/etc/init.d/10wireless:system/etc/init.d/10wireless \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel \
     $(LOCAL_PATH)/prebuilt/system/media/LMprec_508.emd:system/media/LMprec_508.emd \
     $(LOCAL_PATH)/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd
