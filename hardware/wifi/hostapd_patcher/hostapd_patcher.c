@@ -21,7 +21,7 @@
 #define ENC_WPA  1 
 #define ENC_WPA2 4 
 
-int main(void) {
+static void patch_hostapd(void) {
 	FILE* pFile;
 	char *ssidBuffer, *passBuffer;
 	unsigned short int ssidLen, encType, passLen;
@@ -96,8 +96,6 @@ int main(void) {
 		ALOGV("Password is: %s\n", passBuffer);
 	}
 
-// be continued :)
-
 free_done:
 	free(ssidBuffer);
 	if (encType && passLen)
@@ -107,5 +105,48 @@ fail_done:
 	fclose(pFile);
 
 done:
+	return;
+}
+
+int main(void) {
+	/*
+	 * driver=nl80211
+	 * logger_syslog=-1
+	 * logger_syslog_level=2
+	 * logger_stdout=-1
+	 * logger_stdout_level=2
+	 * dump_file=/data/misc/wifi/hostapd.dump
+	 * ctrl_interface=wlan0
+	 * ctrl_interface_group=0
+	 * hw_mode=g
+	 * channel=11
+	 * beacon_int=100
+	 * dtim_period=2
+	 * max_num_sta=5
+	 * supported_rates=10 20 55 110 60 90 120 180 240 360 480 540
+	 * preamble=1
+	 * macaddr_acl=0
+	 * auth_algs=1
+	 * ignore_broadcast_ssid=0
+	 * wme_enabled=0
+	 * eap_server=0
+	 * own_ip_addr=127.0.0.1
+	 * interface=wlan0
+	 * ap_table_max_size=255
+	 * ap_table_expiration_time=3600
+	 * tx_queue_data2_aifs=2
+	 * tx_queue_data2_cwmin=15
+	 * tx_queue_data2_cwmax=63
+	 * tx_queue_data2_burst=0
+	 * # from this line we need to generate next lines
+	 * # by hostapdpatcher into hostapd_xperia.conf
+	 * ssid=AndroidAP
+	 * wpa=1
+	 * wpa_passphrase=myhomelanpass
+	 * wpa_key_mgmt=WPA-PSK
+	 * wpa_pairwise=CCMP
+	 */
+	ALOGV("be continued :)\n");
+
 	return 0;
 }
