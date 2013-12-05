@@ -216,7 +216,7 @@ LOCAL_SRC_FILES := \
     ${SRC}/android-nl.c
 
 LOCAL_C_INCLUDES := \
-	$(SRC)/iw_util \
+	$(LOCAL_PATH)/wifi/iw_util \
 	external/libnl-headers
 
 LOCAL_CFLAGS := -O2 -g -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs
