@@ -485,7 +485,12 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
-service hostapd_bin /system/bin/hostapd -d /data/misc/wifi/hostapd.conf
+service hostapd_fix /system/bin/hostapdpatcher
+    group wifi
+    disabled
+    oneshot
+
+service hostapd_bin /system/bin/hostapd -d /data/misc/wifi/hostapd_xperia.conf
     class main
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
@@ -540,10 +545,11 @@ on property:wlan.driver.status=ok
 
 on property:init.svc.p2p_supplicant=stopped
     start initial_regdom
-    stop dhcpcd
-    start dhcpcd_fix
 
-on property:init.svc.dhcpcd=stopped
+on property:init.svc.wpa_supplicant=stopped
+    start initial_regdom
+
+on property:init.svc.dhcpcd_wlan0=stopped
     stop dhcpcd
     start dhcpcd_fix
 
@@ -553,6 +559,14 @@ on property:dhcp.wlan0.result=ok
 # delete tethered interface
 on property:init.svc.hostapd_bin=stopped
     exec /system/bin/iw dev mon.wlan0 del
+    exec /system/bin/netcfg wlan0 down
+    start hostapd_fix
+    stop hostapd_fix
+
+# restart hostapd to load (if) new user configuration
+on property init.svc.hostapd_bin=running
+    stop hostapd_bin
+    start hostapd_bin
 
 # STE, C&N service daemon
 service cn_server /system/bin/cn_server

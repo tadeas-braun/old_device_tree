@@ -236,6 +236,7 @@ LOCAL_CFLAGS := -O2 -g -Wall -Wundef -Werror-implicit-function-declaration
 LOCAL_MODULE_PATH := $(TARGET_OUT_EXECUTABLES)
 LOCAL_MODULE_TAGS := optional
 LOCAL_SHARED_LIBRARIES := liblog
+LOCAL_STATIC_LIBRARIES := libcrecovery
 LOCAL_MODULE:=hostapdpatcher
 include $(BUILD_EXECUTABLE)
 
