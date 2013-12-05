@@ -16,7 +16,7 @@
 #include <sys/types.h>
 
 #define SOFTAP_CONF "/data/misc/wifi/softap.conf"
-#define SOFTAP_CONF_NEW "/data/misc/wifi/hostapd_xperia.conf"
+#define HOSTAPD_CONF_NEW "/data/misc/wifi/hostapd_xperia.conf"
 
 #define ENC_NONE 0 
 #define ENC_WPA  1 
@@ -79,8 +79,8 @@ int main(void) {
 		goto done;
 	}
 
-	if ((pFileOut = fopen(SOFTAP_CONF_NEW, "w")) == NULL) {
-		ALOGE("Fail to open %s for writing! I must exit now!\n", SOFTAP_CONF_NEW);
+	if ((pFileOut = fopen(HOSTAPD_CONF_NEW, "w")) == NULL) {
+		ALOGE("Fail to open %s for writing! I must exit now!\n", HOSTAPD_CONF_NEW);
 		goto done;
 	}
 
@@ -193,5 +193,5 @@ fail_done:
 	fclose(pFileOut);
 
 done:
-	return;
+	return 0;
 }
