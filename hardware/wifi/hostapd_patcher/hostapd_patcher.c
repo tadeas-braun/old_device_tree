@@ -148,7 +148,7 @@ int main(void) {
 			fputs(tmp_buffer, pFileOut);
 			snprintf(tmp_buffer, sizeof(tmp_buffer), "wpa=2\n");
 			fputs(tmp_buffer, pFileOut);
-			snprintf(tmp_buffer, sizeof(tmp_buffer), "wpa_passphrase%s\n", passBuffer);
+			snprintf(tmp_buffer, sizeof(tmp_buffer), "wpa_passphrase=%s\n", passBuffer);
 			fputs(tmp_buffer, pFileOut);
 			snprintf(tmp_buffer, sizeof(tmp_buffer), "wpa_key_mgmt=WPA-PSK\n");
 			fputs(tmp_buffer, pFileOut);
@@ -160,7 +160,7 @@ int main(void) {
 			fputs(tmp_buffer, pFileOut);
 			snprintf(tmp_buffer, sizeof(tmp_buffer), "wpa=1\n");
 			fputs(tmp_buffer, pFileOut);
-			snprintf(tmp_buffer, sizeof(tmp_buffer), "wpa_passphrase%s\n", passBuffer);
+			snprintf(tmp_buffer, sizeof(tmp_buffer), "wpa_passphrase=%s\n", passBuffer);
 			fputs(tmp_buffer, pFileOut);
 			snprintf(tmp_buffer, sizeof(tmp_buffer), "wpa_key_mgmt=WPA-PSK\n");
 			fputs(tmp_buffer, pFileOut);
