@@ -563,6 +563,11 @@ on property:init.svc.hostapd_bin=stopped
     start hostapd_fix
     stop hostapd_fix
 
+# restart hostapd to load (if) new user configuration
+on property init.svc.hostapd_bin=running
+    stop hostapd_bin
+    start hostapd_bin
+
 # STE, C&N service daemon
 service cn_server /system/bin/cn_server
     class modem-core
