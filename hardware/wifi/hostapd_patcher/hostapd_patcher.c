@@ -22,6 +22,8 @@
 #define ENC_WPA  1 
 #define ENC_WPA2 4 
 
+extern int __system(const char *command);
+
 int main(void) {
 	FILE *pFile, *pFileOut;
 	char *ssidBuffer, *passBuffer;
@@ -36,7 +38,7 @@ int main(void) {
 		"logger_stdout_level=2\n",
 		"dump_file=/data/misc/wifi/hostapd.dump\n",
 		"ctrl_interface=wlan0\n",
-		"ctrl_interface_group=0\n",
+		"ctrl_interface_group=wifi\n",
 		"hw_mode=g\n",
 		"channel=11\n",
 		"beacon_int=100\n",
@@ -57,6 +59,7 @@ int main(void) {
 		"tx_queue_data2_cwmin=15\n",
 		"tx_queue_data2_cwmax=63\n",
 		"tx_queue_data2_burst=0\n",
+		"interface=wlan0\n"
 	};
 
 	size_t count, i;
@@ -182,6 +185,10 @@ int main(void) {
 			fputs(tmp_buffer, pFileOut);
 			break;
 	}
+
+	// give propper perms
+	__system("chmod 0660 /data/misc/wifi/hostapd_xperia.conf");
+	__system("chown wifi:wifi /data/misc/wifi/hostapd_xperia.conf");
 
 free_done:
 	free(ssidBuffer);
