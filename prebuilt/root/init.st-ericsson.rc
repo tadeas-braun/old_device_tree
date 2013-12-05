@@ -485,11 +485,6 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
-service hostapd_fix /system/bin/hostapdpatcher
-    group wifi
-    disabled
-    oneshot
-
 service hostapd_bin /system/bin/hostapd -d /data/misc/wifi/hostapd_xperia.conf
     class main
     socket wpa_wlan0 dgram 660 wifi wifi
@@ -542,6 +537,7 @@ service initial_regdom /system/bin/iw reg set US
 # To prevent connection to channel 12, 13 in flight mode/no coverage/no sim case at startup.
 on property:wlan.driver.status=ok
     start initial_regdom
+    exec /system/bin/hostapdpatcher
 
 on property:init.svc.p2p_supplicant=stopped
     start initial_regdom
@@ -556,17 +552,10 @@ on property:init.svc.dhcpcd_wlan0=stopped
 on property:dhcp.wlan0.result=ok
     exec /system/bin/iw phy phy0 wowlan enable any
 
-# delete tethered interface
+# delete tethered interface and bring down wlan0
 on property:init.svc.hostapd_bin=stopped
     exec /system/bin/iw dev mon.wlan0 del
     exec /system/bin/netcfg wlan0 down
-    start hostapd_fix
-    stop hostapd_fix
-
-# restart hostapd to load (if) new user configuration
-on property init.svc.hostapd_bin=running
-    stop hostapd_bin
-    start hostapd_bin
 
 # STE, C&N service daemon
 service cn_server /system/bin/cn_server
