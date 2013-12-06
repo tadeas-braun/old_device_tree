@@ -193,6 +193,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     iw
 
+# xperia specific wifi tethering
+PRODUCT_PACKAGES += \
+    hostapdpatcher
+
 # GPS
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/gps.conf:system/etc/gps.conf \
