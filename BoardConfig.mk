@@ -58,6 +58,8 @@ BOARD_HOSTAPD_PRIVATE_LIB := private_lib_nl80211_cmd
 USE_OPENGL_RENDERER := true
 BOARD_EGL_CFG := device/sony/lotus/prebuilt/system/lib/egl/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
+# kitkat
+BOARD_HAVE_PIXEL_FORMAT_INFO := true
 
 # libutils backward compatibility for hals
 COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
