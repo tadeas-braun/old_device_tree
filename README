@@ -11,7 +11,7 @@ Getting Started :
     cd device
     mkdir sony
     cd sony
-    git clone https://github.com/munjeni/aosp_4.3_device_sony_lotus.git -b cm-11.0 lotus
+    git clone https://github.com/munjeni/android_device_sony_lotus.git -b cm-11.0 lotus
     cd lotus
 
 Now connect your phone which have runing CM11 :
@@ -19,7 +19,7 @@ Now connect your phone which have runing CM11 :
     ./extract-files.sh
     cd ../../..
     cd hardware
-    git clone https://github.com/munjeni/aosp_4.3_hardware_semc.git -b master semc
+    git clone https://github.com/munjeni/android_hardware_semc.git -b master semc
     cd ..
     mkdir -p kernel/sony
     cd kernel/sony
