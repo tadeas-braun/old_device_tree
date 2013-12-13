@@ -435,7 +435,7 @@ service hdmid /system/bin/hdmid
     socket hdmid stream 0660 system graphics
     oneshot
 
-service bluetoothd /system/bin/logwrapper /system/bin/bluetoothd -d -n
+service bluetoothd /system/bin/logwrapper /system/bin/bluetoothd
     class main
     socket bluetooth stream 660 bluetooth bluetooth
     socket dbus_bluetooth stream 660 bluetooth bluetooth
