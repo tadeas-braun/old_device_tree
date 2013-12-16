@@ -5,7 +5,7 @@ COMMAND1="/system/bin/insmod"
 COMMAND2="/system/bin/iw"
 MOD_PATH="/system/lib/modules"
 MOD_CORE="cw1200_core.ko"
-MOD_WLAN="cw1200_wlan.ko"
+MOD_WLAN="cw1200_wlan_sdio.ko"
 ARG="macaddr="
 
 if ( /system/bin/ls $MAC_FILE > /dev/null ); then
