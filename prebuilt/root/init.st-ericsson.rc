@@ -447,7 +447,7 @@ service hciattach /system/bin/logwrapper /system/bin/hciattach -a 23 -n -s 11520
     group bluetooth net_bt_admin misc root
     oneshot
 
-service bluetoothd /system/bin/logwrapper /system/bin/bluetoothd -n
+service bluetoothd /system/bin/logwrapper /system/bin/bluetoothd
     class main
     socket bluetooth stream 660 bluetooth bluetooth
     socket dbus_bluetooth stream 660 bluetooth bluetooth
