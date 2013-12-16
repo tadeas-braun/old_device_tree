@@ -131,16 +131,16 @@ diff --git a/frameworks/av/include/media/AudioParameter.h b/frameworks/av/includ
 index bce7f21..29c8a53 100644
 --- a/frameworks/av/include/media/AudioParameter.h
 +++ b/frameworks/av/include/media/AudioParameter.h
-@@ -61,6 +61,9 @@ public:
+@@ -61,6 +61,9 @@
      static const char * const keyCanOpenProxy;
      static const char * const keyFmVolume;
  #endif
 +#ifdef STE_AUDIO
 +    static const char *keySinkLatency;
 +#endif
+     static const char * const keySoundCardStatus;
  
      String8 toString();
- 
 diff --git a/frameworks/av/include/media/AudioRecord.h b/frameworks/av/include/media/AudioRecord.h
 index e4cb560..75a03b0 100644
 --- a/frameworks/av/include/media/AudioRecord.h
@@ -423,16 +423,17 @@ diff --git a/frameworks/av/media/libmedia/AudioParameter.cpp b/frameworks/av/med
 index 4240a9a..ebb1ad8 100644
 --- a/frameworks/av/media/libmedia/AudioParameter.cpp
 +++ b/frameworks/av/media/libmedia/AudioParameter.cpp
-@@ -45,6 +45,9 @@ const char * const AudioParameter::keyADSPStatus = AUDIO_PARAMETER_KEY_ADSP_STAT
+@@ -45,7 +45,9 @@
  const char * const AudioParameter::keyCanOpenProxy = AUDIO_CAN_OPEN_PROXY;
  const char * const AudioParameter::keyFmVolume = AUDIO_PARAMETER_KEY_FM_VOLUME;
  #endif
+-
 +#ifdef STE_AUDIO
 +const char *AudioParameter::keySinkLatency = "sink_latency";
 +#endif
+ const char * const AudioParameter::keySoundCardStatus = AUDIO_PARAMETER_KEY_SND_CARD_STATUS;
  
  AudioParameter::AudioParameter(const String8& keyValuePairs)
- {
 diff --git a/frameworks/av/media/libmedia/AudioRecord.cpp b/frameworks/av/media/libmedia/AudioRecord.cpp
 index a3ee6c2..a818a1f 100644
 --- a/frameworks/av/media/libmedia/AudioRecord.cpp
