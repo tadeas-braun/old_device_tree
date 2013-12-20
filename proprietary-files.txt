@@ -1,5 +1,6 @@
 bin/admsrv
 bin/at_core
+bin/batcap
 bin/blue-up.sh
 bin/cg2900-channel_init.sh
 bin/chargemon
