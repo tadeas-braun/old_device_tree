@@ -430,16 +430,14 @@ service admsrv /system/bin/admsrv
     ioprio rt 4
     capability NET_ADMIN NET_RAW SYS_NICE
 
-service cg2900_chanel_init /system/bin/cg2900-channel_init.sh
-    user root
-    group bluetooth net_bt_admin net_admin misc root
-    oneshot
-
 service hciattach /system/bin/logwrapper /system/bin/hciattach -a 23 -n -s 115200 /dev/ttyAMA0 cg2900 115200 flow
     class main
     user root
     group bluetooth net_bt_admin net_admin misc root
     oneshot
+
+on propery:init.svc.hciattach=running
+    exec /system/bin/cg2900-channel_init.sh
 
 service bluetoothd /system/bin/logwrapper /system/bin/bluetoothd
     class main
