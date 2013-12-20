@@ -543,20 +543,17 @@ service initial_regdom /system/bin/iw reg set US
 on property:wlan.driver.status=ok
     start initial_regdom
     exec /system/bin/hostapdpatcher
+    write /sys/class/rfkill/rfkill0/state 1
+
+# power down wifi interface
+on property:wlan.driver.status=unloaded
+    write /sys/class/rfkill/rfkill0/state 0
 
 on property:init.svc.p2p_supplicant=stopped
     start initial_regdom
-    write /sys/class/rfkill/rfkill0/state 0
-
-on property:init.svc.p2p_supplicant=running
-    write /sys/class/rfkill/rfkill0/state 1
 
 on property:init.svc.wpa_supplicant=stopped
     start initial_regdom
-    write /sys/class/rfkill/rfkill0/state 0
-
-on property:init.svc.wpa_supplicant=running
-    write /sys/class/rfkill/rfkill0/state 1
 
 on property:init.svc.dhcpcd_wlan0=stopped
     stop dhcpcd
