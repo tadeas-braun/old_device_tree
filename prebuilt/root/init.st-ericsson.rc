@@ -547,6 +547,7 @@ on property:wlan.driver.status=ok
 
 # power down wifi interface
 on property:wlan.driver.status=unloaded
+    exec /system/bin/iw dev p2p0 del
     write /sys/class/rfkill/rfkill0/state 0
 
 on property:init.svc.p2p_supplicant=stopped
