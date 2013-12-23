@@ -80,6 +80,10 @@ PRODUCT_PACKAGES += \
     ciptool \
     bccmd
 
+# bt profile test (apk)
+#PRODUCT_PACKAGES += \
+#    BluetoothProfileTests
+
 # libaudioparameter
 PRODUCT_PACKAGES += \
     libaudioparameter
