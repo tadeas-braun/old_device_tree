@@ -56,9 +56,14 @@ PRODUCT_PACKAGES += \
     libbtio \
     libbluetooth
 
+# setup functions to initialize the encoder and decoder for A2DP streams
+PRODUCT_PACKAGES += \
+    libsbc
+
 # Bluez 5.11 daemon, android hal and haltest
 PRODUCT_PACKAGES += \
     bluetoothd \
+    bluetoothd-snoop \
     bluetooth.default \
     audio.a2dp.default \
     haltest
@@ -79,7 +84,8 @@ PRODUCT_PACKAGES += \
     l2ping \
     sdptool \
     ciptool \
-    bccmd
+    bccmd \
+    btproxy
 
 # bt profile test (apk)
 #PRODUCT_PACKAGES += \
