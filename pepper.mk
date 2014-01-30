@@ -123,9 +123,9 @@ PRODUCT_PACKAGES += \
     audio.usb.default
 
 # Screen recorder
-PRODUCT_PACKAGES += \
-    ScreenRecorder \
-    libscreenrecorder
+#PRODUCT_PACKAGES += \
+#    ScreenRecorder \
+#    libscreenrecorder
 
 # Permissions
 PRODUCT_COPY_FILES += \
